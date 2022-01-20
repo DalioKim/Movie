@@ -1,5 +1,5 @@
 import Foundation
 
-struct ImageQuery: Equatable {
+struct MovieQuery: Equatable {
     let query: String
 }

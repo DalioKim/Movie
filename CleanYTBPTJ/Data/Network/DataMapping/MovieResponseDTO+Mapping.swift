@@ -7,13 +7,13 @@
 
 import Foundation
 
-struct ImageResponseDTO  : Decodable{
+struct MovieResponseDTO  : Decodable{
   
-    let items: [ImageDTO]
+    let items: [MovieDTO]
 }
 
-extension ImageResponseDTO{
-    struct ImageDTO : Decodable{
+extension MovieResponseDTO{
+    struct MovieDTO : Decodable{
      
         let title : String?
         let image : String?
@@ -22,15 +22,15 @@ extension ImageResponseDTO{
     }
 }
 
-extension ImageResponseDTO {
-    func toDomain() -> ImagesPage {
+extension MovieResponseDTO {
+    func toDomain() -> MoviesPage {
         return .init(
-            images: items.map { $0.toDomain() })
+            movies: items.map { $0.toDomain() })
     }
 }
 
-extension ImageResponseDTO.ImageDTO {
-    func toDomain() -> Image {
+extension MovieResponseDTO.MovieDTO {
+    func toDomain() -> Movie {
         return .init(title: title,
                      path : image)
     }

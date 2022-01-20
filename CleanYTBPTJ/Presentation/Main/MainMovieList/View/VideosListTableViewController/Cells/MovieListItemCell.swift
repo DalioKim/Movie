@@ -7,9 +7,9 @@
 
 import UIKit
 
-class ThumbnailListItemCell: UITableViewCell {
+class MovieListItemCell: UITableViewCell {
     
-    static let reuseIdentifier = String(describing: ThumbnailListItemCell.self)
+    static let reuseIdentifier = String(describing: MovieListItemCell.self)
     static let height = CGFloat(300)
 
      private var titleLabel: UILabel!
@@ -17,7 +17,7 @@ class ThumbnailListItemCell: UITableViewCell {
      private var overviewLabel: UILabel!
      private var thumbnailImageView: UIImageView!
 
-    private var viewModel: ImagesListItemViewModel!
+    private var viewModel: MovieListItemViewModel!
 
     private var thumbnailRepository: ThumbnailRepository?
 
@@ -59,7 +59,7 @@ class ThumbnailListItemCell: UITableViewCell {
     
     
 
-    func fill(with viewModel: ImagesListItemViewModel, thumbnailRepository: ThumbnailRepository?) {
+    func fill(with viewModel: MovieListItemViewModel, thumbnailRepository: ThumbnailRepository?) {
 
         self.viewModel = viewModel
         self.thumbnailRepository = thumbnailRepository
@@ -74,7 +74,7 @@ class ThumbnailListItemCell: UITableViewCell {
     }
 
     private func updateThumbnailImage(width: Int) {
-        printIfDebug("updateThumbnailImage")
+        printIfDebug("updateThumbnailImage \(viewModel.thumbnailImagePath)")
         thumbnailImageView.image = nil
             
         guard let thumbnailImagePath = viewModel.thumbnailImagePath else { return }

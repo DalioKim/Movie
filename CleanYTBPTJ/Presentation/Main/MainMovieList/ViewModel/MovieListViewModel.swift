@@ -6,16 +6,16 @@ import UIKit
 //thread safe
 //유스케이스 정의
 //자료구조와 정렬알고리즘
-struct ImagesListViewModelActions {
+struct MovieListViewModelActions {
 
 }
 
-enum ImagesListItemViewModelLoading {
+enum MovieListItemViewModelLoading {
     case fullScreen
     case nextPage
 }
 
-protocol ImagesListViewModelInput {
+protocol MovieListViewModelInput {
     func viewDidLoad()
     func didLoadNextPage()
     func didSearch(query: String)
@@ -28,11 +28,11 @@ protocol ImagesListViewModelInput {
     func didSelectItem(at index: Int)
 }
 
-protocol ImagesListViewModelOutput {
+protocol MovieListViewModelOutput {
 //    var items: Observable<[VideosListItemViewModel]> { get }
 //    var loading: Observable<ImagesListViewModelLoading?> { get }
-    var items: Observable<[ImagesListItemViewModel]> { get }
-    var loading: Observable<ImagesListItemViewModelLoading?> { get }
+    var items: Observable<[MovieListItemViewModel]> { get }
+    var loading: Observable<MovieListItemViewModelLoading?> { get }
     var query: Observable<String> { get }
     var error: Observable<String> { get }
     var isEmpty: Bool { get }
@@ -42,9 +42,9 @@ protocol ImagesListViewModelOutput {
     var searchBarPlaceholder: String { get }
 }
 
-protocol ImagesListViewModel: ImagesListViewModelInput, ImagesListViewModelOutput {}
+protocol MovieListViewModel: MovieListViewModelInput, MovieListViewModelOutput {}
 
-final class DefaultImagesListViewModel: ImagesListViewModel {
+final class DefaultMovieListViewModel: MovieListViewModel {
     
     
     
@@ -54,9 +54,9 @@ final class DefaultImagesListViewModel: ImagesListViewModel {
     
     
 
-    private let searchImagesUseCase: SearchImagesUseCase
+    private let searchMovieUseCase: SearchMovieUseCase
 
-    private let actions: ImagesListViewModelActions?
+    private let actions: MovieListViewModelActions?
 
     var currentPage: Int = 0
     var totalPageCount: Int = 1
@@ -64,13 +64,13 @@ final class DefaultImagesListViewModel: ImagesListViewModel {
     var nextPage: Int { hasMorePages ? currentPage + 1 : currentPage }
 
     private var pages: [VideosPage] = []
-    private var videosLoadTask: Cancellable? { willSet { videosLoadTask?.cancel() } }
+    private var moviesLoadTask: Cancellable? { willSet { moviesLoadTask?.cancel() } }
 
     // MARK: - OUTPUT
 //    let loading: Observable<ImagesListViewModelLoading?> = Observable(.none)
 //    let items: Observable<[VideosListItemViewModel]> = Observable([])
-    let loading: Observable<ImagesListItemViewModelLoading?> = Observable(.none)
-    let items: Observable<[ImagesListItemViewModel]> = Observable([])
+    let loading: Observable<MovieListItemViewModelLoading?> = Observable(.none)
+    let items: Observable<[MovieListItemViewModel]> = Observable([])
 
     let query: Observable<String> = Observable("")
     let error: Observable<String> = Observable("")
@@ -81,25 +81,25 @@ final class DefaultImagesListViewModel: ImagesListViewModel {
     let searchBarPlaceholder = NSLocalizedString("Search Movies", comment: "")
 
     // MARK: - Init
-    init(searchImagesUseCase: SearchImagesUseCase,
-         actions: ImagesListViewModelActions? = nil) {
-        print("DefaultImagesListViewModel init")
+    init(searchMovieUseCase: SearchMovieUseCase,
+         actions: MovieListViewModelActions? = nil) {
+        print("DefaultMoviesListViewModel init")
 
-        self.searchImagesUseCase = searchImagesUseCase
+        self.searchMovieUseCase = searchMovieUseCase
         self.actions = actions
     }
 
     // MARK: - Private
-    private func appendPage(_ imagesPage: ImagesPage) {
+    private func appendPage(_ moviesPage: MoviesPage) {
         printIfDebug("debug appendPage")
 
         //유튜브
         //self.items.value =  videosPage.videos.map { $0.id}.map(VideosListItemViewModel.init)
 
-        items.value = imagesPage.images.map(ImagesListItemViewModel.init)
-//        imagesPage.images.map{
-//            printIfDebug("path 디버깅 : \($0.path)")
-//        }
+        items.value = moviesPage.movies.map(MovieListItemViewModel.init)
+        moviesPage.movies.map{
+            printIfDebug("path 디버깅 : \($0.path)")
+        }
     }
 
     private func resetPages() {
@@ -111,15 +111,15 @@ final class DefaultImagesListViewModel: ImagesListViewModel {
 
  
     
-    private func load(imageQuery: ImageQuery, loading: ImagesListItemViewModelLoading) {
+    private func load(movieQuery: MovieQuery, loading: MovieListItemViewModelLoading) {
         
         printIfDebug("networkTask - load")
         
         self.loading.value = loading
-        query.value = imageQuery.query
+        query.value = movieQuery.query
 
-        videosLoadTask = searchImagesUseCase.execute(
-            requestValue: .init(query: imageQuery, page: nextPage),
+        moviesLoadTask = searchMovieUseCase.execute(
+            requestValue: .init(query: movieQuery, page: nextPage),
             cached: appendPage,
             completion: { result in
                 switch result {
@@ -141,15 +141,15 @@ final class DefaultImagesListViewModel: ImagesListViewModel {
 
 
     
-    private func update(imageQuery: ImageQuery) {
+    private func update(movieQuery: MovieQuery) {
         printIfDebug("networkTask update")
         //resetPages()
-        load(imageQuery: imageQuery, loading: .fullScreen)
+        load(movieQuery: movieQuery, loading: .fullScreen)
     }
 }
 
 // MARK: - INPUT. View event methods
-extension DefaultImagesListViewModel {
+extension DefaultMovieListViewModel {
 
     //func viewDidLoad() { }
     
@@ -158,22 +158,22 @@ extension DefaultImagesListViewModel {
         printIfDebug("networkTask didLoadNextPage")
 
         guard hasMorePages, loading.value == .none else { return }
-        load(imageQuery: .init(query: query.value),
+        load(movieQuery: .init(query: query.value),
              loading: .nextPage)
     }
 
     func didSearch(query: String) {
         guard !query.isEmpty else { return }
-        update(imageQuery: ImageQuery(query: query))
+        update(movieQuery: MovieQuery(query: query))
     }
     
     func didSetDefaultList() {
         printIfDebug("didSetDefaultList")
-        update(imageQuery: ImageQuery(query: "default"))
+        update(movieQuery: MovieQuery(query: "default"))
     }
 
     func didCancelSearch() {
-        videosLoadTask?.cancel()
+        moviesLoadTask?.cancel()
     }
 
     func showQueriesSuggestions() {

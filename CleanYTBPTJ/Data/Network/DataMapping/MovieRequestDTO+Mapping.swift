@@ -8,7 +8,7 @@
 import Foundation
 
 //네이버
-struct ImageRequestDTO: Encodable {
+struct MovieRequestDTO: Encodable {
     let query: String
 }
 

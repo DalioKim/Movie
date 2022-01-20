@@ -1,16 +1,16 @@
 import Foundation
 
-struct ImagesListItemViewModel: Equatable {
+struct MovieListItemViewModel: Equatable {
     let title : String
     let thumbnailImagePath : String?
 
 }
 
-extension ImagesListItemViewModel {
+extension MovieListItemViewModel {
 
-    init(image: Image) {
-        self.title = image.title ?? ""
-        self.thumbnailImagePath = image.path
+    init(movie: Movie) {
+        self.title = movie.title ?? ""
+        self.thumbnailImagePath = movie.path
 
 
     }

@@ -7,9 +7,9 @@
 
 import UIKit
 
-class ThumbnailListTableViewController: UITableViewController {
+class MovieListTableViewController: UITableViewController {
     
-    var viewModel: ImagesListViewModel!
+    var viewModel: MovieListViewModel!
 
     var thumbnailRepository: ThumbnailRepository?
     var nextPageLoadingSpinner: UIActivityIndicatorView?
@@ -31,7 +31,7 @@ class ThumbnailListTableViewController: UITableViewController {
 
 // MARK: - UITableViewDataSource, UITableViewDelegate
 
-extension ThumbnailListTableViewController {
+extension MovieListTableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.items.value.count
@@ -41,7 +41,7 @@ extension ThumbnailListTableViewController {
         
         
         printIfDebug("tableView")
-        let cell = tableView.dequeueReusableCell(withIdentifier: ThumbnailListItemCell.reuseIdentifier) as! ThumbnailListItemCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: MovieListItemCell.reuseIdentifier) as! MovieListItemCell
         
         
         

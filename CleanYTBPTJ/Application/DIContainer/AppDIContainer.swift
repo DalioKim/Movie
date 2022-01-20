@@ -22,9 +22,9 @@ final class AppDIContainer {
  
     
     // MARK: - DIContainers of scenes
-    func makeThumbnailsSceneDIContainer() -> ThumbnailsSceneDIContainer {
+    func makeMovieSceneDIContainer() -> MovieSceneDIContainer {
         printIfDebug("AppDIContainer makeThumbnailsSceneDIContainer")
-        let dependencies = ThumbnailsSceneDIContainer.Dependencies(apiDataTransferService: apiDataTransferService)
-        return ThumbnailsSceneDIContainer(dependencies: dependencies)
+        let dependencies = MovieSceneDIContainer.Dependencies(apiDataTransferService: apiDataTransferService)
+        return MovieSceneDIContainer(dependencies: dependencies)
     }
 }

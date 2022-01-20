@@ -15,7 +15,7 @@ struct APIEndpoints {
                         queryParametersEncodable: VideosRequestDTO)
     }
 
-    static func getImages(with ImageRequestDTO: ImageRequestDTO) -> Endpoint<ImageResponseDTO> {
+    static func getMovies(with MovieRequestDTO: MovieRequestDTO) -> Endpoint<MovieResponseDTO> {
         printIfDebug("networkTask - APIEndpoints-getVideos")
         
     
@@ -23,7 +23,7 @@ struct APIEndpoints {
         
         return Endpoint(path: "movie.json",
                         method: .get,
-                        queryParametersEncodable: ImageRequestDTO)
+                        queryParametersEncodable: MovieRequestDTO)
     }
     
     

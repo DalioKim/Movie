@@ -21,7 +21,7 @@ import Alamofire
 
 
 
-class ThumbnailListViewController: UIViewController {
+class MovieListViewController: UIViewController {
     
     
     struct Dependencies {
@@ -31,23 +31,23 @@ class ThumbnailListViewController: UIViewController {
 
     
     
-    private var thumbnailListTableViewController  = ThumbnailListTableViewController()
+    private var movieListTableViewController  = MovieListTableViewController()
 
     private let vIdeosListTableView: UITableView = {
         let vIdeosListTableView = UITableView()
         return vIdeosListTableView
     }()
     
-    private var viewModel: ImagesListViewModel!
+    private var viewModel: MovieListViewModel!
     private var thumbnailRepository: ThumbnailRepository?
 
 
 //싱글턴으로 뷰모델을 하나만 만든다.
-    static func create(with viewModel: ImagesListViewModel, thumbnailRepository : ThumbnailRepository) -> ThumbnailListViewController {
+    static func create(with viewModel: MovieListViewModel, thumbnailRepository : ThumbnailRepository) -> MovieListViewController {
         
         printIfDebug("ThumbnailListViewController create")
         
-        let view = ThumbnailListViewController()
+        let view = MovieListViewController()
         view.viewModel = viewModel
         view.thumbnailRepository = thumbnailRepository
 
@@ -83,7 +83,7 @@ class ThumbnailListViewController: UIViewController {
 
 
     
-    private func bind(to viewModel: ImagesListViewModel) {
+    private func bind(to viewModel: MovieListViewModel) {
         debugPrint("viewModel : \(viewModel)")
 
         viewModel.items.observe(on: self) { [weak self] _ in self?.updateItems() }
@@ -95,13 +95,13 @@ class ThumbnailListViewController: UIViewController {
     private func setupViews() {
         debugPrint("setupViews Model : \(viewModel)")
         
-        thumbnailListTableViewController.viewModel = viewModel
-        thumbnailListTableViewController.thumbnailRepository = thumbnailRepository
+        movieListTableViewController.viewModel = viewModel
+        movieListTableViewController.thumbnailRepository = thumbnailRepository
 
-        vIdeosListTableView.rowHeight = ThumbnailListItemCell.height
-        vIdeosListTableView.register(ThumbnailListItemCell.self, forCellReuseIdentifier: ThumbnailListItemCell.reuseIdentifier)
-        vIdeosListTableView.dataSource = thumbnailListTableViewController
-        vIdeosListTableView.delegate = thumbnailListTableViewController
+        vIdeosListTableView.rowHeight = MovieListItemCell.height
+        vIdeosListTableView.register(MovieListItemCell.self, forCellReuseIdentifier: MovieListItemCell.reuseIdentifier)
+        vIdeosListTableView.dataSource = movieListTableViewController
+        vIdeosListTableView.delegate = movieListTableViewController
             self.view.addSubview(vIdeosListTableView)
         self.vIdeosListTableView.snp.makeConstraints { (make) -> Void in
             make.width.height.equalToSuperview() // 임의의 사이즈를 지정한다.
@@ -109,7 +109,7 @@ class ThumbnailListViewController: UIViewController {
                    //make.center.equalTo(self.view) // Constraints의 중앙을 view에 맞춘다.
                 }
 
-        printIfDebug("setupViews viewmodel \(thumbnailListTableViewController.viewModel.items.value.count)")
+        printIfDebug("setupViews viewmodel \(movieListTableViewController.viewModel.items.value.count)")
 
     }
     
@@ -122,12 +122,12 @@ class ThumbnailListViewController: UIViewController {
     
     private func updateItems() {
         printIfDebug("updateItems")
-        printIfDebug("update viewmodel \(thumbnailListTableViewController.viewModel.items.value.count)")
+        printIfDebug("update viewmodel \(movieListTableViewController.viewModel.items.value.count)")
         self.vIdeosListTableView.reloadData()
 
     }
 
-    private func updateLoading(_ loading: ImagesListItemViewModelLoading?) {
+    private func updateLoading(_ loading: MovieListItemViewModelLoading?) {
 
     }
 

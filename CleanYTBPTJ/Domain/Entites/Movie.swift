@@ -7,13 +7,13 @@
 
 import Foundation
 
-struct Image: Equatable {
+struct Movie: Equatable {
 
     let title: String?
     let path : String?
 
 }
 
-struct ImagesPage: Equatable {
-    let images: [Image]
+struct MoviesPage: Equatable {
+    let movies: [Movie]
 }

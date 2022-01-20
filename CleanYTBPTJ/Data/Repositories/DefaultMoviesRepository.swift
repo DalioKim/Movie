@@ -1,7 +1,7 @@
 
 import Foundation
 
-final class DefaultImagesRepository {
+final class DefaultMoviesRepository {
 
     private let dataTransferService: DataTransferService
 
@@ -12,22 +12,22 @@ final class DefaultImagesRepository {
    
 }
 
-extension DefaultImagesRepository: ImagesRepository {
+extension DefaultMoviesRepository: MoviesRepository {
     
     
     
-    func fetchImagesList(query: ImageQuery, page: Int, cached: @escaping (ImagesPage) -> Void, completion: @escaping (Result<ImagesPage, Error>) -> Void) -> Cancellable? {
+    func fetchMovieList(query: MovieQuery, page: Int, cached: @escaping (MoviesPage) -> Void, completion: @escaping (Result<MoviesPage, Error>) -> Void) -> Cancellable? {
         
-        printIfDebug("networkTask - fetchImagesList")
+        printIfDebug("networkTask - fetchMovieList")
         
-        let requestDTO = ImageRequestDTO(query: "마블")
+        let requestDTO = MovieRequestDTO(query: "마블")
         
         
         let task = RepositoryTask()
 
 
 
-        let endpoint = APIEndpoints.getImages(with: requestDTO)
+        let endpoint = APIEndpoints.getMovies(with: requestDTO)
         
 
         
@@ -35,13 +35,13 @@ extension DefaultImagesRepository: ImagesRepository {
             switch result {
 
             case .success(let responseDTO):
-                printIfDebug("networkTask - fetchImagesList-success")
+                printIfDebug("networkTask - fetchMovieList-success")
 
 
                 
                 completion(.success(responseDTO.toDomain()))
             case .failure(let error):
-                printIfDebug("networkTask - fetchImagesList-success")
+                printIfDebug("networkTask - fetchMovieList-success")
 
 
                 completion(.failure(error))
