@@ -39,7 +39,6 @@ final class DefaultEnterMainUseCase: EnterMainUseCase {
 }
 
 struct EnterMainUseCaseRequestValue {
-    //let query: VideoQuery
     let query: MovieQuery
     let page: Int
 }

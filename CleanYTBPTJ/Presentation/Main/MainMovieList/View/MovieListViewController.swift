@@ -33,9 +33,9 @@ class MovieListViewController: UIViewController {
     
     private var movieListTableViewController  = MovieListTableViewController()
 
-    private let vIdeosListTableView: UITableView = {
-        let vIdeosListTableView = UITableView()
-        return vIdeosListTableView
+    private let movieListTableView: UITableView = {
+        let movieListTableView = UITableView()
+        return movieListTableView
     }()
     
     private var viewModel: MovieListViewModel!
@@ -98,12 +98,12 @@ class MovieListViewController: UIViewController {
         movieListTableViewController.viewModel = viewModel
         movieListTableViewController.thumbnailRepository = thumbnailRepository
 
-        vIdeosListTableView.rowHeight = MovieListItemCell.height
-        vIdeosListTableView.register(MovieListItemCell.self, forCellReuseIdentifier: MovieListItemCell.reuseIdentifier)
-        vIdeosListTableView.dataSource = movieListTableViewController
-        vIdeosListTableView.delegate = movieListTableViewController
-            self.view.addSubview(vIdeosListTableView)
-        self.vIdeosListTableView.snp.makeConstraints { (make) -> Void in
+        movieListTableView.rowHeight = MovieListItemCell.height
+        movieListTableView.register(MovieListItemCell.self, forCellReuseIdentifier: MovieListItemCell.reuseIdentifier)
+        movieListTableView.dataSource = movieListTableViewController
+        movieListTableView.delegate = movieListTableViewController
+            self.view.addSubview(movieListTableView)
+        self.movieListTableView.snp.makeConstraints { (make) -> Void in
             make.width.height.equalToSuperview() // 임의의 사이즈를 지정한다.
             
                    //make.center.equalTo(self.view) // Constraints의 중앙을 view에 맞춘다.
@@ -123,7 +123,7 @@ class MovieListViewController: UIViewController {
     private func updateItems() {
         printIfDebug("updateItems")
         printIfDebug("update viewmodel \(movieListTableViewController.viewModel.items.value.count)")
-        self.vIdeosListTableView.reloadData()
+        self.movieListTableView.reloadData()
 
     }
 

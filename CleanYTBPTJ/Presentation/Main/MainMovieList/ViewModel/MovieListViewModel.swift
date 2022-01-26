@@ -29,8 +29,6 @@ protocol MovieListViewModelInput {
 }
 
 protocol MovieListViewModelOutput {
-//    var items: Observable<[VideosListItemViewModel]> { get }
-//    var loading: Observable<ImagesListViewModelLoading?> { get }
     var items: Observable<[MovieListItemViewModel]> { get }
     var loading: Observable<MovieListItemViewModelLoading?> { get }
     var query: Observable<String> { get }
@@ -63,12 +61,10 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     var hasMorePages: Bool { currentPage < totalPageCount }
     var nextPage: Int { hasMorePages ? currentPage + 1 : currentPage }
 
-    private var pages: [VideosPage] = []
+    private var pages: [MoviesPage] = []
     private var moviesLoadTask: Cancellable? { willSet { moviesLoadTask?.cancel() } }
 
     // MARK: - OUTPUT
-//    let loading: Observable<ImagesListViewModelLoading?> = Observable(.none)
-//    let items: Observable<[VideosListItemViewModel]> = Observable([])
     let loading: Observable<MovieListItemViewModelLoading?> = Observable(.none)
     let items: Observable<[MovieListItemViewModel]> = Observable([])
 
@@ -92,9 +88,6 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     // MARK: - Private
     private func appendPage(_ moviesPage: MoviesPage) {
         printIfDebug("debug appendPage")
-
-        //유튜브
-        //self.items.value =  videosPage.videos.map { $0.id}.map(VideosListItemViewModel.init)
 
         items.value = moviesPage.movies.map(MovieListItemViewModel.init)
         moviesPage.movies.map{
@@ -176,21 +169,11 @@ extension DefaultMovieListViewModel {
         moviesLoadTask?.cancel()
     }
 
-    func showQueriesSuggestions() {
-//        actions?.showVideoQueriesSuggestions(update(videoQuery:))
-    }
+    func showQueriesSuggestions() {}
 
-    func closeQueriesSuggestions() {
-  //      actions?.closeVideoQueriesSuggestions()
-    }
+    func closeQueriesSuggestions() {}
 
-    func didSelectItem(at index: Int) {
-    //    actions?.showVideoDetails(pages.videos[index])
-    }
+    func didSelectItem(at index: Int) {}
 }
 
-// MARK: - Private
-//제네릭 사용제약
-private extension Array where Element == VideosPage {
-    var videos: [Snippet] { flatMap { $0.videos } }
-}
+

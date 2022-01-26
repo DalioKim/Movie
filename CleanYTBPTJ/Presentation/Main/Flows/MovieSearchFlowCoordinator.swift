@@ -12,7 +12,6 @@ final class MovieSearchFlowCoordinator {
     private let dependencies: MovieSearchFlowCoordinatorDependencies
 
     private weak var MovieListVC: MovieListViewController?
-    private weak var VideosQueriesSuggestionsVC: UIViewController?
 
     init(navigationController: UINavigationController,
          dependencies: MovieSearchFlowCoordinatorDependencies) {
