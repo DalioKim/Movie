@@ -25,24 +25,19 @@ final class DefaultSearchMovieUseCase: SearchMovieUseCase {
 
     func execute(requestValue: SearchMovieUseCaseRequestValue,
                  cached: @escaping (MoviesPage) -> Void,
-                 completion: @escaping (Result<MoviesPage, Error>) -> Void) -> Cancellable? {
-        printIfDebug("networkTask - execute")
-
+                 completion: @escaping (Result<MoviesPage, Error>) -> Void) -> CancelDelegate? {
+        
         return moviesRepository.fetchMovieList(query: requestValue.query,
-                                                page: requestValue.page,
-                                                cached: cached,
-                                                completion: { result in
-
-//            if case .success = result {
-//                self.MoviesQueriesRepository.saveRecentQuery(query: requestValue.query) { _ in }
-//            }
-
+                                               page: requestValue.page,
+                                               cached: cached,
+                                               completion: { result in
             completion(result)
         })
     }
 }
 
 struct SearchMovieUseCaseRequestValue {
+    
     let query: MovieQuery
     let page: Int
 }

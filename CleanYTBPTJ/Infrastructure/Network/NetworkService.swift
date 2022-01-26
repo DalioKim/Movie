@@ -51,8 +51,7 @@ public final class DefaultNetworkService {
         self.logger = logger
     }
     
-    private func request(request: URLRequest, completion: @escaping CompletionHandler) -> NetworkCancellable {
-        printIfDebug("networkTask - DefaultNetworkService-request")
+    private func request(request: URLRequest, completion: @escaping CompletionHandler) -> NetworkCancelDelegate {
 
         let sessionDataTask = sessionManager.request(request) { data, response, requestError in
             
@@ -70,9 +69,6 @@ public final class DefaultNetworkService {
                 self.logger.log(error: error)
                 completion(.failure(error))
             } else {
-                printIfDebug("networkTask - DefaultNetworkService-requestSUccess")
-
-                printIfDebug("networkTask - Data : \(data)")
 
                 self.logger.log(responseData: data, response: response)
                 completion(.success(data))
@@ -85,6 +81,7 @@ public final class DefaultNetworkService {
     }
     
     private func resolve(error: Error) -> NetworkError {
+        
         let code = URLError.Code(rawValue: (error as NSError).code)
         switch code {
         case .notConnectedToInternet: return .notConnected
@@ -111,19 +108,12 @@ extension DefaultNetworkService: NetworkService {
 }
 
 // MARK: - Default Network Session Manager
-// Note: If authorization is needed NetworkSessionManager can be implemented by using,
-// for example, Alamofire SessionManager with its RequestAdapter and RequestRetrier.
-// And it can be incjected into NetworkService instead of default one.
 
 public class DefaultNetworkSessionManager: NetworkSessionManager {
     public init() {}
     public func request(_ request: URLRequest,
-                        completion: @escaping CompletionHandler) -> NetworkCancellable {
-        printIfDebug("networkTask - DefaultNetworkSessionManager-request")
+                        completion: @escaping CompletionHandler) -> NetworkCancelDelegate {
 
-      
-  
-        
         let task = URLSession.shared.dataTask(with: request, completionHandler: completion)
         task.resume()
         return task
@@ -133,14 +123,13 @@ public class DefaultNetworkSessionManager: NetworkSessionManager {
 // MARK: - Logger
 
 public final class DefaultNetworkErrorLogger: NetworkErrorLogger {
-    public init() { }
-
+    public init() {}
     public func log(request: URLRequest) {
-        print("-------------")
-        print("request: \(request.url!)")
-        print("headers: \(request.allHTTPHeaderFields!)")
-        print("method: \(request.httpMethod!)")
-        if let httpBody = request.httpBody, let result = ((try? JSONSerialization.jsonObject(with: httpBody, options: []) as? [String: AnyObject]) as [String: AnyObject]??) {
+        
+        if let httpBody = request.httpBody
+            , let result =
+            ((try? JSONSerialization.jsonObject(with: httpBody, options: [])
+              as? [String: AnyObject]) as [String: AnyObject]??) {
             printIfDebug("body: \(String(describing: result))")
         } else if let httpBody = request.httpBody, let resultString = String(data: httpBody, encoding: .utf8) {
             printIfDebug("body: \(String(describing: resultString))")
@@ -148,13 +137,15 @@ public final class DefaultNetworkErrorLogger: NetworkErrorLogger {
     }
 
     public func log(responseData data: Data?, response: URLResponse?) {
+        
         guard let data = data else { return }
         if let dataDict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-           // printIfDebug("responseData: \(String(describing: dataDict))")
+            printIfDebug("responseData: \(String(describing: dataDict))")
         }
     }
 
     public func log(error: Error) {
+        
         printIfDebug("\(error)")
     }
 }
@@ -162,9 +153,11 @@ public final class DefaultNetworkErrorLogger: NetworkErrorLogger {
 // MARK: - NetworkError extension
 
 extension NetworkError {
+    
     public var isNotFoundError: Bool { return hasStatusCode(404) }
     
     public func hasStatusCode(_ codeError: Int) -> Bool {
+        
         switch self {
         case let .error(code, _):
             return code == codeError
@@ -174,7 +167,9 @@ extension NetworkError {
 }
 
 extension Dictionary where Key == String {
+    
     func prettyPrint() -> String {
+        
         var string: String = ""
         if let data = try? JSONSerialization.data(withJSONObject: self, options: .prettyPrinted) {
             if let nstr = NSString(data: data, encoding: String.Encoding.utf8.rawValue) {
@@ -183,9 +178,11 @@ extension Dictionary where Key == String {
         }
         return string
     }
+    
 }
 
 func printIfDebug(_ string: String) {
+    
     #if DEBUG
     print(string)
     #endif
