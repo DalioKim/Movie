@@ -10,6 +10,7 @@
 		0C73AC71F1E6BB8A962B205A /* Pods_CleanYTBPTJ_CleanYTBPTJUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A6ABF33FC0B00E5F6A0FED /* Pods_CleanYTBPTJ_CleanYTBPTJUITests.framework */; };
 		98368CE86C7DEA3D288F45DB /* Pods_CleanYTBPTJTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBDAACE014EAFC6D4BE836D5 /* Pods_CleanYTBPTJTests.framework */; };
 		E36A966F2799517700EC90C6 /* DefaultMoviesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36A966E2799517700EC90C6 /* DefaultMoviesRepository.swift */; };
+		E38EAE3D27A12AAB002AD364 /* UILabel+GetRegular.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38EAE3C27A12AAB002AD364 /* UILabel+GetRegular.swift */; };
 		E3F5F935274A72C000B8DF11 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5F934274A72C000B8DF11 /* AppDelegate.swift */; };
 		E3F5F937274A72C000B8DF11 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5F936274A72C000B8DF11 /* SceneDelegate.swift */; };
 		E3F5F93E274A72C300B8DF11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E3F5F93D274A72C300B8DF11 /* Assets.xcassets */; };
@@ -52,7 +53,6 @@
 		E3F5FC012789BA7500B8DF11 /* MovieResponseDTO+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5FC002789BA7500B8DF11 /* MovieResponseDTO+Mapping.swift */; };
 		E3F5FC0C2789C93A00B8DF11 /* MovieListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5FC0B2789C93A00B8DF11 /* MovieListItemViewModel.swift */; };
 		E3F5FC1B278AED8E00B8DF11 /* DefaultThumbnailRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5FC1A278AED8E00B8DF11 /* DefaultThumbnailRepository.swift */; };
-		E3F5FC26278B17E700B8DF11 /* UILabel+GetRegular.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5FC25278B17E500B8DF11 /* UILabel+GetRegular.swift */; };
 		EF97A2862AC649BFEADA1707 /* Pods_CleanYTBPTJ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C2111432D82A4E88FECA85E /* Pods_CleanYTBPTJ.framework */; };
 /* End PBXBuildFile section */
 
@@ -83,6 +83,7 @@
 		BDE225084A05C44C159F96DC /* Pods-CleanYTBPTJTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CleanYTBPTJTests.release.xcconfig"; path = "Target Support Files/Pods-CleanYTBPTJTests/Pods-CleanYTBPTJTests.release.xcconfig"; sourceTree = "<group>"; };
 		BE9579CD6B377CADAFCA46BE /* Pods-CleanYTBPTJ-CleanYTBPTJUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CleanYTBPTJ-CleanYTBPTJUITests.release.xcconfig"; path = "Target Support Files/Pods-CleanYTBPTJ-CleanYTBPTJUITests/Pods-CleanYTBPTJ-CleanYTBPTJUITests.release.xcconfig"; sourceTree = "<group>"; };
 		E36A966E2799517700EC90C6 /* DefaultMoviesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultMoviesRepository.swift; sourceTree = "<group>"; };
+		E38EAE3C27A12AAB002AD364 /* UILabel+GetRegular.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+GetRegular.swift"; sourceTree = "<group>"; };
 		E3F5F931274A72C000B8DF11 /* CleanYTBPTJ.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CleanYTBPTJ.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3F5F934274A72C000B8DF11 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E3F5F936274A72C000B8DF11 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -129,7 +130,6 @@
 		E3F5FC002789BA7500B8DF11 /* MovieResponseDTO+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MovieResponseDTO+Mapping.swift"; sourceTree = "<group>"; };
 		E3F5FC0B2789C93A00B8DF11 /* MovieListItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListItemViewModel.swift; sourceTree = "<group>"; };
 		E3F5FC1A278AED8E00B8DF11 /* DefaultThumbnailRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultThumbnailRepository.swift; sourceTree = "<group>"; };
-		E3F5FC25278B17E500B8DF11 /* UILabel+GetRegular.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+GetRegular.swift"; sourceTree = "<group>"; };
 		EBDAACE014EAFC6D4BE836D5 /* Pods_CleanYTBPTJTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CleanYTBPTJTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -391,7 +391,7 @@
 			children = (
 				E3F5FA9C2785A60100B8DF11 /* UIImageView+ImageSizeAfterAspectFit.swift */,
 				E3F5FB912787E5DA00B8DF11 /* UIViewController+AddBehaviors.swift */,
-				E3F5FC25278B17E500B8DF11 /* UILabel+GetRegular.swift */,
+				E38EAE3C27A12AAB002AD364 /* UILabel+GetRegular.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -761,6 +761,7 @@
 				E3F5FBA02787E66900B8DF11 /* BlackStyleNavigationBarBehavior.swift in Sources */,
 				E3F5FB7E2787300400B8DF11 /* AppAppearance.swift in Sources */,
 				E3F5FA802785982E00B8DF11 /* MovieListTableViewController.swift in Sources */,
+				E38EAE3D27A12AAB002AD364 /* UILabel+GetRegular.swift in Sources */,
 				E3F5FB252787060C00B8DF11 /* AppDIContainer.swift in Sources */,
 				E3F5FBEA2789AA2400B8DF11 /* MoviesRepository.swift in Sources */,
 				E3F5FAEC2785C7ED00B8DF11 /* NetworkService.swift in Sources */,
@@ -780,7 +781,6 @@
 				E3F5FB182785CC8500B8DF11 /* RepositoryTask.swift in Sources */,
 				E3F5FB922787E5DA00B8DF11 /* UIViewController+AddBehaviors.swift in Sources */,
 				E3F5FBEF2789AA5400B8DF11 /* Movie.swift in Sources */,
-				E3F5FC26278B17E700B8DF11 /* UILabel+GetRegular.swift in Sources */,
 				E3F5FC0C2789C93A00B8DF11 /* MovieListItemViewModel.swift in Sources */,
 				E3F5F935274A72C000B8DF11 /* AppDelegate.swift in Sources */,
 				E3F5F937274A72C000B8DF11 /* SceneDelegate.swift in Sources */,

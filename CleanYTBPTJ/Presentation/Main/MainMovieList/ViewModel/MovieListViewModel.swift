@@ -62,7 +62,7 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     var nextPage: Int { hasMorePages ? currentPage + 1 : currentPage }
 
     private var pages: [MoviesPage] = []
-    private var moviesLoadTask: Cancellable? { willSet { moviesLoadTask?.cancel() } }
+    private var moviesLoadTask: CancelDelegate? { willSet { moviesLoadTask?.cancel() } }
 
     // MARK: - OUTPUT
     let loading: Observable<MovieListItemViewModelLoading?> = Observable(.none)

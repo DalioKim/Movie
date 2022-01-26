@@ -10,23 +10,23 @@ public enum NetworkError: Error {
     case urlGeneration
 }
 
-public protocol NetworkCancellable {
+public protocol NetworkCancelDelegate {
     func cancel()
 }
 
-extension URLSessionTask: NetworkCancellable { }
+extension URLSessionTask: NetworkCancelDelegate { }
 
 public protocol NetworkService {
     typealias CompletionHandler = (Result<Data?, NetworkError>) -> Void
     
-    func request(endpoint: Requestable, completion: @escaping CompletionHandler) -> NetworkCancellable?
+    func request(endpoint: Requestable, completion: @escaping CompletionHandler) -> NetworkCancelDelegate?
 }
 
 public protocol NetworkSessionManager {
     typealias CompletionHandler = (Data?, URLResponse?, Error?) -> Void
     
     func request(_ request: URLRequest,
-                 completion: @escaping CompletionHandler) -> NetworkCancellable
+                 completion: @escaping CompletionHandler) -> NetworkCancelDelegate
 }
 
 public protocol NetworkErrorLogger {
@@ -93,7 +93,7 @@ public final class DefaultNetworkService {
 
 extension DefaultNetworkService: NetworkService {
     
-    public func request(endpoint: Requestable, completion: @escaping CompletionHandler) -> NetworkCancellable? {
+    public func request(endpoint: Requestable, completion: @escaping CompletionHandler) -> NetworkCancelDelegate? {
         printIfDebug("networkTask - extensionDefaultNetworkService-request")
 
         do {

@@ -4,7 +4,7 @@ import Foundation
 protocol SearchMovieUseCase {
     func execute(requestValue: SearchMovieUseCaseRequestValue,
                  cached: @escaping (MoviesPage) -> Void,
-                 completion: @escaping (Result<MoviesPage, Error>) -> Void) -> Cancellable?
+                 completion: @escaping (Result<MoviesPage, Error>) -> Void) -> CancelDelegate?
 }
 
 

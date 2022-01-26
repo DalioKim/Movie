@@ -4,14 +4,14 @@ import Foundation
 protocol EnterMainUseCase {
     func execute(requestValue: EnterMainUseCaseRequestValue,
                  cached: @escaping (MoviesPage) -> Void,
-                 completion: @escaping (Result<MoviesPage, Error>) -> Void) -> Cancellable?
+                 completion: @escaping (Result<MoviesPage, Error>) -> Void) -> CancelDelegate?
 }
 
 
 final class DefaultEnterMainUseCase: EnterMainUseCase {
     
     
-    func execute(requestValue: EnterMainUseCaseRequestValue, cached: @escaping (MoviesPage) -> Void, completion: @escaping (Result<MoviesPage, Error>) -> Void) -> Cancellable? {
+    func execute(requestValue: EnterMainUseCaseRequestValue, cached: @escaping (MoviesPage) -> Void, completion: @escaping (Result<MoviesPage, Error>) -> Void) -> CancelDelegate? {
         printIfDebug("networkTask - execute")
 
                 return moviesRepository.fetchMovieList(query: requestValue.query,
