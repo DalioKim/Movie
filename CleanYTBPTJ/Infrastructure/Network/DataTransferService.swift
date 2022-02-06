@@ -15,14 +15,12 @@ public protocol DataTransferService {
     @discardableResult
     func request<T: Decodable, E: ResponseRequestable>(
         with endpoint: E,
-        completion: @escaping CompletionHandler<T>) ->
-    NetworkCancelDelegate? where E.Response == T
+        completion: @escaping CompletionHandler<T>) -> NetworkCancelDelegate? where E.Response == T
     
     @discardableResult
     func request<E: ResponseRequestable>(
         with endpoint: E,
-        completion: @escaping CompletionHandler<Void>) ->
-    NetworkCancelDelegate? where E.Response == Void
+        completion: @escaping CompletionHandler<Void>) -> NetworkCancelDelegate? where E.Response == Void
     
 }
 
@@ -58,51 +56,49 @@ extension DefaultDataTransferService: DataTransferService {
     
     public func request<T: Decodable, E: ResponseRequestable>(
         with endpoint: E,
-        completion: @escaping CompletionHandler<T>) ->
-    NetworkCancelDelegate? where E.Response == T {
-        return self.networkService.request(endpoint: endpoint) {
-            result in
-            
-            switch result {
-            case .success(let data):
+        completion: @escaping CompletionHandler<T>) -> NetworkCancelDelegate? where E.Response == T {
+            return self.networkService.request(endpoint: endpoint) {
+                [weak self] result in
                 
-                let result: Result<T, DataTransferError> = self.decode(data: data, decoder: endpoint.responseDecoder)
-                DispatchQueue.main.async { return completion(result) }
-                
-            case .failure(let error):
-                
-                self.errorLogger.log(error: error)
-                let error = self.resolve(networkError: error)
-                DispatchQueue.main.async { return completion(.failure(error)) }
+                switch result {
+                case .success(let data):
+                    
+                    guard let result: Result<T, DataTransferError> = self?.decode(data: data, decoder: endpoint.responseDecoder) else { return }
+                    DispatchQueue.main.async { completion(result) }
+                    
+                case .failure(let error):
+                    
+                    self?.errorLogger.log(error: error)
+                    guard let error = self?.resolve(networkError: error) else { return }
+                    DispatchQueue.main.async { completion(.failure(error)) }
+                }
             }
         }
-    }
     
     public func request<E>(
         with endpoint: E,
-        completion: @escaping CompletionHandler<Void>) ->
-    NetworkCancelDelegate?
+        completion: @escaping CompletionHandler<Void>) -> NetworkCancelDelegate?
     where E : ResponseRequestable,
-    E.Response == Void {
-        return self.networkService.request(endpoint: endpoint) {
-            result in
-            switch result {
-            case .success:
-                DispatchQueue.main.async { return completion(.success(())) }
-                
-            case .failure(let error):
-                
-                self.errorLogger.log(error: error)
-                let error = self.resolve(networkError: error)
-                DispatchQueue.main.async { return completion(.failure(error)) }
-            }
-        }
-    }
+          E.Response == Void {
+              return self.networkService.request(endpoint: endpoint) {
+                  result in
+                  switch result {
+                  case .success:
+                      DispatchQueue.main.async { completion(.success(())) }
+                      
+                  case .failure(let error):
+                      
+                      self.errorLogger.log(error: error)
+                      let error = self.resolve(networkError: error)
+                      DispatchQueue.main.async { completion(.failure(error)) }
+                  }
+              }
+          }
     
     // MARK: - Private
     
-    private func decode<T: Decodable>(data: Data?, decoder: ResponseDecoder) ->
-    Result<T, DataTransferError> {
+    private func decode<T: Decodable>(data: Data?,
+                                      decoder: ResponseDecoder) -> Result<T, DataTransferError> {
         
         do {
             guard let data = data else { return .failure(.noResponse) }

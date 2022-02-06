@@ -10,6 +10,12 @@ public enum NetworkError: Error {
     case urlGeneration
 }
 
+enum resultType{
+    case objectType(_: [String: AnyObject])
+    case stringType(_: String)
+    case none
+}
+
 public protocol NetworkCancelDelegate {
     func cancel()
 }
@@ -25,8 +31,7 @@ public protocol NetworkService {
 public protocol NetworkSessionManager {
     typealias CompletionHandler = (Data?, URLResponse?, Error?) -> Void
     
-    func request(_ request: URLRequest,
-                 completion: @escaping CompletionHandler) -> NetworkCancelDelegate
+    func request(_ request: URLRequest, completion: @escaping CompletionHandler) -> NetworkCancelDelegate
 }
 
 public protocol NetworkErrorLogger {
@@ -52,12 +57,12 @@ public final class DefaultNetworkService {
     }
     
     private func request(request: URLRequest, completion: @escaping CompletionHandler) -> NetworkCancelDelegate {
-
+        
         let sessionDataTask = sessionManager.request(request) { data, response, requestError in
             
             if let requestError = requestError {
                 printIfDebug("networkTask - DefaultNetworkService-requestError")
-
+                
                 debugPrint("NTDEBUG DefaultNetworkService requestError")
                 var error: NetworkError
                 if let response = response as? HTTPURLResponse {
@@ -69,14 +74,14 @@ public final class DefaultNetworkService {
                 self.logger.log(error: error)
                 completion(.failure(error))
             } else {
-
+                
                 self.logger.log(responseData: data, response: response)
                 completion(.success(data))
             }
         }
-    
+        
         logger.log(request: request)
-
+        
         return sessionDataTask
     }
     
@@ -94,8 +99,8 @@ public final class DefaultNetworkService {
 extension DefaultNetworkService: NetworkService {
     
     public func request(endpoint: Requestable, completion: @escaping CompletionHandler) -> NetworkCancelDelegate? {
+        
         printIfDebug("networkTask - extensionDefaultNetworkService-request")
-
         do {
             let urlRequest = try endpoint.urlRequest(with: config)
             printIfDebug("netwotktask urlRequest : \(urlRequest)")
@@ -110,10 +115,12 @@ extension DefaultNetworkService: NetworkService {
 // MARK: - Default Network Session Manager
 
 public class DefaultNetworkSessionManager: NetworkSessionManager {
+    
     public init() {}
+    
     public func request(_ request: URLRequest,
                         completion: @escaping CompletionHandler) -> NetworkCancelDelegate {
-
+        
         let task = URLSession.shared.dataTask(with: request, completionHandler: completion)
         task.resume()
         return task
@@ -123,19 +130,34 @@ public class DefaultNetworkSessionManager: NetworkSessionManager {
 // MARK: - Logger
 
 public final class DefaultNetworkErrorLogger: NetworkErrorLogger {
+    
     public init() {}
-    public func log(request: URLRequest) {
-        
-        if let httpBody = request.httpBody
-            , let result =
-            ((try? JSONSerialization.jsonObject(with: httpBody, options: [])
-              as? [String: AnyObject]) as [String: AnyObject]??) {
-            printIfDebug("body: \(String(describing: result))")
-        } else if let httpBody = request.httpBody, let resultString = String(data: httpBody, encoding: .utf8) {
-            printIfDebug("body: \(String(describing: resultString))")
+    
+    let classified = { (httpBody: Data) -> resultType in
+        if let objectType = try? JSONSerialization.jsonObject(with: httpBody, options: []) as? [String: AnyObject] {
+            return resultType.objectType(objectType)
+        } else if let stringType = String(data: httpBody, encoding: .utf8) {
+            return resultType.stringType(stringType)
+        }else {
+            return resultType.none
         }
     }
-
+    
+    public func log(request: URLRequest) {
+        
+        guard let httpBody = request.httpBody else { return } // request에 httpBody 없음
+        
+        switch classified(httpBody){
+        
+        case .objectType(_: let objectPrint):
+            printIfDebug("body: \(objectPrint.prettyPrint())")
+        case .stringType(_ : let stringPrint):
+            printIfDebug("body: \(stringPrint)")
+        case .none:
+            break
+        }
+    }
+    
     public func log(responseData data: Data?, response: URLResponse?) {
         
         guard let data = data else { return }
@@ -143,7 +165,7 @@ public final class DefaultNetworkErrorLogger: NetworkErrorLogger {
             printIfDebug("responseData: \(String(describing: dataDict))")
         }
     }
-
+    
     public func log(error: Error) {
         
         printIfDebug("\(error)")
@@ -170,20 +192,16 @@ extension Dictionary where Key == String {
     
     func prettyPrint() -> String {
         
-        var string: String = ""
-        if let data = try? JSONSerialization.data(withJSONObject: self, options: .prettyPrinted) {
-            if let nstr = NSString(data: data, encoding: String.Encoding.utf8.rawValue) {
-                string = nstr as String
-            }
-        }
-        return string
+        let data = try? JSONSerialization.data(withJSONObject: self, options: .prettyPrinted)
+        return data
+            .flatMap { NSString(data: $0, encoding: String.Encoding.utf8.rawValue) }
+            .map { $0 as String } ?? ""
     }
-    
 }
 
 func printIfDebug(_ string: String) {
     
-    #if DEBUG
+#if DEBUG
     print(string)
-    #endif
+#endif
 }
