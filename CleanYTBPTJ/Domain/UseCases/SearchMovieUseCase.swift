@@ -3,7 +3,7 @@ import Foundation
 
 protocol SearchMovieUseCase {
     func execute(requestValue: SearchMovieUseCaseRequestValue,
-                 cached: @escaping (MoviesPage) -> Void,
+                 cached: @escaping (MoviesPage) -> [MovieListItemViewModel],
                  completion: @escaping (Result<MoviesPage, Error>) -> Void) -> CancelDelegate?
 }
 
@@ -21,7 +21,7 @@ final class DefaultSearchMovieUseCase: SearchMovieUseCase {
     }
     
     func execute(requestValue: SearchMovieUseCaseRequestValue,
-                 cached: @escaping (MoviesPage) -> Void,
+                 cached: @escaping (MoviesPage) -> [MovieListItemViewModel],
                  completion: @escaping (Result<MoviesPage, Error>) -> Void) -> CancelDelegate? {
         
         return moviesRepository.fetchMovieList(

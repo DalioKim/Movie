@@ -73,22 +73,18 @@ class MovieListViewController: UIViewController {
         
         setupViews()
         setupBehaviours()
-        bind(to: viewModel)
+        viewModel = bind(to: viewModel)
         viewModel.didSetDefaultList()
-        
-        
-        
     }
     
+    // MARK: - Private
     
-    
-    
-    private func bind(to viewModel: MovieListViewModel) {
-        debugPrint("viewModel : \(viewModel)")
+    // MARK: -  좀 더 고민 (불변성 수정) MovieListViewModel - let으로 수정
+    private func bind(to viewModel: MovieListViewModel) -> MovieListViewModel {
         
-        viewModel.items.observe(on: self) { [weak self] _ in self?.updateItems() }
-        viewModel.loading.observe(on: self) { [weak self] in self?.updateLoading($0) }
-        viewModel.error.observe(on: self) { [weak self] in self?.showError($0) }
+        guard let vm = viewModel as? DefaultMovieListViewModel else { return viewModel }
+        vm.delegate = self
+        return vm
     }
     
     
@@ -103,24 +99,26 @@ class MovieListViewController: UIViewController {
         movieListTableView.dataSource = movieListTableViewController
         movieListTableView.delegate = movieListTableViewController
         self.view.addSubview(movieListTableView)
-        self.movieListTableView.snp.makeConstraints {
-            $0.width.height.equalToSuperview()
-        }
-        
-        printIfDebug("setupViews viewmodel \(movieListTableViewController.viewModel.items.value.count)")
-        
+        self.movieListTableView.snp.makeConstraints { $0.width.height.equalToSuperview() }
     }
     
     private func setupBehaviours() {
+        
         addBehaviors([BackButtonEmptyTitleNavigationBarBehavior(),
                       BlackStyleNavigationBarBehavior()])
     }
     
+    private func updateLoading(_ loading: MovieListItemViewModelLoading?) {}
     
+    private func showError(_ error: String) {}
+}
+
+// MARK: -  ViewModel 대리자 패턴
+
+extension MovieListViewController: MovieListViewModelDelegate {
     
-    private func updateItems() {
-        printIfDebug("updateItems")
-        printIfDebug("update viewmodel \(movieListTableViewController.viewModel.items.value.count)")
+    func didLoadData() {
+        
         self.movieListTableView.reloadData()
         
     }

@@ -2,11 +2,11 @@
 import Foundation
 
 protocol EnterMainUseCase {
+    
     func execute(requestValue: EnterMainUseCaseRequestValue,
-                 cached: @escaping (MoviesPage) -> Void,
+                 cached: @escaping (MoviesPage) -> [MovieListItemViewModel],
                  completion: @escaping (Result<MoviesPage, Error>) -> Void) -> CancelDelegate?
 }
-
 
 final class DefaultEnterMainUseCase: EnterMainUseCase {
     
@@ -18,7 +18,7 @@ final class DefaultEnterMainUseCase: EnterMainUseCase {
     }
     
     func execute(requestValue: EnterMainUseCaseRequestValue,
-                 cached: @escaping (MoviesPage) -> Void,
+                 cached: @escaping (MoviesPage) -> [MovieListItemViewModel],
                  completion: @escaping (Result<MoviesPage, Error>) -> Void) -> CancelDelegate? {
         
         printIfDebug("networkTask - execute")

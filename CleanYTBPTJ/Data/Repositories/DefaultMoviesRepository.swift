@@ -16,7 +16,7 @@ extension DefaultMoviesRepository: MoviesRepository {
     
     
     
-    func fetchMovieList(query: MovieQuery, page: Int, cached: @escaping (MoviesPage) -> Void,
+    func fetchMovieList(query: MovieQuery, page: Int, cached: @escaping (MoviesPage) -> [MovieListItemViewModel],
                         completion: @escaping (Result<MoviesPage, Error>) -> Void) -> CancelDelegate? {
         
         printIfDebug("networkTask - fetchMovieList")

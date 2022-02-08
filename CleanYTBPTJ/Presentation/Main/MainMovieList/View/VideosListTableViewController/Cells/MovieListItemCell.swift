@@ -74,6 +74,7 @@ class MovieListItemCell: UITableViewCell {
     }
     
     private func updateThumbnailImage(width: Int) {
+        
         printIfDebug("updateThumbnailImage \(viewModel.thumbnailImagePath)")
         thumbnailImageView.image = nil
         guard let thumbnailImagePath = viewModel.thumbnailImagePath else { return }

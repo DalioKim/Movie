@@ -2,17 +2,14 @@ import Foundation
 
 struct MovieListItemViewModel: Equatable {
     let title : String
-    let thumbnailImagePath : String?
-
+    let thumbnailImagePath : String
+    
+    init(title: String?, thumbnailImagePath: String?) {
+       self.title = title ?? ""
+       self.thumbnailImagePath = thumbnailImagePath ?? ""
+   }
 }
 
-extension MovieListItemViewModel {
-
-    init(movie: Movie) {
-        self.title = movie.title ?? ""
-        self.thumbnailImagePath = movie.path
-    }
-}
 
 private let dateFormatter: DateFormatter = {
     let formatter = DateFormatter()

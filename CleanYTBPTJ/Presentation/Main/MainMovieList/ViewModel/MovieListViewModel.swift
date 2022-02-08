@@ -1,25 +1,29 @@
 
 import Foundation
 import UIKit
+import SwiftUI
 
-//스택에 값타입으로 생성되는 구조체는 속도와 함수형 언어의 특징인 불변성을 유지하는데 유리하다.
-//thread safe
-//유스케이스 정의
-//자료구조와 정렬알고리즘
 struct MovieListViewModelActions {}
 
 enum MovieListItemViewModelLoading {
+    
     case fullScreen
     case nextPage
 }
 
+protocol MovieListViewModelDelegate : AnyObject {
+    
+    func didLoadData()
+}
+
 protocol MovieListViewModelInput {
+    
     func viewDidLoad()
     func didLoadNextPage()
     func didSearch(query: String)
     func didSetDefaultList()
     
-    func didCancelSearch()
+    func didCancelSearch() -> CancelDelegate?
     func showQueriesSuggestions()
     
     func closeQueriesSuggestions()
@@ -27,10 +31,8 @@ protocol MovieListViewModelInput {
 }
 
 protocol MovieListViewModelOutput {
-    var items: Observable<[MovieListItemViewModel]> { get }
-    var loading: Observable<MovieListItemViewModelLoading?> { get }
-    var query: Observable<String> { get }
-    var error: Observable<String> { get }
+    
+    var loading: MovieListItemViewModelLoading? { get }
     var isEmpty: Bool { get }
     var screenTitle: String { get }
     var emptyDataTitle: String { get }
@@ -38,14 +40,21 @@ protocol MovieListViewModelOutput {
     var searchBarPlaceholder: String { get }
 }
 
-protocol MovieListViewModel: MovieListViewModelInput, MovieListViewModelOutput {}
+protocol MovieListViewModel: MovieListViewModelInput, MovieListViewModelOutput {
+    // MARK: - 이 부분 좀 더 꼬민 
+    var movies: [MovieListItemViewModel]  { get set }
+}
 
 final class DefaultMovieListViewModel: MovieListViewModel {
-    
+
     func viewDidLoad() {}
     
     private let searchMovieUseCase: SearchMovieUseCase
     private let actions: MovieListViewModelActions?
+    
+    var loading: MovieListItemViewModelLoading?
+    var movies: [MovieListItemViewModel]
+    var delegate: MovieListViewModelDelegate?
     
     var currentPage: Int = 0
     var totalPageCount: Int = 1
@@ -60,11 +69,8 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     }
     
     // MARK: - OUTPUT
-    let loading: Observable<MovieListItemViewModelLoading?> = Observable(.none)
-    let items: Observable<[MovieListItemViewModel]> = Observable([])
-    let query: Observable<String> = Observable("")
-    let error: Observable<String> = Observable("")
-    var isEmpty: Bool { return items.value.isEmpty }
+    
+    var isEmpty: Bool { return movies.isEmpty }
     let screenTitle = NSLocalizedString("Movies", comment: "")
     let emptyDataTitle = NSLocalizedString("Search results", comment: "")
     let errorTitle = NSLocalizedString("Error", comment: "")
@@ -72,31 +78,41 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     
     // MARK: - Init
     init(searchMovieUseCase: SearchMovieUseCase,
-         actions: MovieListViewModelActions? = nil) {
+         actions: MovieListViewModelActions? = nil,
+         movies : [MovieListItemViewModel]) {
         print("DefaultMoviesListViewModel init")
+        
         self.searchMovieUseCase = searchMovieUseCase
         self.actions = actions
+        self.movies = movies
+        
     }
     
     // MARK: - Private
-    private func appendPage(_ moviesPage: MoviesPage) {
+
+    private func appendPage(_ moviesPage: MoviesPage) ->  [MovieListItemViewModel] {
+        
         printIfDebug("debug appendPage")
-        items.value = moviesPage.movies.map(MovieListItemViewModel.init)
+        var items = [MovieListItemViewModel]()
+        moviesPage.movies.forEach { items.append(MovieListItemViewModel.init(title: $0.title, thumbnailImagePath: $0.path)) }
+        
+        return items
+            .sorted { $0.title < $1.title }
+            .filter { $0.title.count < 20 }
     }
     
+    // MARK: - 함수형으로 어떻게 바꿀 수 있을지 고민 
     private func resetPages() {
+        
         currentPage = 0
         totalPageCount = 1
         pages.removeAll()
-        items.value.removeAll()
     }
     
     private func load(movieQuery: MovieQuery, loading: MovieListItemViewModelLoading) {
         printIfDebug("networkTask - load")
-        
-        self.loading.value = loading
-        query.value = movieQuery.query
-        
+        // MARK: - 쿼리 로딩 어떻게 할지 고민
+        // MARK: - completion escaping 후행로그 확인
         moviesLoadTask = searchMovieUseCase.execute(
             requestValue: .init(query: movieQuery, page: nextPage),
             cached: appendPage,
@@ -108,16 +124,11 @@ final class DefaultMovieListViewModel: MovieListViewModel {
                 case .failure(let error):
                     self.handle(error: error)
                 }
-                self.loading.value = .none
-                self.moviesLoadTask = nil
+                self?.moviesLoadTask = nil
             })
     }
     
-    private func handle(error: Error) {
-        self.error.value = error.isInternetConnectionError ?
-        NSLocalizedString("No internet connection", comment: "") :
-        NSLocalizedString("Failed loading images", comment: "")
-    }
+    private func handle(error: Error) {}
     
     private func update(movieQuery: MovieQuery) {
         printIfDebug("networkTask update")
@@ -129,14 +140,10 @@ final class DefaultMovieListViewModel: MovieListViewModel {
 // MARK: - INPUT. View event methods
 extension DefaultMovieListViewModel {
     
-    //func viewDidLoad() {}
-    func didLoadNextPage() {
-        printIfDebug("networkTask didLoadNextPage")
-        
-        guard hasMorePages, loading.value == .none else { return }
-        load(movieQuery: .init(query: query.value),
-             loading: .nextPage)
-    }
+    //func viewDidLoad() { }
+    
+    // MARK: - 좀 더 고민
+    func didLoadNextPage() { }
     
     func didSearch(query: String) {
         guard !query.isEmpty else { return }
@@ -148,9 +155,9 @@ extension DefaultMovieListViewModel {
         update(movieQuery: MovieQuery(query: "default"))
     }
     
-    func didCancelSearch() {
+    func didCancelSearch() -> CancelDelegate? {
         moviesLoadTask?.cancel()
-        moviesLoadTask = nil
+        return nil
     }
     
     func showQueriesSuggestions() {}
