@@ -62,7 +62,6 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     // MARK: - OUTPUT
     let loading: Observable<MovieListItemViewModelLoading?> = Observable(.none)
     let items: Observable<[MovieListItemViewModel]> = Observable([])
-    
     let query: Observable<String> = Observable("")
     let error: Observable<String> = Observable("")
     var isEmpty: Bool { return items.value.isEmpty }
@@ -74,7 +73,6 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     // MARK: - Init
     init(searchMovieUseCase: SearchMovieUseCase,
          actions: MovieListViewModelActions? = nil) {
-        
         print("DefaultMoviesListViewModel init")
         self.searchMovieUseCase = searchMovieUseCase
         self.actions = actions
@@ -82,7 +80,6 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     
     // MARK: - Private
     private func appendPage(_ moviesPage: MoviesPage) {
-        
         printIfDebug("debug appendPage")
         items.value = moviesPage.movies.map(MovieListItemViewModel.init)
     }
@@ -95,7 +92,6 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     }
     
     private func load(movieQuery: MovieQuery, loading: MovieListItemViewModelLoading) {
-        
         printIfDebug("networkTask - load")
         
         self.loading.value = loading
@@ -105,14 +101,15 @@ final class DefaultMovieListViewModel: MovieListViewModel {
             requestValue: .init(query: movieQuery, page: nextPage),
             cached: appendPage,
             completion: { [weak self] result in
+                guard let self = self else { return }
                 switch result {
                 case .success(let page):
-                    self?.appendPage(page)
+                    self.appendPage(page)
                 case .failure(let error):
-                    self?.handle(error: error)
+                    self.handle(error: error)
                 }
-                self?.loading.value = .none
-                self?.moviesLoadTask = nil
+                self.loading.value = .none
+                self.moviesLoadTask = nil
             })
     }
     
@@ -132,7 +129,7 @@ final class DefaultMovieListViewModel: MovieListViewModel {
 // MARK: - INPUT. View event methods
 extension DefaultMovieListViewModel {
     
-    //func viewDidLoad() { }
+    //func viewDidLoad() {}
     func didLoadNextPage() {
         printIfDebug("networkTask didLoadNextPage")
         
