@@ -186,6 +186,16 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		CEF7D85127B8AD9000C63D68 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				E3F5FACF2785C06300B8DF11 /* Protocols */,
+				E3F5FA332779FCBB00B8DF11 /* Utils */,
+				E3F5FA9B2785A5EF00B8DF11 /* Extensions */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
 		E3F5F928274A72C000B8DF11 = {
 			isa = PBXGroup;
 			children = (
@@ -212,9 +222,9 @@
 			isa = PBXGroup;
 			children = (
 				E3F5FB22278705CA00B8DF11 /* Application */,
+				CEF7D85127B8AD9000C63D68 /* Helper */,
 				E3F5F9F8275651BD00B8DF11 /* Presentation */,
 				E3F5FAE42785C78D00B8DF11 /* Infrastructure */,
-				E3F5FA462784324100B8DF11 /* Common */,
 				E3F5FA002756524700B8DF11 /* Data */,
 				E3F5F9FE2756520000B8DF11 /* Domain */,
 				E3F5F93D274A72C300B8DF11 /* Assets.xcassets */,
@@ -264,7 +274,6 @@
 		E3F5F9F8275651BD00B8DF11 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				E3F5FA332779FCBB00B8DF11 /* Utils */,
 				E3F5F967274A740100B8DF11 /* Main */,
 			);
 			path = Presentation;
@@ -330,8 +339,8 @@
 			isa = PBXGroup;
 			children = (
 				E3F5FA742784368A00B8DF11 /* Observable.swift */,
-				E3F5FACF2785C06300B8DF11 /* Protocols */,
-				E3F5FA9B2785A5EF00B8DF11 /* Extensions */,
+				E3F5FA4F2784327500B8DF11 /* ConnectionError.swift */,
+				E3F5FA6F2784360D00B8DF11 /* Cancellable.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -343,15 +352,6 @@
 				E3F5FBAA2788086E00B8DF11 /* EnterMainUseCase.swift */,
 			);
 			path = UseCases;
-			sourceTree = "<group>";
-		};
-		E3F5FA462784324100B8DF11 /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				E3F5FA4F2784327500B8DF11 /* ConnectionError.swift */,
-				E3F5FA6F2784360D00B8DF11 /* Cancellable.swift */,
-			);
-			path = Common;
 			sourceTree = "<group>";
 		};
 		E3F5FA542784334900B8DF11 /* Interfaces */ = {
