@@ -79,9 +79,9 @@ class MovieListItemCell: UITableViewCell {
             
         guard let thumbnailImagePath = viewModel.thumbnailImagePath else { return }
 
-        thumbnailRepository?.fetchImage(with: thumbnailImagePath, width: width, completion: { UIImage in
+        thumbnailRepository?.fetchImage(with: thumbnailImagePath, width: width, completion: { [weak self] UIImage in
+            guard let self = self else { return }
             self.thumbnailImageView.image = UIImage
-            
         })
         
         
