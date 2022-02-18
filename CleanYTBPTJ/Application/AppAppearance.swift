@@ -14,6 +14,6 @@ final class AppAppearance {
 
 extension UINavigationController {
     @objc override open var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+        .lightContent
     }
 }

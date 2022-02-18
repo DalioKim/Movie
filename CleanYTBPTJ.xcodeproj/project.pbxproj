@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0C73AC71F1E6BB8A962B205A /* Pods_CleanYTBPTJ_CleanYTBPTJUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A6ABF33FC0B00E5F6A0FED /* Pods_CleanYTBPTJ_CleanYTBPTJUITests.framework */; };
 		98368CE86C7DEA3D288F45DB /* Pods_CleanYTBPTJTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBDAACE014EAFC6D4BE836D5 /* Pods_CleanYTBPTJTests.framework */; };
+		CEF7D85027B8AC7B00C63D68 /* StoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF7D84F27B8AC7B00C63D68 /* StoryboardInstantiable.swift */; };
 		E36A966F2799517700EC90C6 /* DefaultMoviesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36A966E2799517700EC90C6 /* DefaultMoviesRepository.swift */; };
 		E38EAE3D27A12AAB002AD364 /* UILabel+GetRegular.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38EAE3C27A12AAB002AD364 /* UILabel+GetRegular.swift */; };
 		E3F5F935274A72C000B8DF11 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5F934274A72C000B8DF11 /* AppDelegate.swift */; };
@@ -82,6 +83,7 @@
 		9C2111432D82A4E88FECA85E /* Pods_CleanYTBPTJ.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CleanYTBPTJ.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDE225084A05C44C159F96DC /* Pods-CleanYTBPTJTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CleanYTBPTJTests.release.xcconfig"; path = "Target Support Files/Pods-CleanYTBPTJTests/Pods-CleanYTBPTJTests.release.xcconfig"; sourceTree = "<group>"; };
 		BE9579CD6B377CADAFCA46BE /* Pods-CleanYTBPTJ-CleanYTBPTJUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CleanYTBPTJ-CleanYTBPTJUITests.release.xcconfig"; path = "Target Support Files/Pods-CleanYTBPTJ-CleanYTBPTJUITests/Pods-CleanYTBPTJ-CleanYTBPTJUITests.release.xcconfig"; sourceTree = "<group>"; };
+		CEF7D84F27B8AC7B00C63D68 /* StoryboardInstantiable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardInstantiable.swift; sourceTree = "<group>"; };
 		E36A966E2799517700EC90C6 /* DefaultMoviesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultMoviesRepository.swift; sourceTree = "<group>"; };
 		E38EAE3C27A12AAB002AD364 /* UILabel+GetRegular.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+GetRegular.swift"; sourceTree = "<group>"; };
 		E3F5F931274A72C000B8DF11 /* CleanYTBPTJ.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CleanYTBPTJ.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -184,6 +186,16 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		CEF7D85127B8AD9000C63D68 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				E3F5FACF2785C06300B8DF11 /* Protocols */,
+				E3F5FA332779FCBB00B8DF11 /* Utils */,
+				E3F5FA9B2785A5EF00B8DF11 /* Extensions */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
 		E3F5F928274A72C000B8DF11 = {
 			isa = PBXGroup;
 			children = (
@@ -210,9 +222,9 @@
 			isa = PBXGroup;
 			children = (
 				E3F5FB22278705CA00B8DF11 /* Application */,
+				CEF7D85127B8AD9000C63D68 /* Helper */,
 				E3F5F9F8275651BD00B8DF11 /* Presentation */,
 				E3F5FAE42785C78D00B8DF11 /* Infrastructure */,
-				E3F5FA462784324100B8DF11 /* Common */,
 				E3F5FA002756524700B8DF11 /* Data */,
 				E3F5F9FE2756520000B8DF11 /* Domain */,
 				E3F5F93D274A72C300B8DF11 /* Assets.xcassets */,
@@ -262,7 +274,6 @@
 		E3F5F9F8275651BD00B8DF11 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				E3F5FA332779FCBB00B8DF11 /* Utils */,
 				E3F5F967274A740100B8DF11 /* Main */,
 			);
 			path = Presentation;
@@ -328,8 +339,8 @@
 			isa = PBXGroup;
 			children = (
 				E3F5FA742784368A00B8DF11 /* Observable.swift */,
-				E3F5FACF2785C06300B8DF11 /* Protocols */,
-				E3F5FA9B2785A5EF00B8DF11 /* Extensions */,
+				E3F5FA4F2784327500B8DF11 /* ConnectionError.swift */,
+				E3F5FA6F2784360D00B8DF11 /* Cancellable.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -341,15 +352,6 @@
 				E3F5FBAA2788086E00B8DF11 /* EnterMainUseCase.swift */,
 			);
 			path = UseCases;
-			sourceTree = "<group>";
-		};
-		E3F5FA462784324100B8DF11 /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				E3F5FA4F2784327500B8DF11 /* ConnectionError.swift */,
-				E3F5FA6F2784360D00B8DF11 /* Cancellable.swift */,
-			);
-			path = Common;
 			sourceTree = "<group>";
 		};
 		E3F5FA542784334900B8DF11 /* Interfaces */ = {
@@ -399,6 +401,7 @@
 		E3F5FACF2785C06300B8DF11 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				CEF7D84F27B8AC7B00C63D68 /* StoryboardInstantiable.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -436,16 +439,8 @@
 			isa = PBXGroup;
 			children = (
 				E3F5FB0D2785CBA500B8DF11 /* CoreDataStorage */,
-				E3F5FAFB2785CAFF00B8DF11 /* VideosResponseStorage */,
 			);
 			path = PersistentStorages;
-			sourceTree = "<group>";
-		};
-		E3F5FAFB2785CAFF00B8DF11 /* VideosResponseStorage */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = VideosResponseStorage;
 			sourceTree = "<group>";
 		};
 		E3F5FB042785CB4000B8DF11 /* DataMapping */ = {
@@ -460,7 +455,6 @@
 		E3F5FB0D2785CBA500B8DF11 /* CoreDataStorage */ = {
 			isa = PBXGroup;
 			children = (
-				E3F5FBAF278819DE00B8DF11 /* VideossResponseStorage */,
 				E3F5FB0E2785CBB000B8DF11 /* CoreDataStorage.swift */,
 			);
 			path = CoreDataStorage;
@@ -511,13 +505,6 @@
 				E3F5FB9F2787E66900B8DF11 /* BlackStyleNavigationBarBehavior.swift */,
 			);
 			path = Behaviors;
-			sourceTree = "<group>";
-		};
-		E3F5FBAF278819DE00B8DF11 /* VideossResponseStorage */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = VideossResponseStorage;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -782,6 +769,7 @@
 				E3F5FB922787E5DA00B8DF11 /* UIViewController+AddBehaviors.swift in Sources */,
 				E3F5FBEF2789AA5400B8DF11 /* Movie.swift in Sources */,
 				E3F5FC0C2789C93A00B8DF11 /* MovieListItemViewModel.swift in Sources */,
+				CEF7D85027B8AC7B00C63D68 /* StoryboardInstantiable.swift in Sources */,
 				E3F5F935274A72C000B8DF11 /* AppDelegate.swift in Sources */,
 				E3F5F937274A72C000B8DF11 /* SceneDelegate.swift in Sources */,
 				E36A966F2799517700EC90C6 /* DefaultMoviesRepository.swift in Sources */,
