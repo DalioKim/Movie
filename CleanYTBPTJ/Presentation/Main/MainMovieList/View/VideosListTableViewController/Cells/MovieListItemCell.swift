@@ -12,10 +12,10 @@ class MovieListItemCell: UITableViewCell {
     static let reuseIdentifier = String(describing: MovieListItemCell.self)
     static let height = CGFloat(300)
     
-    private var titleLabel: UILabel!
-    private var dateLabel: UILabel!
-    private var overviewLabel: UILabel!
-    private var thumbnailImageView: UIImageView!
+    private lazy var titleLabel: UILabel = UILabel()
+    private lazy var dateLabel: UILabel = UILabel()
+    private lazy var overviewLabel: UILabel = UILabel()
+    private lazy var thumbnailImageView: UIImageView = UIImageView()
     
     private var viewModel: MovieListItemViewModel!
     private var thumbnailRepository: ThumbnailRepository?
