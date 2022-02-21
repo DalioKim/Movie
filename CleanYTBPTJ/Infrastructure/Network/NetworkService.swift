@@ -10,7 +10,7 @@ public enum NetworkError: Error {
     case urlGeneration
 }
 
-enum resultType{
+enum resultType {
     case objectType(_: [String: AnyObject])
     case stringType(_: String)
     case none
@@ -20,7 +20,7 @@ public protocol NetworkCancelDelegate {
     func cancel()
 }
 
-extension URLSessionTask: NetworkCancelDelegate { }
+extension URLSessionTask: NetworkCancelDelegate {}
 
 public protocol NetworkService {
     typealias CompletionHandler = (Result<Data?, NetworkError>) -> Void
@@ -57,36 +57,27 @@ public final class DefaultNetworkService {
     }
     
     private func request(request: URLRequest, completion: @escaping CompletionHandler) -> NetworkCancelDelegate {
-        
         let sessionDataTask = sessionManager.request(request) { data, response, requestError in
-            
             if let requestError = requestError {
                 printIfDebug("networkTask - DefaultNetworkService-requestError")
-                
-                debugPrint("NTDEBUG DefaultNetworkService requestError")
                 var error: NetworkError
                 if let response = response as? HTTPURLResponse {
                     error = .error(statusCode: response.statusCode, data: data)
                 } else {
                     error = self.resolve(error: requestError)
                 }
-                
                 self.logger.log(error: error)
                 completion(.failure(error))
             } else {
-                
                 self.logger.log(responseData: data, response: response)
                 completion(.success(data))
             }
         }
-        
         logger.log(request: request)
-        
         return sessionDataTask
     }
     
     private func resolve(error: Error) -> NetworkError {
-        
         let code = URLError.Code(rawValue: (error as NSError).code)
         switch code {
         case .notConnectedToInternet: return .notConnected
@@ -99,7 +90,6 @@ public final class DefaultNetworkService {
 extension DefaultNetworkService: NetworkService {
     
     public func request(endpoint: Requestable, completion: @escaping CompletionHandler) -> NetworkCancelDelegate? {
-        
         printIfDebug("networkTask - extensionDefaultNetworkService-request")
         do {
             let urlRequest = try endpoint.urlRequest(with: config)
@@ -120,7 +110,6 @@ public class DefaultNetworkSessionManager: NetworkSessionManager {
     
     public func request(_ request: URLRequest,
                         completion: @escaping CompletionHandler) -> NetworkCancelDelegate {
-        
         let task = URLSession.shared.dataTask(with: request, completionHandler: completion)
         task.resume()
         return task
@@ -138,17 +127,14 @@ public final class DefaultNetworkErrorLogger: NetworkErrorLogger {
             return resultType.objectType(objectType)
         } else if let stringType = String(data: httpBody, encoding: .utf8) {
             return resultType.stringType(stringType)
-        }else {
+        } else {
             return resultType.none
         }
     }
     
     public func log(request: URLRequest) {
-        
         guard let httpBody = request.httpBody else { return } // request에 httpBody 없음
-        
-        switch classified(httpBody){
-        
+        switch classified(httpBody) {
         case .objectType(_: let objectPrint):
             printIfDebug("body: \(objectPrint.prettyPrint())")
         case .stringType(_ : let stringPrint):
@@ -159,7 +145,6 @@ public final class DefaultNetworkErrorLogger: NetworkErrorLogger {
     }
     
     public func log(responseData data: Data?, response: URLResponse?) {
-        
         guard let data = data else { return }
         if let dataDict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
             printIfDebug("responseData: \(String(describing: dataDict))")
@@ -167,7 +152,6 @@ public final class DefaultNetworkErrorLogger: NetworkErrorLogger {
     }
     
     public func log(error: Error) {
-        
         printIfDebug("\(error)")
     }
 }
@@ -179,7 +163,6 @@ extension NetworkError {
     public var isNotFoundError: Bool { return hasStatusCode(404) }
     
     public func hasStatusCode(_ codeError: Int) -> Bool {
-        
         switch self {
         case let .error(code, _):
             return code == codeError
@@ -191,7 +174,6 @@ extension NetworkError {
 extension Dictionary where Key == String {
     
     func prettyPrint() -> String {
-        
         let data = try? JSONSerialization.data(withJSONObject: self, options: .prettyPrinted)
         return data
             .flatMap { NSString(data: $0, encoding: String.Encoding.utf8.rawValue) }
@@ -200,7 +182,6 @@ extension Dictionary where Key == String {
 }
 
 func printIfDebug(_ string: String) {
-    
 #if DEBUG
     print(string)
 #endif
