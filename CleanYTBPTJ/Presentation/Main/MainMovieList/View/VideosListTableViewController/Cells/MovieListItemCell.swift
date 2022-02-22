@@ -4,7 +4,6 @@
 //
 //  Created by 김동현 on 2022/01/05.
 //
-
 import UIKit
 
 class MovieListItemCell: UITableViewCell {
@@ -74,11 +73,11 @@ class MovieListItemCell: UITableViewCell {
     }
     
     private func updateThumbnailImage(width: Int) {
-        
         printIfDebug("updateThumbnailImage \(viewModel.thumbnailImagePath)")
         thumbnailImageView.image = nil
         guard let thumbnailImagePath = viewModel.thumbnailImagePath else { return }
         thumbnailRepository?.fetchImage(with: thumbnailImagePath, width: width) { [weak self] in
-            self?.thumbnailImageView.image = $0        }
+            self?.thumbnailImageView.image = $0
+        }
     }
 }
