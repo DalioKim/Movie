@@ -73,17 +73,21 @@ class MovieListViewController: UIViewController {
         
         setupViews()
         setupBehaviours()
-        viewModel = bind(to: viewModel)
+        bind(to: viewModel)
         viewModel.didSetDefaultList()
+        
+        
+        
     }
     
-    // MARK: - Private
     
-    private func bind(to viewModel: MovieListViewModel) -> MovieListViewModel {
+    
+    
+    private func bind(to viewModel: MovieListViewModel) {
+        debugPrint("viewModel : \(viewModel)")
         
-        guard let vm = viewModel as? DefaultMovieListViewModel else { return viewModel }
-        vm.delegate = self
-        return vm
+        guard let viewModel = viewModel as? DefaultMovieListViewModel else { return }
+        viewModel.delegate = self
     }
     
     
@@ -122,6 +126,6 @@ extension MovieListViewController: MovieListViewModelDelegate {
         self.movieListTableView.reloadData()
         
     }
-
+    
 }
 
