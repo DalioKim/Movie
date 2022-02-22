@@ -1,18 +1,15 @@
 
 import Foundation
 import UIKit
-import SwiftUI
 
 struct MovieListViewModelActions {}
 
 enum MovieListItemViewModelLoading {
-    
     case fullScreen
     case nextPage
 }
 
 protocol MovieListViewModelDelegate : AnyObject {
-    
     func didLoadData()
 }
 
@@ -41,7 +38,6 @@ protocol MovieListViewModelOutput {
 }
 
 protocol MovieListViewModel: MovieListViewModelInput, MovieListViewModelOutput {
-    // MARK: - 이 부분 좀 더 꼬민 
     var movies: [MovieListItemViewModel]  { get set }
 }
 
@@ -102,6 +98,7 @@ final class DefaultMovieListViewModel: MovieListViewModel {
         currentPage = 0
         totalPageCount = 1
         pages.removeAll()
+        movies.removeAll()
     }
     
     private func load(movieQuery: MovieQuery, loading: MovieListItemViewModelLoading) {
@@ -133,10 +130,7 @@ final class DefaultMovieListViewModel: MovieListViewModel {
 
 // MARK: - INPUT. View event methods
 extension DefaultMovieListViewModel {
-    
-    //func viewDidLoad() { }
-    
-    // MARK: - 좀 더 고민
+
     func didLoadNextPage() { }
     
     func didSearch(query: String) {

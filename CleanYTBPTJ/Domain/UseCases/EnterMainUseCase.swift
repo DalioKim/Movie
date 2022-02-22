@@ -2,11 +2,11 @@
 import Foundation
 
 protocol EnterMainUseCase {
-    
     func execute(requestValue: EnterMainUseCaseRequestValue,
                  cached: @escaping (MoviesPage) -> Void,
                  completion: @escaping (Result<MoviesPage, Error>) -> Void) -> CancelDelegate?
 }
+
 
 final class DefaultEnterMainUseCase: EnterMainUseCase {
     
