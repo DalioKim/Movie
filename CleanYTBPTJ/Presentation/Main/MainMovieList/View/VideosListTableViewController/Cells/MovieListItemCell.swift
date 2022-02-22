@@ -77,8 +77,7 @@ class MovieListItemCell: UITableViewCell {
         
         printIfDebug("updateThumbnailImage \(viewModel.thumbnailImagePath)")
         thumbnailImageView.image = nil
-        guard let thumbnailImagePath = viewModel.thumbnailImagePath else { return }
-        thumbnailRepository?.fetchImage(with: thumbnailImagePath, width: width) { [weak self] in
+        thumbnailRepository?.fetchImage(with: viewModel.thumbnailImagePath, width: width) { [weak self] in
             self?.thumbnailImageView.image = $0
         }
     }

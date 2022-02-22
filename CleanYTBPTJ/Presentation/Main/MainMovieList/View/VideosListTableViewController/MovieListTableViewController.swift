@@ -34,7 +34,7 @@ class MovieListTableViewController: UITableViewController {
 extension MovieListTableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.items.value.count
+        return viewModel.movies.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -45,14 +45,14 @@ extension MovieListTableViewController {
         
         
         
-        cell.fill(with: viewModel.items.value[indexPath.row], thumbnailRepository: thumbnailRepository)
+        cell.fill(with: viewModel.movies[indexPath.row], thumbnailRepository: thumbnailRepository)
 
 
         return cell
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return viewModel.isEmpty ? tableView.frame.height : super.tableView(tableView, heightForRowAt: indexPath)
+        return viewModel.movies.isEmpty ? tableView.frame.height : super.tableView(tableView, heightForRowAt: indexPath)
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

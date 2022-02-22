@@ -79,7 +79,6 @@ class MovieListViewController: UIViewController {
     
     // MARK: - Private
     
-    // MARK: -  좀 더 고민 (불변성 수정) MovieListViewModel - let으로 수정
     private func bind(to viewModel: MovieListViewModel) -> MovieListViewModel {
         
         guard let vm = viewModel as? DefaultMovieListViewModel else { return viewModel }
@@ -118,20 +117,11 @@ class MovieListViewController: UIViewController {
 extension MovieListViewController: MovieListViewModelDelegate {
     
     func didLoadData() {
-        
+        print(#function)
+        print("모델 카운트 : \(viewModel.movies.count)")
         self.movieListTableView.reloadData()
         
     }
-    
-    private func updateLoading(_ loading: MovieListItemViewModelLoading?) {
-        
-    }
-    
-    
-    
-    private func showError(_ error: String) {
-        guard !error.isEmpty else { return }
-        // showAlert(title: viewModel.errorTitle, message: error)
-    }
+
 }
 

@@ -23,7 +23,7 @@ protocol MovieListViewModelInput {
     func didSearch(query: String)
     func didSetDefaultList()
     
-    func didCancelSearch() -> CancelDelegate?
+    func didCancelSearch()
     func showQueriesSuggestions()
     
     func closeQueriesSuggestions()
@@ -89,19 +89,14 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     }
     
     // MARK: - Private
-
-    private func appendPage(_ moviesPage: MoviesPage) ->  [MovieListItemViewModel] {
-        
+    
+    private func appendPage(_ moviesPage: MoviesPage) {
         printIfDebug("debug appendPage")
-        var items = [MovieListItemViewModel]()
-        moviesPage.movies.forEach { items.append(MovieListItemViewModel.init(title: $0.title, thumbnailImagePath: $0.path)) }
-        
-        return items
-            .sorted { $0.title < $1.title }
-            .filter { $0.title.count < 20 }
+        movies = moviesPage.movies.map {
+            MovieListItemViewModel.init(title: $0.title, thumbnailImagePath: $0.path)
+        }
     }
     
-    // MARK: - 함수형으로 어떻게 바꿀 수 있을지 고민 
     private func resetPages() {
         
         currentPage = 0
@@ -111,8 +106,6 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     
     private func load(movieQuery: MovieQuery, loading: MovieListItemViewModelLoading) {
         printIfDebug("networkTask - load")
-        // MARK: - 쿼리 로딩 어떻게 할지 고민
-        // MARK: - completion escaping 후행로그 확인
         moviesLoadTask = searchMovieUseCase.execute(
             requestValue: .init(query: movieQuery, page: nextPage),
             cached: appendPage,
@@ -124,7 +117,8 @@ final class DefaultMovieListViewModel: MovieListViewModel {
                 case .failure(let error):
                     self.handle(error: error)
                 }
-                self?.moviesLoadTask = nil
+                self.moviesLoadTask = nil
+                self.delegate?.didLoadData()
             })
     }
     
@@ -155,9 +149,9 @@ extension DefaultMovieListViewModel {
         update(movieQuery: MovieQuery(query: "default"))
     }
     
-    func didCancelSearch() -> CancelDelegate? {
+    func didCancelSearch() {
         moviesLoadTask?.cancel()
-        return nil
+        moviesLoadTask = nil
     }
     
     func showQueriesSuggestions() {}

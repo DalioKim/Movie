@@ -56,7 +56,12 @@ final class MovieSceneDIContainer: MovieSearchFlowCoordinatorDependencies {
         debugPrint("makeMovieListViewModel")
 
         return DefaultMovieListViewModel(searchMovieUseCase: makeSearchMovieUseCase(),
-                                          actions: actions)
+                                         actions: actions, movies: makeMovieListItemViewModel())
+    }
+    
+    func makeMovieListItemViewModel() -> [MovieListItemViewModel] {
+        let movieListItemViewModel = [MovieListItemViewModel]()
+        return movieListItemViewModel
     }
     
     
