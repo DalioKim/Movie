@@ -17,7 +17,7 @@ class MovieListItemCell: UITableViewCell {
     private var overviewLabel: UILabel!
     private var thumbnailImageView: UIImageView!
     
-    private var viewModel: MovieListItemViewModel!
+    private var itemViewModel: MovieListItemViewModel!
     
     private var thumbnailRepository: ThumbnailRepository?
     
@@ -57,26 +57,20 @@ class MovieListItemCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    
-    func fill(with viewModel: MovieListItemViewModel, thumbnailRepository: ThumbnailRepository?) {
-        
-        self.viewModel = viewModel
+    func fill(with viewModel: MovieListItemViewModel?, thumbnailRepository: ThumbnailRepository?) {
+        guard viewModel != nil else { return }
+        itemViewModel = viewModel
         self.thumbnailRepository = thumbnailRepository
-        printIfDebug("fill")
-        
-        titleLabel.text = viewModel.title
+        titleLabel.text = itemViewModel.title
         titleLabel = titleLabel.getRegular(title: titleLabel.text ?? "", titleLabel: titleLabel)
         
-        
         updateThumbnailImage(width: 200)
-        
     }
     
     private func updateThumbnailImage(width: Int) {
-        printIfDebug("updateThumbnailImage \(viewModel.thumbnailImagePath)")
+        printIfDebug("updateThumbnailImage \(itemViewModel.thumbnailImagePath)")
         thumbnailImageView.image = nil
-        guard let thumbnailImagePath = viewModel.thumbnailImagePath else { return }
+        guard let thumbnailImagePath = itemViewModel.thumbnailImagePath else { return }
         thumbnailRepository?.fetchImage(with: thumbnailImagePath, width: width) { [weak self] in
             self?.thumbnailImageView.image = $0
         }

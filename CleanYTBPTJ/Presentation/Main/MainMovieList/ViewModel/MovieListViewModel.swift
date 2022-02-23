@@ -14,21 +14,13 @@ protocol MovieListViewModelDelegate : AnyObject {
 }
 
 protocol MovieListViewModelInput {
-    
-    func viewDidLoad()
-    func didLoadNextPage()
     func didSearch(query: String)
-    func didSetDefaultList()
-    
     func didCancelSearch()
-    func showQueriesSuggestions()
-    
-    func closeQueriesSuggestions()
+    func didSetDefaultList()
     func didSelectItem(at index: Int)
 }
 
 protocol MovieListViewModelOutput {
-    
     var loading: MovieListItemViewModelLoading? { get }
     var isEmpty: Bool { get }
     var screenTitle: String { get }
@@ -42,15 +34,13 @@ protocol MovieListViewModel: MovieListViewModelInput, MovieListViewModelOutput {
 }
 
 final class DefaultMovieListViewModel: MovieListViewModel {
-
-    func viewDidLoad() {}
     
     private let searchMovieUseCase: SearchMovieUseCase
     private let actions: MovieListViewModelActions?
     
     var loading: MovieListItemViewModelLoading?
     var movies: [MovieListItemViewModel]
-    var delegate: MovieListViewModelDelegate?
+    weak var delegate: MovieListViewModelDelegate?
     
     var currentPage: Int = 0
     var totalPageCount: Int = 1
@@ -77,11 +67,9 @@ final class DefaultMovieListViewModel: MovieListViewModel {
          actions: MovieListViewModelActions? = nil,
          movies : [MovieListItemViewModel]) {
         print("DefaultMoviesListViewModel init")
-        
         self.searchMovieUseCase = searchMovieUseCase
         self.actions = actions
         self.movies = movies
-        
     }
     
     // MARK: - Private
@@ -94,7 +82,6 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     }
     
     private func resetPages() {
-        
         currentPage = 0
         totalPageCount = 1
         pages.removeAll()
@@ -112,14 +99,12 @@ final class DefaultMovieListViewModel: MovieListViewModel {
                 case .success(let page):
                     self.appendPage(page)
                 case .failure(let error):
-                    self.handle(error: error)
+                    break
                 }
                 self.moviesLoadTask = nil
                 self.delegate?.didLoadData()
             })
     }
-    
-    private func handle(error: Error) {}
     
     private func update(movieQuery: MovieQuery) {
         printIfDebug("networkTask update")
@@ -129,9 +114,8 @@ final class DefaultMovieListViewModel: MovieListViewModel {
 }
 
 // MARK: - INPUT. View event methods
-extension DefaultMovieListViewModel {
 
-    func didLoadNextPage() { }
+extension DefaultMovieListViewModel {
     
     func didSearch(query: String) {
         guard !query.isEmpty else { return }
@@ -148,9 +132,11 @@ extension DefaultMovieListViewModel {
         moviesLoadTask = nil
     }
     
-    func showQueriesSuggestions() {}
-    func closeQueriesSuggestions() {}
-    func didSelectItem(at index: Int) {}
+    //didSelectItem 기능 추가 예정
+    func didSelectItem(at index: Int) {
+        print("\(index)번 아이템")
+    }
+    
 }
 
 

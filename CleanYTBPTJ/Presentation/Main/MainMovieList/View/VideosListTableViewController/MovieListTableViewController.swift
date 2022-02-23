@@ -45,7 +45,7 @@ extension MovieListTableViewController {
         
         
         
-        cell.fill(with: viewModel.movies[indexPath.row], thumbnailRepository: thumbnailRepository)
+        cell.fill(with: viewModel.movies[safe: indexPath.row], thumbnailRepository: thumbnailRepository)
 
 
         return cell
