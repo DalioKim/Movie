@@ -7,14 +7,12 @@ class MovieListTableViewController: UITableViewController {
     var viewModel: MovieListViewModel!
     var thumbnailRepository: ThumbnailRepository?
     var nextPageLoadingSpinner: UIActivityIndicatorView?
-
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-
-    // MARK: - Private
     
 }
 
