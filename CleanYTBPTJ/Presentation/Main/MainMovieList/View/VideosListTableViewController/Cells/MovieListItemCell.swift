@@ -15,12 +15,20 @@ class MovieListItemCell: UITableViewCell {
     }()
     private let thumbnailImageView = UIImageView()
     
-    private var viewModel: MovieListItemViewModel?
+    private weak var viewModel: MovieListItemViewModel?
     private var thumbnailRepository: ThumbnailRepository?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.configure()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+       super.prepareForReuse()
     }
     
     func configure() {
