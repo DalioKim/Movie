@@ -17,7 +17,6 @@ final class MovieSceneDIContainer: MovieSearchFlowCoordinatorDependencies {
         printIfDebug("MovieSceneDIContainer init")
         let actions = MovieListViewModelActions()
         makeMovieListViewController(actions: actions)
-        
     }
     
     // MARK: - Use Cases
@@ -54,8 +53,7 @@ final class MovieSceneDIContainer: MovieSearchFlowCoordinatorDependencies {
     
     func makeMovieListViewModel(actions: MovieListViewModelActions) -> MovieListViewModel {
         debugPrint("makeMovieListViewModel")
-        return DefaultMovieListViewModel(searchMovieUseCase: makeSearchMovieUseCase(),
-                                         actions: actions, movies: [MovieListItemViewModel]())
+        return DefaultMovieListViewModel(searchMovieUseCase: makeSearchMovieUseCase())
     }
     
     // MARK: - Flow Coordinators

@@ -12,6 +12,8 @@
 		CEF7D85027B8AC7B00C63D68 /* StoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF7D84F27B8AC7B00C63D68 /* StoryboardInstantiable.swift */; };
 		E36A966F2799517700EC90C6 /* DefaultMoviesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36A966E2799517700EC90C6 /* DefaultMoviesRepository.swift */; };
 		E38EAE3D27A12AAB002AD364 /* UILabel+GetRegular.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38EAE3C27A12AAB002AD364 /* UILabel+GetRegular.swift */; };
+		E3F488A027C8BB8E00F77C4B /* Array+Safe.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F4889F27C8BB8E00F77C4B /* Array+Safe.swift */; };
+		E3F488A227C8BBDB00F77C4B /* DateFormatter+DateStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F488A127C8BBDB00F77C4B /* DateFormatter+DateStyle.swift */; };
 		E3F5F935274A72C000B8DF11 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5F934274A72C000B8DF11 /* AppDelegate.swift */; };
 		E3F5F937274A72C000B8DF11 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5F936274A72C000B8DF11 /* SceneDelegate.swift */; };
 		E3F5F93E274A72C300B8DF11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E3F5F93D274A72C300B8DF11 /* Assets.xcassets */; };
@@ -86,6 +88,8 @@
 		CEF7D84F27B8AC7B00C63D68 /* StoryboardInstantiable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardInstantiable.swift; sourceTree = "<group>"; };
 		E36A966E2799517700EC90C6 /* DefaultMoviesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultMoviesRepository.swift; sourceTree = "<group>"; };
 		E38EAE3C27A12AAB002AD364 /* UILabel+GetRegular.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+GetRegular.swift"; sourceTree = "<group>"; };
+		E3F4889F27C8BB8E00F77C4B /* Array+Safe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Safe.swift"; sourceTree = "<group>"; };
+		E3F488A127C8BBDB00F77C4B /* DateFormatter+DateStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+DateStyle.swift"; sourceTree = "<group>"; };
 		E3F5F931274A72C000B8DF11 /* CleanYTBPTJ.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CleanYTBPTJ.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3F5F934274A72C000B8DF11 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E3F5F936274A72C000B8DF11 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -394,6 +398,8 @@
 				E3F5FA9C2785A60100B8DF11 /* UIImageView+ImageSizeAfterAspectFit.swift */,
 				E3F5FB912787E5DA00B8DF11 /* UIViewController+AddBehaviors.swift */,
 				E38EAE3C27A12AAB002AD364 /* UILabel+GetRegular.swift */,
+				E3F4889F27C8BB8E00F77C4B /* Array+Safe.swift */,
+				E3F488A127C8BBDB00F77C4B /* DateFormatter+DateStyle.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -744,6 +750,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E3F488A227C8BBDB00F77C4B /* DateFormatter+DateStyle.swift in Sources */,
 				E3F5FA752784368A00B8DF11 /* Observable.swift in Sources */,
 				E3F5FBA02787E66900B8DF11 /* BlackStyleNavigationBarBehavior.swift in Sources */,
 				E3F5FB7E2787300400B8DF11 /* AppAppearance.swift in Sources */,
@@ -780,6 +787,7 @@
 				E3F5FBFC2789BA4D00B8DF11 /* MovieRequestDTO+Mapping.swift in Sources */,
 				E3F5FA162779F15100B8DF11 /* MovieListViewModel.swift in Sources */,
 				E3F5FB352787065700B8DF11 /* AppConfigurations.swift in Sources */,
+				E3F488A027C8BB8E00F77C4B /* Array+Safe.swift in Sources */,
 				E3F5FBF42789AA8000B8DF11 /* ImageQuery.swift in Sources */,
 				E3F5FAF62785C87E00B8DF11 /* NetworkConfigurable.swift in Sources */,
 				E3F5FC012789BA7500B8DF11 /* MovieResponseDTO+Mapping.swift in Sources */,

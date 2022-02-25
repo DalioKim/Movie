@@ -1,4 +1,5 @@
 
+
 import Foundation
 import UIKit
 
@@ -9,14 +10,14 @@ enum MovieListItemViewModelLoading {
     case nextPage
 }
 
-protocol MovieListViewModelDelegate : AnyObject {
+protocol MovieListViewModelDelegate: AnyObject {
     func didLoadData()
 }
 
 protocol MovieListViewModelInput {
-    func didSearch(query: String)
+    func refresh(query: String)
+    func loadMore()
     func didCancelSearch()
-    func didSetDefaultList()
     func didSelectItem(at index: Int)
 }
 
@@ -56,20 +57,22 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     
     // MARK: - OUTPUT
     
-    var isEmpty: Bool { return movies.isEmpty }
+    var isEmpty: Bool { movies.isEmpty }
     let screenTitle = NSLocalizedString("Movies", comment: "")
     let emptyDataTitle = NSLocalizedString("Search results", comment: "")
     let errorTitle = NSLocalizedString("Error", comment: "")
     let searchBarPlaceholder = NSLocalizedString("Search Movies", comment: "")
     
     // MARK: - Init
+    
     init(searchMovieUseCase: SearchMovieUseCase,
          actions: MovieListViewModelActions? = nil,
-         movies : [MovieListItemViewModel]) {
+         movies : [MovieListItemViewModel] = [MovieListItemViewModel]()) {
         print("DefaultMoviesListViewModel init")
         self.searchMovieUseCase = searchMovieUseCase
         self.actions = actions
         self.movies = movies
+        fetch(movieQuery: MovieQuery(query: "default"), loading: .fullScreen)
     }
     
     // MARK: - Private
@@ -77,7 +80,7 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     private func appendPage(_ moviesPage: MoviesPage) {
         printIfDebug("debug appendPage")
         movies = moviesPage.movies.map {
-            MovieListItemViewModel.init(title: $0.title ?? "", thumbnailImagePath: $0.path)
+            MovieListItemViewModel(title: $0.title ?? "", thumbnailImagePath: $0.path)
         }
     }
     
@@ -88,8 +91,7 @@ final class DefaultMovieListViewModel: MovieListViewModel {
         movies.removeAll()
     }
     
-    private func load(movieQuery: MovieQuery, loading: MovieListItemViewModelLoading) {
-        printIfDebug("networkTask - load")
+    private func fetch(movieQuery: MovieQuery, loading: MovieListItemViewModelLoading) {
         moviesLoadTask = searchMovieUseCase.execute(
             requestValue: .init(query: movieQuery, page: nextPage),
             cached: appendPage,
@@ -105,26 +107,20 @@ final class DefaultMovieListViewModel: MovieListViewModel {
                 self.delegate?.didLoadData()
             })
     }
-    
-    private func update(movieQuery: MovieQuery) {
-        printIfDebug("networkTask update")
-        //resetPages()
-        load(movieQuery: movieQuery, loading: .fullScreen)
-    }
 }
 
 // MARK: - INPUT. View event methods
 
 extension DefaultMovieListViewModel {
     
-    func didSearch(query: String) {
+    func refresh(query: String) {
         guard !query.isEmpty else { return }
-        update(movieQuery: MovieQuery(query: query))
+        resetPages()
+        fetch(movieQuery: MovieQuery(query: query), loading: .fullScreen)
     }
     
-    func didSetDefaultList() {
-        printIfDebug("didSetDefaultList")
-        update(movieQuery: MovieQuery(query: "default"))
+    func loadMore() {
+        fetch(movieQuery: MovieQuery(query: "default"), loading: .nextPage) //쿼리 저장방식 추가예정
     }
     
     func didCancelSearch() {
@@ -136,7 +132,4 @@ extension DefaultMovieListViewModel {
     func didSelectItem(at index: Int) {
         print("\(index)번 아이템")
     }
-    
 }
-
-

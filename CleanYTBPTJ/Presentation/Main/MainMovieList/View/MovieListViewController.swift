@@ -2,7 +2,6 @@
 
 import UIKit
 import SnapKit
-import Alamofire
 
 class MovieListViewController: UIViewController {
     
@@ -33,7 +32,6 @@ class MovieListViewController: UIViewController {
         setupViews()
         setupBehaviours()
         bind(to: viewModel)
-        viewModel.didSetDefaultList()
     }
     
     private func bind(to viewModel: MovieListViewModel) {
@@ -75,4 +73,3 @@ extension MovieListViewController: MovieListViewModelDelegate {
         self.movieListTableView.reloadData()
     }
 }
-
