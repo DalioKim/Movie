@@ -13,7 +13,7 @@ class MovieListTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-    
+
 }
 
 // MARK: - UITableViewDataSource, UITableViewDelegate
@@ -25,8 +25,8 @@ extension MovieListTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: MovieListItemCell.reuseIdentifier) as! MovieListItemCell
-        cell.bind(with: viewModel.movies[safe: indexPath.row], thumbnailRepository: thumbnailRepository)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieListItemCell.reuseIdentifier) as? MovieListItemCell else { fatalError() }
+        cell.bind(with: viewModel.items.value[indexPath.row], thumbnailRepository: thumbnailRepository)
         return cell
     }
     
