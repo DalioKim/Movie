@@ -2,12 +2,11 @@
 
 import Foundation
 
-// MARK: - Set DateStyle
+// MARK: - Set DateStyle convenience init
 
 extension DateFormatter {
-    func setStyle() -> DateFormatter {
-        self.dateStyle = .medium
-        return self
+    convenience init(dateStyle: DateFormatter.Style) {
+        self.init()
+        self.dateStyle = dateStyle
     }
 }
-

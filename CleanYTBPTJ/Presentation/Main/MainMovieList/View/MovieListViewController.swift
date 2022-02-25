@@ -68,7 +68,6 @@ class MovieListViewController: UIViewController {
 extension MovieListViewController: MovieListViewModelDelegate {
     
     func didLoadData() {
-        print(#function)
         print("모델 카운트 : \(viewModel.movies.count)")
         self.movieListTableView.reloadData()
     }

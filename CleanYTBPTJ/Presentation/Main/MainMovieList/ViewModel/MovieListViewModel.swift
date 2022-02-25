@@ -80,7 +80,7 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     private func appendPage(_ moviesPage: MoviesPage) {
         printIfDebug("debug appendPage")
         movies = moviesPage.movies.map {
-            MovieListItemViewModel(title: $0.title ?? "", thumbnailImagePath: $0.path)
+            MovieListItemViewModel(movie: $0)
         }
     }
     
