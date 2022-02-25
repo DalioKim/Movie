@@ -755,7 +755,7 @@
 				E3F5FBA02787E66900B8DF11 /* BlackStyleNavigationBarBehavior.swift in Sources */,
 				E3F5FB7E2787300400B8DF11 /* AppAppearance.swift in Sources */,
 				E3F5FA802785982E00B8DF11 /* MovieListTableViewController.swift in Sources */,
-				E38EAE3D27A12AAB002AD364 /* UILabel+GetRegular.swift in Sources */,
+				E38EAE3D27A12AAB002AD364 /* String+GetRegular.swift in Sources */,
 				E3F5FB252787060C00B8DF11 /* AppDIContainer.swift in Sources */,
 				E3F5FBEA2789AA2400B8DF11 /* MoviesRepository.swift in Sources */,
 				E3F5FAEC2785C7ED00B8DF11 /* NetworkService.swift in Sources */,
