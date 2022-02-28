@@ -9,7 +9,7 @@ class MovieListItemCell: UITableViewCell {
     
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
-        titleLabel.numberOfLines = 3
+        titleLabel.numberOfLines = -1
         titleLabel.textAlignment = .center
         return titleLabel
     }()
@@ -59,7 +59,7 @@ class MovieListItemCell: UITableViewCell {
         guard let viewModel = viewModel else { return }
         self.viewModel = viewModel
         self.thumbnailRepository = thumbnailRepository
-        titleLabel.attributedText = viewModel.title.removeTag()
+        titleLabel.attributedText = viewModel.title.applyTag()
         updateThumbnailImage(width: 200)
     }
     
