@@ -9,7 +9,7 @@ class MovieListItemCell: UITableViewCell {
     
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
-        titleLabel.numberOfLines = 1
+        titleLabel.numberOfLines = 3
         titleLabel.textAlignment = .center
         return titleLabel
     }()
@@ -28,7 +28,9 @@ class MovieListItemCell: UITableViewCell {
     }
     
     override func prepareForReuse() {
-       super.prepareForReuse()
+        super.prepareForReuse()
+        thumbnailImageView.image = nil
+        titleLabel.text = ""
     }
     
     func configure() {
@@ -57,13 +59,11 @@ class MovieListItemCell: UITableViewCell {
         guard let viewModel = viewModel else { return }
         self.viewModel = viewModel
         self.thumbnailRepository = thumbnailRepository
-        titleLabel.text = viewModel.title
-        titleLabel = titleLabel.getRegular(title: titleLabel.text ?? "", titleLabel: titleLabel)
+        titleLabel.attributedText = viewModel.title.removeTag()
         updateThumbnailImage(width: 200)
     }
     
     private func updateThumbnailImage(width: Int) {
-        thumbnailImageView.image = nil
         guard let thumbnailImagePath = viewModel?.thumbnailImagePath else { return }
         thumbnailRepository?.fetchImage(with: thumbnailImagePath, width: width) { [weak self] in
             self?.thumbnailImageView.image = $0
