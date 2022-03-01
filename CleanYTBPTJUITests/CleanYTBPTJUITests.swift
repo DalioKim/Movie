@@ -1,9 +1,3 @@
-//
-//  CleanYTBPTJUITests.swift
-//  CleanYTBPTJUITests
-//
-//  Created by 김동현 on 2021/11/21.
-//
 
 import XCTest
 

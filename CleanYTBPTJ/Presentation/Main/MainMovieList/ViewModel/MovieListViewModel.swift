@@ -2,7 +2,7 @@
 import Foundation
 import UIKit
 
-struct MovieListViewModelActions {}
+struct MovieListViewModelActions {} // 추후 삭제 혹은 구현 예정
 
 enum MovieListItemViewModelLoading {
     case fullScreen
@@ -30,7 +30,7 @@ protocol MovieListViewModelOutput {
 }
 
 protocol MovieListViewModel: MovieListViewModelInput, MovieListViewModelOutput {
-    var movies: [MovieListItemViewModel]  { get set }
+    var movies: [MovieListItemViewModel] { get set }
 }
 
 final class DefaultMovieListViewModel: MovieListViewModel {

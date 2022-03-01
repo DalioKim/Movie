@@ -7,9 +7,6 @@ protocol SearchMovieUseCase {
                  completion: @escaping (Result<MoviesPage, Error>) -> Void) -> CancelDelegate?
 }
 
-/*
- 유스케이스에서 레포짓을 파라미터로 받는 이육가 뭐지?
- */
 final class DefaultSearchMovieUseCase: SearchMovieUseCase {
     
     private let moviesRepository: MoviesRepository

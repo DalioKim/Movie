@@ -1,3 +1,4 @@
+
 import UIKit
 
 public protocol StoryboardInstantiable: NSObjectProtocol {
@@ -13,7 +14,7 @@ public extension StoryboardInstantiable where Self: UIViewController {
     
     static func instantiateViewController(_ bundle: Bundle? = nil) -> Self {
         let fileName = defaultFileName
-        printIfDebug("defaultFileName : \(defaultFileName)")
+        printIfDebug("defaultFileName: \(defaultFileName)")
         
         let storyboard = UIStoryboard(name: fileName, bundle: bundle)
         guard let vc = storyboard.instantiateInitialViewController() as? Self else {

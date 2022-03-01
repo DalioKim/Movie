@@ -1,3 +1,4 @@
+
 import Foundation
 import UIKit
 
@@ -66,10 +67,12 @@ extension String {
         let startTagRegex = "(<)[a-z0-9]*>+"
         
         guard let tagRange = self.range(of: startTagRegex, options: .regularExpression) else { return nil }
+        
         let attributedCase = AttributedCase(rawValue: String(self[tagRange]))
         let replaceTag = attributedCase?.replacedTag() ?? ""
         guard let wordRange = self.range(of: wordRegex, options: .regularExpression),
               let attributes = attributedCase?.getAttributes() else { return nil }
+        
         let tagInfo = ["wordRange": wordRange, "replaceTag": replaceTag, "attributes": attributes] as [String: Any]
         return tagInfo
     }

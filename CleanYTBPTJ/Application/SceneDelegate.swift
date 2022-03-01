@@ -1,9 +1,3 @@
-//
-//  SceneDelegate.swift
-//  CleanYTBPTJ
-//
-//  Created by 김동현 on 2021/11/21.
-//
 
 import UIKit
 
@@ -55,4 +49,3 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
     }
 }
-

@@ -98,7 +98,7 @@ extension DefaultDataTransferService: DataTransferService {
 // MARK: - Logger
 public final class DefaultDataTransferErrorLogger: DataTransferErrorLogger {
     
-    public init() {}
+    public init() {} //추후 삭제 혹은 구현 예정
 
     public func log(error: Error) {
         printIfDebug("\(error)")
@@ -108,7 +108,7 @@ public final class DefaultDataTransferErrorLogger: DataTransferErrorLogger {
 // MARK: - Error Resolver
 public class DefaultDataTransferErrorResolver: DataTransferErrorResolver {
     
-    public init() {}
+    public init() {} //추후 삭제 혹은 구현 예정
 
     public func resolve(error: NetworkError) -> Error {
         return error
@@ -120,7 +120,7 @@ public class JSONResponseDecoder: ResponseDecoder {
     
     private let jsonDecoder = JSONDecoder()
 
-    public init() {}
+    public init() {} //추후 삭제 혹은 구현 예정
 
     public func decode<T: Decodable>(_ data: Data) throws -> T {
         return try jsonDecoder.decode(T.self, from: data)
@@ -129,7 +129,7 @@ public class JSONResponseDecoder: ResponseDecoder {
 
 public class RawDataResponseDecoder: ResponseDecoder {
     
-    public init() {}
+    public init() {} //추후 삭제 혹은 구현 예정
     
     enum CodingKeys: String, CodingKey {
         case `default` = ""

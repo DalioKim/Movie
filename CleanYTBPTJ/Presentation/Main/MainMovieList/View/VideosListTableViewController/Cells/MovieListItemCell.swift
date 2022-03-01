@@ -29,8 +29,10 @@ class MovieListItemCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        viewModel = nil
+        thumbnailRepository = nil
         thumbnailImageView.image = nil
-        titleLabel.text = ""
+        titleLabel.attributedText = nil
     }
     
     func configure() {

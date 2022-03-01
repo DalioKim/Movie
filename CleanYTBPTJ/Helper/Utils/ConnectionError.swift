@@ -1,7 +1,3 @@
-//
-//  ConnectionError.swift
-//  ExampleMVVM
-//
 
 import Foundation
 

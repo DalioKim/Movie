@@ -1,5 +1,4 @@
 
-
 import Foundation
 
 public enum HTTPMethodType: String {
@@ -106,14 +105,13 @@ extension Requestable {
         printIfDebug("debug urlRequest")
 
         let url = try self.url(with: config)
-        printIfDebug("debug url : \(url)")
-        printIfDebug("debug config : \(config)")
+        printIfDebug("debug url: \(url)")
+        printIfDebug("debug config: \(config)")
 
         var urlRequest = URLRequest(url: url)
         var allHeaders: [String: String] = config.headers
         headerParamaters.forEach { allHeaders.updateValue($1, forKey: $0) }
-        printIfDebug("debug allHeaders : \(config.headers)")
-
+        printIfDebug("debug allHeaders: \(config.headers)")
     
         let bodyParamaters = try bodyParamatersEncodable?.toDictionary() ?? self.bodyParamaters
         if !bodyParamaters.isEmpty {
