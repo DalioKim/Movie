@@ -51,10 +51,6 @@ class MovieListItemCell: UITableViewCell {
         }
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     func bind(with viewModel: MovieListItemViewModel?, thumbnailRepository: ThumbnailRepository?) {
         guard let viewModel = viewModel else { return }
         self.viewModel = viewModel

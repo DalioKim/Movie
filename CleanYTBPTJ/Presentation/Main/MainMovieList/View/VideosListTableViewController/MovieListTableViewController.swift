@@ -26,7 +26,7 @@ extension MovieListTableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieListItemCell.reuseIdentifier) as? MovieListItemCell else { fatalError() }
-        cell.bind(with: viewModel.items.value[indexPath.row], thumbnailRepository: thumbnailRepository)
+        cell.bind(with: viewModel.movies[safe: indexPath.row], thumbnailRepository: thumbnailRepository)
         return cell
     }
     
