@@ -18,7 +18,6 @@ class MovieListItemCell: UITableViewCell {
     private var thumbnailImageView: UIImageView!
     
     private var viewModel: MovieListItemViewModel!
-    
     private var thumbnailRepository: ThumbnailRepository?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -38,8 +37,6 @@ class MovieListItemCell: UITableViewCell {
         titleLabel.numberOfLines = 0
         titleLabel.textAlignment = .center
         
-        
-        
         thumbnailImageView = UIImageView(frame: .zero)
         self.contentView.addSubview(thumbnailImageView)
         thumbnailImageView.snp.makeConstraints {
@@ -48,29 +45,19 @@ class MovieListItemCell: UITableViewCell {
             $0.top.equalToSuperview().offset(10)
             $0.bottom.equalToSuperview().offset(-10)
         }
-        
-        
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    
-    func fill(with viewModel: MovieListItemViewModel, thumbnailRepository: ThumbnailRepository?) {
-        
+    func bind(with viewModel: MovieListItemViewModel?, thumbnailRepository: ThumbnailRepository?) {
+        guard let viewModel = viewModel else { return }
         self.viewModel = viewModel
         self.thumbnailRepository = thumbnailRepository
-        printIfDebug("fill")
-        
         titleLabel.text = viewModel.title
         titleLabel = titleLabel.getRegular(title: titleLabel.text ?? "", titleLabel: titleLabel)
-        
-        
         updateThumbnailImage(width: 200)
-        
     }
     
     private func updateThumbnailImage(width: Int) {

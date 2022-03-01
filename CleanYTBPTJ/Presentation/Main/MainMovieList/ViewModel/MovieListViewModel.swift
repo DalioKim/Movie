@@ -1,11 +1,8 @@
 
+
 import Foundation
 import UIKit
 
-//스택에 값타입으로 생성되는 구조체는 속도와 함수형 언어의 특징인 불변성을 유지하는데 유리하다.
-//thread safe
-//유스케이스 정의
-//자료구조와 정렬알고리즘
 struct MovieListViewModelActions {}
 
 enum MovieListItemViewModelLoading {
@@ -13,24 +10,19 @@ enum MovieListItemViewModelLoading {
     case nextPage
 }
 
+protocol MovieListViewModelDelegate: AnyObject {
+    func didLoadData()
+}
+
 protocol MovieListViewModelInput {
-    func viewDidLoad()
-    func didLoadNextPage()
-    func didSearch(query: String)
-    func didSetDefaultList()
-    
+    func refresh(query: String)
+    func loadMore()
     func didCancelSearch()
-    func showQueriesSuggestions()
-    
-    func closeQueriesSuggestions()
     func didSelectItem(at index: Int)
 }
 
 protocol MovieListViewModelOutput {
-    var items: Observable<[MovieListItemViewModel]> { get }
-    var loading: Observable<MovieListItemViewModelLoading?> { get }
-    var query: Observable<String> { get }
-    var error: Observable<String> { get }
+    var loading: MovieListItemViewModelLoading? { get }
     var isEmpty: Bool { get }
     var screenTitle: String { get }
     var emptyDataTitle: String { get }
@@ -38,14 +30,18 @@ protocol MovieListViewModelOutput {
     var searchBarPlaceholder: String { get }
 }
 
-protocol MovieListViewModel: MovieListViewModelInput, MovieListViewModelOutput {}
+protocol MovieListViewModel: MovieListViewModelInput, MovieListViewModelOutput {
+    var movies: [MovieListItemViewModel]  { get set }
+}
 
 final class DefaultMovieListViewModel: MovieListViewModel {
     
-    func viewDidLoad() {}
-    
     private let searchMovieUseCase: SearchMovieUseCase
     private let actions: MovieListViewModelActions?
+    
+    var loading: MovieListItemViewModelLoading?
+    var movies: [MovieListItemViewModel]
+    weak var delegate: MovieListViewModelDelegate?
     
     var currentPage: Int = 0
     var totalPageCount: Int = 1
@@ -60,43 +56,42 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     }
     
     // MARK: - OUTPUT
-    let loading: Observable<MovieListItemViewModelLoading?> = Observable(.none)
-    let items: Observable<[MovieListItemViewModel]> = Observable([])
-    let query: Observable<String> = Observable("")
-    let error: Observable<String> = Observable("")
-    var isEmpty: Bool { return items.value.isEmpty }
+    
+    var isEmpty: Bool { movies.isEmpty }
     let screenTitle = NSLocalizedString("Movies", comment: "")
     let emptyDataTitle = NSLocalizedString("Search results", comment: "")
     let errorTitle = NSLocalizedString("Error", comment: "")
     let searchBarPlaceholder = NSLocalizedString("Search Movies", comment: "")
     
     // MARK: - Init
+    
     init(searchMovieUseCase: SearchMovieUseCase,
-         actions: MovieListViewModelActions? = nil) {
+         actions: MovieListViewModelActions? = nil,
+         movies : [MovieListItemViewModel] = [MovieListItemViewModel]()) {
         print("DefaultMoviesListViewModel init")
         self.searchMovieUseCase = searchMovieUseCase
         self.actions = actions
+        self.movies = movies
+        fetch(movieQuery: MovieQuery(query: "default"), loading: .fullScreen)
     }
     
     // MARK: - Private
+    
     private func appendPage(_ moviesPage: MoviesPage) {
         printIfDebug("debug appendPage")
-        items.value = moviesPage.movies.map(MovieListItemViewModel.init)
+        movies = moviesPage.movies.map {
+            MovieListItemViewModel(movie: $0)
+        }
     }
     
     private func resetPages() {
         currentPage = 0
         totalPageCount = 1
         pages.removeAll()
-        items.value.removeAll()
+        movies.removeAll()
     }
     
-    private func load(movieQuery: MovieQuery, loading: MovieListItemViewModelLoading) {
-        printIfDebug("networkTask - load")
-        
-        self.loading.value = loading
-        query.value = movieQuery.query
-        
+    private func fetch(movieQuery: MovieQuery, loading: MovieListItemViewModelLoading) {
         moviesLoadTask = searchMovieUseCase.execute(
             requestValue: .init(query: movieQuery, page: nextPage),
             cached: appendPage,
@@ -106,46 +101,26 @@ final class DefaultMovieListViewModel: MovieListViewModel {
                 case .success(let page):
                     self.appendPage(page)
                 case .failure(let error):
-                    self.handle(error: error)
+                    break
                 }
-                self.loading.value = .none
                 self.moviesLoadTask = nil
+                self.delegate?.didLoadData()
             })
-    }
-    
-    private func handle(error: Error) {
-        self.error.value = error.isInternetConnectionError ?
-        NSLocalizedString("No internet connection", comment: "") :
-        NSLocalizedString("Failed loading images", comment: "")
-    }
-    
-    private func update(movieQuery: MovieQuery) {
-        printIfDebug("networkTask update")
-        //resetPages()
-        load(movieQuery: movieQuery, loading: .fullScreen)
     }
 }
 
 // MARK: - INPUT. View event methods
+
 extension DefaultMovieListViewModel {
     
-    //func viewDidLoad() {}
-    func didLoadNextPage() {
-        printIfDebug("networkTask didLoadNextPage")
-        
-        guard hasMorePages, loading.value == .none else { return }
-        load(movieQuery: .init(query: query.value),
-             loading: .nextPage)
-    }
-    
-    func didSearch(query: String) {
+    func refresh(query: String) {
         guard !query.isEmpty else { return }
-        update(movieQuery: MovieQuery(query: query))
+        resetPages()
+        fetch(movieQuery: MovieQuery(query: query), loading: .fullScreen)
     }
     
-    func didSetDefaultList() {
-        printIfDebug("didSetDefaultList")
-        update(movieQuery: MovieQuery(query: "default"))
+    func loadMore() {
+        fetch(movieQuery: MovieQuery(query: "default"), loading: .nextPage) //쿼리 저장방식 추가예정
     }
     
     func didCancelSearch() {
@@ -153,9 +128,8 @@ extension DefaultMovieListViewModel {
         moviesLoadTask = nil
     }
     
-    func showQueriesSuggestions() {}
-    func closeQueriesSuggestions() {}
-    func didSelectItem(at index: Int) {}
+    //didSelectItem 기능 추가 예정
+    func didSelectItem(at index: Int) {
+        print("\(index)번 아이템")
+    }
 }
-
-

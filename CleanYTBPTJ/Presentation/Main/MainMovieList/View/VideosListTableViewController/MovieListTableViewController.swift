@@ -1,29 +1,18 @@
-//
-//  ThumbnailListTableViewController.swift
-//  CleanYTBPTJ
-//
-//  Created by 김동현 on 2022/01/05.
-//
+
 
 import UIKit
 
 class MovieListTableViewController: UITableViewController {
     
     var viewModel: MovieListViewModel!
-
     var thumbnailRepository: ThumbnailRepository?
     var nextPageLoadingSpinner: UIActivityIndicatorView?
-    
-
 
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-
-
-
 
     // MARK: - Private
 
@@ -34,25 +23,17 @@ class MovieListTableViewController: UITableViewController {
 extension MovieListTableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.items.value.count
+        return viewModel.movies.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        
-        printIfDebug("tableView")
         let cell = tableView.dequeueReusableCell(withIdentifier: MovieListItemCell.reuseIdentifier) as! MovieListItemCell
-        
-        
-        
-        cell.fill(with: viewModel.items.value[indexPath.row], thumbnailRepository: thumbnailRepository)
-
-
+        cell.bind(with: viewModel.movies[safe: indexPath.row], thumbnailRepository: thumbnailRepository)
         return cell
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return viewModel.isEmpty ? tableView.frame.height : super.tableView(tableView, heightForRowAt: indexPath)
+        return viewModel.movies.isEmpty ? tableView.frame.height : super.tableView(tableView, heightForRowAt: indexPath)
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
