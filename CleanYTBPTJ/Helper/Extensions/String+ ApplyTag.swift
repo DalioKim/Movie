@@ -11,7 +11,7 @@ extension String {
         
         func getAttributes() -> [NSAttributedString.Key: Any] {
             var attributes : [NSAttributedString.Key: Any]
-            var font : UIFont // MARK: font 사이즈는 임시로 하드코딩 처리 추후에 상수 처리 및 기종별 사이즈적용
+            var font : UIFont // MARK: font 사이즈는 임시로 하드코딩 처리, 추후에 상수 처리 및 기종별 사이즈적용
             
             switch self {
             case .bold:
@@ -68,8 +68,8 @@ extension String {
         guard let tagRange = self.range(of: startTagRegex, options: .regularExpression) else { return nil }
         let attributedCase = AttributedCase(rawValue: String(self[tagRange]))
         let replaceTag = attributedCase?.replacedTag() ?? ""
-        guard let wordRange = self.range(of: wordRegex, options: .regularExpression) else { return nil }
-        guard let attributes = attributedCase?.getAttributes() else { return nil }
+        guard let wordRange = self.range(of: wordRegex, options: .regularExpression),
+              let attributes = attributedCase?.getAttributes() else { return nil }
         let tagInfo = ["wordRange": wordRange, "replaceTag":replaceTag, "attributes" : attributes] as [String : Any]
         return tagInfo
     }
