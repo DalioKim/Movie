@@ -1,5 +1,4 @@
 
-
 import UIKit
 
 class MovieListItemCell: UITableViewCell {
@@ -13,6 +12,7 @@ class MovieListItemCell: UITableViewCell {
         titleLabel.textAlignment = .center
         return titleLabel
     }()
+
     private let thumbnailImageView = UIImageView()
     
     private weak var viewModel: MovieListItemViewModel?

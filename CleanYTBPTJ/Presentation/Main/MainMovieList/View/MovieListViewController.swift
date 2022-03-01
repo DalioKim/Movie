@@ -38,8 +38,7 @@ class MovieListViewController: UIViewController {
         debugPrint("viewModel : \(viewModel)")
         (viewModel as? DefaultMovieListViewModel).flatMap { $0.delegate = self }
     }
-    
-    
+
     private func setupViews() {
         debugPrint("setupViews Model : \(viewModel)")
         
@@ -57,7 +56,6 @@ class MovieListViewController: UIViewController {
     }
     
     private func setupBehaviours() {
-        
         addBehaviors([BackButtonEmptyTitleNavigationBarBehavior(),
                       BlackStyleNavigationBarBehavior()])
     }

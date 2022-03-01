@@ -8,14 +8,9 @@ final class DefaultMoviesRepository {
     init(dataTransferService: DataTransferService) {
         self.dataTransferService = dataTransferService
     }
-
-   
 }
 
 extension DefaultMoviesRepository: MoviesRepository {
-    
-    
-    
     func fetchMovieList(query: MovieQuery, page: Int, cached: @escaping (MoviesPage) -> Void,
                         completion: @escaping (Result<MoviesPage, Error>) -> Void) -> CancelDelegate? {
         

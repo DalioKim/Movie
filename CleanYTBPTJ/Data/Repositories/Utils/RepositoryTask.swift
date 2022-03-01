@@ -16,5 +16,4 @@ class RepositoryTask: CancelDelegate {
         networkTask?.cancel()
         isCancelled = true
     }
-    
 }

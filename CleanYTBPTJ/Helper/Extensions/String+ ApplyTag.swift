@@ -10,8 +10,8 @@ extension String {
         case none
         
         func getAttributes() -> [NSAttributedString.Key: Any] {
-            var attributes : [NSAttributedString.Key: Any]
-            var font : UIFont // MARK: font 사이즈는 임시로 하드코딩 처리, 추후에 상수 처리 및 기종별 사이즈적용
+            var attributes: [NSAttributedString.Key: Any]
+            var font: UIFont // MARK: font 사이즈는 임시로 하드코딩 처리, 추후에 상수 처리 및 기종별 사이즈적용
             
             switch self {
             case .bold:
@@ -50,7 +50,7 @@ extension String {
         guard let tagInfo = searchTag(),
               let wordRange = tagInfo["wordRange"] as? Range<String.Index>,
               let replaceTag = tagInfo["replaceTag"] as? String,
-              let attributes = tagInfo["attributes"] as? [NSAttributedString.Key : Any]
+              let attributes = tagInfo["attributes"] as? [NSAttributedString.Key: Any]
         else { return NSMutableAttributedString(string: self) }
         
         let word =  String(self[wordRange]).replacingOccurrences(of: tagRegex, with: "", options: .regularExpression)
@@ -70,7 +70,7 @@ extension String {
         let replaceTag = attributedCase?.replacedTag() ?? ""
         guard let wordRange = self.range(of: wordRegex, options: .regularExpression),
               let attributes = attributedCase?.getAttributes() else { return nil }
-        let tagInfo = ["wordRange": wordRange, "replaceTag":replaceTag, "attributes" : attributes] as [String : Any]
+        let tagInfo = ["wordRange": wordRange, "replaceTag": replaceTag, "attributes": attributes] as [String: Any]
         return tagInfo
     }
 }

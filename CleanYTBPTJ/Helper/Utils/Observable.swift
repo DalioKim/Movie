@@ -22,7 +22,9 @@ public final class Observable<Value> {
     private var observers = [Observer<Value>]()
     
     public var value: Value {
-        didSet { notifyObservers() }
+        didSet {
+            notifyObservers()
+        }
     }
     
     public init(_ value: Value) {

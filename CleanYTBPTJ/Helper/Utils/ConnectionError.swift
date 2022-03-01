@@ -3,7 +3,6 @@
 //  ExampleMVVM
 //
 
-//
 import Foundation
 
 public protocol ConnectionError: Error {

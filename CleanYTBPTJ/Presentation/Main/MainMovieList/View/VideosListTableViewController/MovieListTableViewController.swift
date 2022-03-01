@@ -1,5 +1,4 @@
 
-
 import UIKit
 
 class MovieListTableViewController: UITableViewController {
@@ -13,7 +12,6 @@ class MovieListTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-
 }
 
 // MARK: - UITableViewDataSource, UITableViewDelegate

@@ -1,8 +1,8 @@
 import Foundation
 
 class MovieListItemViewModel {
-    let title : String
-    let thumbnailImagePath : String?
+    let title: String
+    let thumbnailImagePath: String?
     
     init(movie: Movie) {
         self.title = movie.title ?? ""

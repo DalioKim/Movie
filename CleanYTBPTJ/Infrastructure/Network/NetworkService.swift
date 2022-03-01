@@ -137,7 +137,7 @@ public final class DefaultNetworkErrorLogger: NetworkErrorLogger {
         switch classified(httpBody) {
         case .objectType(_: let objectPrint):
             printIfDebug("body: \(objectPrint.prettyPrint())")
-        case .stringType(_ : let stringPrint):
+        case .stringType(_: let stringPrint):
             printIfDebug("body: \(stringPrint)")
         case .none:
             break

@@ -1,5 +1,4 @@
 
-
 import Foundation
 import UIKit
 
@@ -67,7 +66,7 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     
     init(searchMovieUseCase: SearchMovieUseCase,
          actions: MovieListViewModelActions? = nil,
-         movies : [MovieListItemViewModel] = [MovieListItemViewModel]()) {
+         movies: [MovieListItemViewModel] = [MovieListItemViewModel]()) {
         print("DefaultMoviesListViewModel init")
         self.searchMovieUseCase = searchMovieUseCase
         self.actions = actions
@@ -100,7 +99,7 @@ final class DefaultMovieListViewModel: MovieListViewModel {
                 switch result {
                 case .success(let page):
                     self.appendPage(page)
-                case .failure(let error):
+                case .failure:
                     break
                 }
                 self.moviesLoadTask = nil
