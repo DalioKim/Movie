@@ -48,22 +48,21 @@ public final class DefaultDataTransferService {
 extension DefaultDataTransferService: DataTransferService {
     
     public func request<T: Decodable, E: ResponseRequestable>(with endpoint: E, completion: @escaping CompletionHandler<T>) -> NetworkCancelDelegate? where E.Response == T {
-            return self.networkService.request(endpoint: endpoint) { [weak self] result in
-                guard let self = self else { return }
-                switch result {
-                case .success(let data):
-                    let result: Result<T, DataTransferError> = self.decode(data: data, decoder: endpoint.responseDecoder)
-                    DispatchQueue.main.async { completion(result) }
-                case .failure(let error):
-                    self.errorLogger.log(error: error)
-                    let error = self.resolve(networkError: error)
-                    DispatchQueue.main.async { completion(.failure(error)) }
-                }
+        return self.networkService.request(endpoint: endpoint) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let data):
+                let result: Result<T, DataTransferError> = self.decode(data: data, decoder: endpoint.responseDecoder)
+                DispatchQueue.main.async { completion(result) }
+            case .failure(let error):
+                self.errorLogger.log(error: error)
+                let error = self.resolve(networkError: error)
+                DispatchQueue.main.async { completion(.failure(error)) }
             }
         }
+    }
     
-    public func request<E>(with endpoint: E, completion: @escaping CompletionHandler<Void>) -> NetworkCancelDelegate?
-    where E: ResponseRequestable, E.Response == Void {
+    public func request<E>(with endpoint: E, completion: @escaping CompletionHandler<Void>) -> NetworkCancelDelegate? where E: ResponseRequestable, E.Response == Void {
         return self.networkService.request(endpoint: endpoint) { [weak self] result in
             guard let self = self else { return }
             switch result {
@@ -99,7 +98,8 @@ extension DefaultDataTransferService: DataTransferService {
 // MARK: - Logger
 public final class DefaultDataTransferErrorLogger: DataTransferErrorLogger {
     
-    public init() {}
+    public init() {} //추후 삭제 혹은 구현 예정
+
     public func log(error: Error) {
         printIfDebug("\(error)")
     }
@@ -108,7 +108,8 @@ public final class DefaultDataTransferErrorLogger: DataTransferErrorLogger {
 // MARK: - Error Resolver
 public class DefaultDataTransferErrorResolver: DataTransferErrorResolver {
     
-    public init() {}
+    public init() {} //추후 삭제 혹은 구현 예정
+
     public func resolve(error: NetworkError) -> Error {
         return error
     }
@@ -118,7 +119,9 @@ public class DefaultDataTransferErrorResolver: DataTransferErrorResolver {
 public class JSONResponseDecoder: ResponseDecoder {
     
     private let jsonDecoder = JSONDecoder()
-    public init() {}
+
+    public init() {} //추후 삭제 혹은 구현 예정
+
     public func decode<T: Decodable>(_ data: Data) throws -> T {
         return try jsonDecoder.decode(T.self, from: data)
     }
@@ -126,7 +129,8 @@ public class JSONResponseDecoder: ResponseDecoder {
 
 public class RawDataResponseDecoder: ResponseDecoder {
     
-    public init() {}
+    public init() {} //추후 삭제 혹은 구현 예정
+    
     enum CodingKeys: String, CodingKey {
         case `default` = ""
     }

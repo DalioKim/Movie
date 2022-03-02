@@ -1,9 +1,4 @@
-//
-//  ConnectionError.swift
-//  ExampleMVVM
-//
 
-//
 import Foundation
 
 public protocol ConnectionError: Error {

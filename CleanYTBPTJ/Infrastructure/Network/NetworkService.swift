@@ -1,5 +1,4 @@
 
-
 import Foundation
 
 public enum NetworkError: Error {
@@ -20,7 +19,7 @@ public protocol NetworkCancelDelegate {
     func cancel()
 }
 
-extension URLSessionTask: NetworkCancelDelegate {}
+extension URLSessionTask: NetworkCancelDelegate {} //추후 삭제 혹은 구현 예정
 
 public protocol NetworkService {
     typealias CompletionHandler = (Result<Data?, NetworkError>) -> Void
@@ -106,7 +105,7 @@ extension DefaultNetworkService: NetworkService {
 
 public class DefaultNetworkSessionManager: NetworkSessionManager {
     
-    public init() {}
+    public init() {} //추후 삭제 혹은 구현 예정
     
     public func request(_ request: URLRequest,
                         completion: @escaping CompletionHandler) -> NetworkCancelDelegate {
@@ -120,7 +119,7 @@ public class DefaultNetworkSessionManager: NetworkSessionManager {
 
 public final class DefaultNetworkErrorLogger: NetworkErrorLogger {
     
-    public init() {}
+    public init() {} //추후 삭제 혹은 구현 예정
     
     let classified = { (httpBody: Data) -> resultType in
         if let objectType = try? JSONSerialization.jsonObject(with: httpBody, options: []) as? [String: AnyObject] {
@@ -137,7 +136,7 @@ public final class DefaultNetworkErrorLogger: NetworkErrorLogger {
         switch classified(httpBody) {
         case .objectType(_: let objectPrint):
             printIfDebug("body: \(objectPrint.prettyPrint())")
-        case .stringType(_ : let stringPrint):
+        case .stringType(_: let stringPrint):
             printIfDebug("body: \(stringPrint)")
         case .none:
             break

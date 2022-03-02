@@ -13,7 +13,6 @@ final class DefaultEnterMainUseCase: EnterMainUseCase {
     private let moviesRepository: MoviesRepository
     
     init(moviesRepository: MoviesRepository) {
-        
         self.moviesRepository = moviesRepository
     }
     

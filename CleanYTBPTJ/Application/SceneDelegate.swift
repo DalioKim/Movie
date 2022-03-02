@@ -1,9 +1,3 @@
-//
-//  SceneDelegate.swift
-//  CleanYTBPTJ
-//
-//  Created by 김동현 on 2021/11/21.
-//
 
 import UIKit
 
@@ -14,21 +8,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var appFlowCoordinator: AppFlowCoordinator?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-
-        
         guard let windowScene = (scene as? UIWindowScene) else { return }
+
         window = UIWindow(windowScene: windowScene)
-                let navigationController = UINavigationController()
         window?.backgroundColor = .white
 
-                window?.rootViewController = navigationController
-                appFlowCoordinator = AppFlowCoordinator(navigationController: navigationController,
-                                                        appDIContainer: appDIContainer)
-                appFlowCoordinator?.start()
-                window?.makeKeyAndVisible()
+        let navigationController = UINavigationController()
+        window?.rootViewController = navigationController
+        appFlowCoordinator = AppFlowCoordinator(navigationController: navigationController, appDIContainer: appDIContainer)
+        appFlowCoordinator?.start()
 
-
-
+        window?.makeKeyAndVisible()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -58,7 +48,4 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
-
-
 }
-

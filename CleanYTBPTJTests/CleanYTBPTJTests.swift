@@ -1,9 +1,3 @@
-//
-//  CleanYTBPTJTests.swift
-//  CleanYTBPTJTests
-//
-//  Created by 김동현 on 2021/11/21.
-//
 
 import XCTest
 @testable import CleanYTBPTJ
@@ -29,5 +23,4 @@ class CleanYTBPTJTests: XCTestCase {
             // Put the code you want to measure the time of here.
         }
     }
-
 }

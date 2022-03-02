@@ -1,11 +1,9 @@
+
 import Foundation
 
-struct MovieListItemViewModel: Equatable {
-    let title : String
-    let thumbnailImagePath : String?
-}
-
-extension MovieListItemViewModel {
+class MovieListItemViewModel {
+    let title: String
+    let thumbnailImagePath: String?
     
     init(movie: Movie) {
         self.title = movie.title ?? ""

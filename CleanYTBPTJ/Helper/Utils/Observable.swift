@@ -2,18 +2,7 @@
 import Foundation
 
 public final class Observable<Value> {
-    
-    
-    /*
-     구조체
-     순환참조
-     블록단위
-     */
-    
-    
-    /*
-     observers에 등록되어있는 observer가 메모리에서 해제되는 경욱가 있나? 
-     */
+
     struct Observer<Value> {
         weak var observer: AnyObject?
         let block: (Value) -> Void
@@ -22,7 +11,9 @@ public final class Observable<Value> {
     private var observers = [Observer<Value>]()
     
     public var value: Value {
-        didSet { notifyObservers() }
+        didSet {
+            notifyObservers()
+        }
     }
     
     public init(_ value: Value) {

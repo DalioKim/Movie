@@ -1,5 +1,4 @@
 
-
 import UIKit
 
 protocol MovieSearchFlowCoordinatorDependencies  {
@@ -11,7 +10,7 @@ final class MovieSearchFlowCoordinator {
     private weak var navigationController: UINavigationController?
     private let dependencies: MovieSearchFlowCoordinatorDependencies
 
-    private weak var MovieListVC: MovieListViewController?
+    private weak var movieListVC: MovieListViewController?
 
     init(navigationController: UINavigationController,
          dependencies: MovieSearchFlowCoordinatorDependencies) {
@@ -32,10 +31,6 @@ final class MovieSearchFlowCoordinator {
         printIfDebug("MoviesSearchFlowCoordinator vc after")
 
         navigationController?.pushViewController(vc, animated: false)
-        MovieListVC = vc
+        movieListVC = vc
     }
-    
-  
-
-    
 }

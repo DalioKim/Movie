@@ -1,5 +1,4 @@
 
-
 import UIKit
 import SnapKit
 
@@ -10,7 +9,7 @@ class MovieListViewController: UIViewController {
         let imageDataTransferService: DataTransferService
     }
     
-    private var movieListTableViewController  = MovieListTableViewController()
+    private var movieListTableViewController = MovieListTableViewController()
     
     private let movieListTableView: UITableView = {
         let movieListTableView = UITableView()
@@ -20,7 +19,7 @@ class MovieListViewController: UIViewController {
     private var viewModel: MovieListViewModel!
     private var thumbnailRepository: ThumbnailRepository?
     
-    static func create(with viewModel: MovieListViewModel, thumbnailRepository : ThumbnailRepository) -> MovieListViewController {
+    static func create(with viewModel: MovieListViewModel, thumbnailRepository: ThumbnailRepository) -> MovieListViewController {
         let view = MovieListViewController()
         view.viewModel = viewModel
         view.thumbnailRepository = thumbnailRepository
@@ -35,13 +34,12 @@ class MovieListViewController: UIViewController {
     }
     
     private func bind(to viewModel: MovieListViewModel) {
-        debugPrint("viewModel : \(viewModel)")
+        debugPrint("viewModel: \(viewModel)")
         (viewModel as? DefaultMovieListViewModel).flatMap { $0.delegate = self }
     }
-    
-    
+
     private func setupViews() {
-        debugPrint("setupViews Model : \(viewModel)")
+        debugPrint("setupViews Model: \(viewModel)")
         
         movieListTableViewController.viewModel = viewModel
         movieListTableViewController.thumbnailRepository = thumbnailRepository
@@ -57,7 +55,6 @@ class MovieListViewController: UIViewController {
     }
     
     private func setupBehaviours() {
-        
         addBehaviors([BackButtonEmptyTitleNavigationBarBehavior(),
                       BlackStyleNavigationBarBehavior()])
     }
@@ -68,7 +65,7 @@ class MovieListViewController: UIViewController {
 extension MovieListViewController: MovieListViewModelDelegate {
     
     func didLoadData() {
-        print("모델 카운트 : \(viewModel.movies.count)")
+        print("모델 카운트: \(viewModel.movies.count)")
         self.movieListTableView.reloadData()
     }
 }
