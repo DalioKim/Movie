@@ -10,7 +10,7 @@ class MovieListViewController: UIViewController {
     }
     
     private let movieListView: UICollectionView = {
-        let cellSize = CGSize(width: 330 , height: 300)
+        let cellSize = CGSize(width: 330, height: 300)
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 0
         layout.itemSize = cellSize
