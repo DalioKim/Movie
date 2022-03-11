@@ -19,7 +19,7 @@ class MovieListViewController: UIViewController {
     private var viewModel: MovieListViewModel
     private var thumbnailRepository: ThumbnailRepository
     
-    init(viewModel: MovieListViewModel, thumbnailRepository: ThumbnailRepository){
+    init(viewModel: MovieListViewModel, thumbnailRepository: ThumbnailRepository) {
         self.viewModel = viewModel
         self.thumbnailRepository = thumbnailRepository
         super.init(nibName: nil, bundle: nil)
@@ -40,7 +40,7 @@ class MovieListViewController: UIViewController {
         debugPrint("viewModel: \(viewModel)")
         (viewModel as? DefaultMovieListViewModel).flatMap { $0.delegate = self }
     }
-
+    
     private func setupViews() {
         debugPrint("setupViews Model: \(viewModel)")
         
