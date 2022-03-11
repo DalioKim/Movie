@@ -9,11 +9,17 @@ class MovieListViewController: UIViewController {
         let imageDataTransferService: DataTransferService
     }
     
-    private var movieListTableViewController = MovieListTableViewController()
-    
-    private let movieListTableView: UITableView = {
-        let movieListTableView = UITableView()
-        return movieListTableView
+    private let movieListView: UICollectionView = {
+        let cellSize = CGSize(width: 330 , height: 300)
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumLineSpacing = 0
+        layout.itemSize = cellSize
+        layout.scrollDirection = .vertical
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        let movieListView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        movieListView.register(MovieListItemCell.self, forCellWithReuseIdentifier: MovieListItemCell.reuseIdentifier)
+
+        return movieListView
     }()
     
     private var viewModel: MovieListViewModel!
@@ -37,21 +43,15 @@ class MovieListViewController: UIViewController {
         debugPrint("viewModel: \(viewModel)")
         (viewModel as? DefaultMovieListViewModel).flatMap { $0.delegate = self }
     }
-
+    
     private func setupViews() {
-        debugPrint("setupViews Model: \(viewModel)")
-        
-        movieListTableViewController.viewModel = viewModel
-        movieListTableViewController.thumbnailRepository = thumbnailRepository
-        
-        movieListTableView.rowHeight = MovieListItemCell.height
-        movieListTableView.register(MovieListItemCell.self, forCellReuseIdentifier: MovieListItemCell.reuseIdentifier)
-        movieListTableView.dataSource = movieListTableViewController
-        movieListTableView.delegate = movieListTableViewController
-        self.view.addSubview(movieListTableView)
-        self.movieListTableView.snp.makeConstraints {
+        movieListView.delegate = self
+        movieListView.dataSource = self
+        view.addSubview(movieListView)
+        movieListView.snp.makeConstraints {
             $0.width.height.equalToSuperview()
         }
+        
     }
     
     private func setupBehaviours() {
@@ -66,6 +66,22 @@ extension MovieListViewController: MovieListViewModelDelegate {
     
     func didLoadData() {
         print("모델 카운트: \(viewModel.movies.count)")
-        self.movieListTableView.reloadData()
+        movieListView.reloadData()
     }
 }
+
+// MARK: -  CollectionViewDelegate
+
+extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return viewModel.movies.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieListItemCell.reuseIdentifier, for: indexPath) as? MovieListItemCell else { fatalError() }
+        cell.bind(with: viewModel.movies[safe:indexPath.item], thumbnailRepository: thumbnailRepository)
+        return cell
+    }
+}
+

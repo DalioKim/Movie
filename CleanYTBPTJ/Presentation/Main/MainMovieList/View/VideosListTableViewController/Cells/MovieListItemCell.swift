@@ -1,7 +1,7 @@
 
 import UIKit
 
-class MovieListItemCell: UITableViewCell {
+class MovieListItemCell: UICollectionViewCell {
     
     static let reuseIdentifier = String(describing: MovieListItemCell.self)
     static let height = CGFloat(300)
@@ -12,18 +12,18 @@ class MovieListItemCell: UITableViewCell {
         titleLabel.textAlignment = .center
         return titleLabel
     }()
-
+    
     private let thumbnailImageView = UIImageView()
     
     private weak var viewModel: MovieListItemViewModel?
     private var thumbnailRepository: ThumbnailRepository?
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.configure()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        configure()
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
