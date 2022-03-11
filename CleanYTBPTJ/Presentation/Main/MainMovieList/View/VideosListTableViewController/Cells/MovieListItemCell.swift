@@ -12,7 +12,7 @@ class MovieListItemCell: UITableViewCell {
         titleLabel.textAlignment = .center
         return titleLabel
     }()
-
+    
     private let thumbnailImageView = UIImageView()
     
     private weak var viewModel: MovieListItemViewModel?
@@ -20,7 +20,7 @@ class MovieListItemCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.configure()
+        configure()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -36,8 +36,8 @@ class MovieListItemCell: UITableViewCell {
     }
     
     func configure() {
-        self.contentView.addSubview(titleLabel)
-        self.contentView.addSubview(thumbnailImageView)
+        contentView.addSubview(titleLabel)
+        contentView.addSubview(thumbnailImageView)
         
         titleLabel.snp.makeConstraints {
             $0.left.equalToSuperview().offset(200)

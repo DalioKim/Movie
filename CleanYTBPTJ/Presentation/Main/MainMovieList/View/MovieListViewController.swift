@@ -37,7 +37,7 @@ class MovieListViewController: UIViewController {
         debugPrint("viewModel: \(viewModel)")
         (viewModel as? DefaultMovieListViewModel).flatMap { $0.delegate = self }
     }
-
+    
     private func setupViews() {
         debugPrint("setupViews Model: \(viewModel)")
         
@@ -48,8 +48,8 @@ class MovieListViewController: UIViewController {
         movieListTableView.register(MovieListItemCell.self, forCellReuseIdentifier: MovieListItemCell.reuseIdentifier)
         movieListTableView.dataSource = movieListTableViewController
         movieListTableView.delegate = movieListTableViewController
-        self.view.addSubview(movieListTableView)
-        self.movieListTableView.snp.makeConstraints {
+        view.addSubview(movieListTableView)
+        movieListTableView.snp.makeConstraints {
             $0.width.height.equalToSuperview()
         }
     }
@@ -66,6 +66,6 @@ extension MovieListViewController: MovieListViewModelDelegate {
     
     func didLoadData() {
         print("모델 카운트: \(viewModel.movies.count)")
-        self.movieListTableView.reloadData()
+        movieListTableView.reloadData()
     }
 }

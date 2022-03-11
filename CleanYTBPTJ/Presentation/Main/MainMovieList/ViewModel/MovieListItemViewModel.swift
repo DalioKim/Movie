@@ -6,7 +6,7 @@ class MovieListItemViewModel {
     let thumbnailImagePath: String?
     
     init(movie: Movie) {
-        self.title = movie.title ?? ""
-        self.thumbnailImagePath = movie.path
+        title = movie.title ?? ""
+        thumbnailImagePath = movie.path
     }
 }

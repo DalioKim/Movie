@@ -95,15 +95,14 @@ final class DefaultMovieListViewModel: MovieListViewModel {
             requestValue: .init(query: movieQuery, page: nextPage),
             cached: appendPage,
             completion: { [weak self] result in
-                guard let self = self else { return }
                 switch result {
                 case .success(let page):
-                    self.appendPage(page)
+                    self?.appendPage(page)
                 case .failure:
                     break
                 }
-                self.moviesLoadTask = nil
-                self.delegate?.didLoadData()
+                self?.moviesLoadTask = nil
+                self?.delegate?.didLoadData()
             })
     }
 }
