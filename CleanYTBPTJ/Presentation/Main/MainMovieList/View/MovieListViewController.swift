@@ -16,14 +16,17 @@ class MovieListViewController: UIViewController {
         return movieListTableView
     }()
     
-    private var viewModel: MovieListViewModel!
-    private var thumbnailRepository: ThumbnailRepository?
+    private var viewModel: MovieListViewModel
+    private var thumbnailRepository: ThumbnailRepository
     
-    static func create(with viewModel: MovieListViewModel, thumbnailRepository: ThumbnailRepository) -> MovieListViewController {
-        let view = MovieListViewController()
-        view.viewModel = viewModel
-        view.thumbnailRepository = thumbnailRepository
-        return view
+    init(viewModel: MovieListViewModel, thumbnailRepository: ThumbnailRepository){
+        self.viewModel = viewModel
+        self.thumbnailRepository = thumbnailRepository
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {
