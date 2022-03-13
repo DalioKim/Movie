@@ -46,7 +46,7 @@ class MovieListViewController: UIViewController {
         movieListView.dataSource = self
         view.addSubview(movieListView)
         movieListView.snp.makeConstraints {
-            $0.leading.trailing.top.bottom.equalToSuperview()
+            $0.leading.trailing.top.bottom.equalToSuperview().inset(UIEdgeInsets(top: 10, left: 10, bottom: 50, right: 50))
         }
         
     }
