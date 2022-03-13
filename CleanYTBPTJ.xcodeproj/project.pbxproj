@@ -12,6 +12,7 @@
 		CEF7D85027B8AC7B00C63D68 /* StoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF7D84F27B8AC7B00C63D68 /* StoryboardInstantiable.swift */; };
 		E34E159527CE36EC00F53F2E /* String+ApplyTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = E34E159427CE36EC00F53F2E /* String+ApplyTag.swift */; };
 		E36A966F2799517700EC90C6 /* DefaultMoviesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36A966E2799517700EC90C6 /* DefaultMoviesRepository.swift */; };
+		E3E49BDB27DE325600B57B8D /* String+CalculateHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E49BDA27DE325600B57B8D /* String+CalculateHeight.swift */; };
 		E3F488A027C8BB8E00F77C4B /* Array+Safe.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F4889F27C8BB8E00F77C4B /* Array+Safe.swift */; };
 		E3F488A227C8BBDB00F77C4B /* DateFormatter+DateStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F488A127C8BBDB00F77C4B /* DateFormatter+DateStyle.swift */; };
 		E3F5F935274A72C000B8DF11 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5F934274A72C000B8DF11 /* AppDelegate.swift */; };
@@ -85,6 +86,7 @@
 		CEF7D84F27B8AC7B00C63D68 /* StoryboardInstantiable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardInstantiable.swift; sourceTree = "<group>"; };
 		E34E159427CE36EC00F53F2E /* String+ApplyTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+ApplyTag.swift"; sourceTree = "<group>"; };
 		E36A966E2799517700EC90C6 /* DefaultMoviesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultMoviesRepository.swift; sourceTree = "<group>"; };
+		E3E49BDA27DE325600B57B8D /* String+CalculateHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+CalculateHeight.swift"; sourceTree = "<group>"; };
 		E3F4889F27C8BB8E00F77C4B /* Array+Safe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Safe.swift"; sourceTree = "<group>"; };
 		E3F488A127C8BBDB00F77C4B /* DateFormatter+DateStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+DateStyle.swift"; sourceTree = "<group>"; };
 		E3F5F931274A72C000B8DF11 /* CleanYTBPTJ.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CleanYTBPTJ.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -395,6 +397,7 @@
 				E3F4889F27C8BB8E00F77C4B /* Array+Safe.swift */,
 				E3F488A127C8BBDB00F77C4B /* DateFormatter+DateStyle.swift */,
 				E34E159427CE36EC00F53F2E /* String+ApplyTag.swift */,
+				E3E49BDA27DE325600B57B8D /* String+CalculateHeight.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -773,6 +776,7 @@
 				CEF7D85027B8AC7B00C63D68 /* StoryboardInstantiable.swift in Sources */,
 				E3F5F935274A72C000B8DF11 /* AppDelegate.swift in Sources */,
 				E3F5F937274A72C000B8DF11 /* SceneDelegate.swift in Sources */,
+				E3E49BDB27DE325600B57B8D /* String+CalculateHeight.swift in Sources */,
 				E36A966F2799517700EC90C6 /* DefaultMoviesRepository.swift in Sources */,
 				E3F5F980274A82D000B8DF11 /* MovieListViewController.swift in Sources */,
 				E3F5FA9D2785A60100B8DF11 /* UIImageView+ImageSizeAfterAspectFit.swift in Sources */,
