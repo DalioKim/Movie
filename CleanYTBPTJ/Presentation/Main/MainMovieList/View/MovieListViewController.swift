@@ -46,9 +46,8 @@ class MovieListViewController: UIViewController {
         movieListView.dataSource = self
         view.addSubview(movieListView)
         movieListView.snp.makeConstraints {
-            $0.leading.trailing.top.bottom.equalToSuperview().inset(UIEdgeInsets(top: 10, left: 10, bottom: 50, right: 50))
+            $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5))
         }
-        
     }
     
     private func setupBehaviours() {
@@ -60,7 +59,6 @@ class MovieListViewController: UIViewController {
 // MARK: -  ViewModel 대리자 패턴
 
 extension MovieListViewController: MovieListViewModelDelegate {
-    
     func didLoadData() {
         print("모델 카운트: \(viewModel.movies.count)")
         movieListView.reloadData()
@@ -83,11 +81,7 @@ extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDat
     // MARK: - UICollectionViewDelegateFlowLayout
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: calculateHeightCell(item: indexPath.item, width: collectionView.frame.width) + 60)
-    }
-    
-    func calculateHeightCell(item : Int , width : CGFloat) -> CGFloat {
-        guard let itemHeight = viewModel.movies[safe: item]?.title.removeTag().calculateHeight(withConstrainedWidth: width) else { return 60 }
-        return itemHeight
+        let width = collectionView.frame.width
+        return MovieListItemCell.size(width: width, viewModel: viewModel.movies[safe: indexPath.item])
     }
 }

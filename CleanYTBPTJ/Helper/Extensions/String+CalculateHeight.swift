@@ -12,6 +12,6 @@ extension String {
     func calculateHeight(withConstrainedWidth width: CGFloat) -> CGFloat {
         let constraintRect = CGSize(width: width, height: .greatestFiniteMagnitude)
         let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16)], context: nil)
-        return ceil(boundingBox.height)
+        return boundingBox.height
     }
 }

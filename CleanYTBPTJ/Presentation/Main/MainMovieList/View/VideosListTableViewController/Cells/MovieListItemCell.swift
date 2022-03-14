@@ -4,7 +4,15 @@ import UIKit
 class MovieListItemCell: UICollectionViewCell {
     
     static let reuseIdentifier = String(describing: MovieListItemCell.self)
-    static let height = CGFloat(300)
+    
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.spacing = 10
+        stackView.distribution = .fillEqually
+        return stackView
+    }()
     
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
@@ -36,20 +44,18 @@ class MovieListItemCell: UICollectionViewCell {
     }
     
     func configure() {
-        self.contentView.addSubview(titleLabel)
-        self.contentView.addSubview(thumbnailImageView)
+        contentView.addSubview(stackView)
+        stackView.addArrangedSubview(titleLabel)
+        stackView.addArrangedSubview(thumbnailImageView)
         
+        stackView.snp.makeConstraints {
+            $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5))
+        }
         titleLabel.snp.makeConstraints {
-            $0.left.equalToSuperview().offset(200)
-            $0.right.equalToSuperview().offset(-10)
-            $0.top.equalToSuperview().offset(0)
-            $0.bottom.equalToSuperview().offset(0)
+            $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 5, left: 150, bottom: 5, right: 5))
         }
         thumbnailImageView.snp.makeConstraints {
-            $0.left.equalToSuperview().offset(10)
-            $0.right.equalToSuperview().offset(-170)
-            $0.top.equalToSuperview().offset(10)
-            $0.bottom.equalToSuperview().offset(-10)
+            $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 150))
         }
     }
     
@@ -66,5 +72,11 @@ class MovieListItemCell: UICollectionViewCell {
         thumbnailRepository?.fetchImage(with: thumbnailImagePath, width: width) { [weak self] in
             self?.thumbnailImageView.image = $0
         }
+    }
+    
+    static func size(width: CGFloat, viewModel: MovieListItemViewModel?) -> CGSize {
+        guard let viewModel = viewModel else { return CGSize(width: width, height: 60) }
+        let itemHeight = viewModel.title.removeTag().calculateHeight(withConstrainedWidth: width)
+        return CGSize(width: width, height: itemHeight + 60)
     }
 }
