@@ -1,6 +1,5 @@
 
 import Foundation
-import SwiftUI
 
 class MovieListItemCellModel {
     let _title: String
