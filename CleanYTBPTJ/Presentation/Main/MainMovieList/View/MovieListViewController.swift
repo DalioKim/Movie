@@ -11,9 +11,8 @@ class MovieListViewController: UIViewController {
     
     private let movieListView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = 0
         layout.scrollDirection = .vertical
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        layout.sectionInset = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
         let movieListView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         movieListView.register(MovieListItemCell.self, forCellWithReuseIdentifier: MovieListItemCell.reuseIdentifier)
         return movieListView
@@ -46,7 +45,7 @@ class MovieListViewController: UIViewController {
         movieListView.dataSource = self
         view.addSubview(movieListView)
         movieListView.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5))
+            $0.edges.equalToSuperview()
         }
     }
     

@@ -4,7 +4,7 @@ import UIKit
 
 struct MovieListViewModelActions {} // 추후 삭제 혹은 구현 예정
 
-enum MovieListItemViewModelLoading {
+enum MovieListItemCellModelLoading {
     case fullScreen
     case nextPage
 }
@@ -21,7 +21,7 @@ protocol MovieListViewModelInput {
 }
 
 protocol MovieListViewModelOutput {
-    var loading: MovieListItemViewModelLoading? { get }
+    var loading: MovieListItemCellModelLoading? { get }
     var isEmpty: Bool { get }
     var screenTitle: String { get }
     var emptyDataTitle: String { get }
@@ -30,7 +30,7 @@ protocol MovieListViewModelOutput {
 }
 
 protocol MovieListViewModel: MovieListViewModelInput, MovieListViewModelOutput {
-    var movies: [MovieListItemViewModel] { get set }
+    var movies: [MovieListItemCellModel] { get set }
 }
 
 final class DefaultMovieListViewModel: MovieListViewModel {
@@ -38,8 +38,8 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     private let searchMovieUseCase: SearchMovieUseCase
     private let actions: MovieListViewModelActions?
     
-    var loading: MovieListItemViewModelLoading?
-    var movies: [MovieListItemViewModel]
+    var loading: MovieListItemCellModelLoading?
+    var movies: [MovieListItemCellModel]
     weak var delegate: MovieListViewModelDelegate?
     
     var currentPage: Int = 0
@@ -66,7 +66,7 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     
     init(searchMovieUseCase: SearchMovieUseCase,
          actions: MovieListViewModelActions? = nil,
-         movies: [MovieListItemViewModel] = [MovieListItemViewModel]()) {
+         movies: [MovieListItemCellModel] = [MovieListItemCellModel]()) {
         print("DefaultMoviesListViewModel init")
         self.searchMovieUseCase = searchMovieUseCase
         self.actions = actions
@@ -79,7 +79,7 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     private func appendPage(_ moviesPage: MoviesPage) {
         printIfDebug("debug appendPage")
         movies = moviesPage.movies.map {
-            MovieListItemViewModel(movie: $0)
+            MovieListItemCellModel(movie: $0)
         }
     }
     
@@ -90,7 +90,7 @@ final class DefaultMovieListViewModel: MovieListViewModel {
         movies.removeAll()
     }
     
-    private func fetch(movieQuery: MovieQuery, loading: MovieListItemViewModelLoading) {
+    private func fetch(movieQuery: MovieQuery, loading: MovieListItemCellModelLoading) {
         moviesLoadTask = searchMovieUseCase.execute(
             requestValue: .init(query: movieQuery, page: nextPage),
             cached: appendPage,

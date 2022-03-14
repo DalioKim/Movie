@@ -6,11 +6,10 @@ class MovieListItemCell: UICollectionViewCell {
     static let reuseIdentifier = String(describing: MovieListItemCell.self)
     
     private lazy var stackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
+        let stackView = UIStackView(arrangedSubviews: [thumbnailImageView, titleLabel])
+        stackView.axis = .horizontal
         stackView.spacing = 10
-        stackView.distribution = .fillEqually
+        stackView.distribution = .fillProportionally
         return stackView
     }()
     
@@ -23,7 +22,7 @@ class MovieListItemCell: UICollectionViewCell {
     
     private let thumbnailImageView = UIImageView()
     
-    private weak var viewModel: MovieListItemViewModel?
+    private weak var viewModel: MovieListItemCellModel?
     private var thumbnailRepository: ThumbnailRepository?
     
     override init(frame: CGRect) {
@@ -45,25 +44,16 @@ class MovieListItemCell: UICollectionViewCell {
     
     func configure() {
         contentView.addSubview(stackView)
-        stackView.addArrangedSubview(titleLabel)
-        stackView.addArrangedSubview(thumbnailImageView)
-        
         stackView.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5))
-        }
-        titleLabel.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 5, left: 150, bottom: 5, right: 5))
-        }
-        thumbnailImageView.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 150))
+            $0.edges.equalToSuperview()
         }
     }
     
-    func bind(with viewModel: MovieListItemViewModel?, thumbnailRepository: ThumbnailRepository?) {
+    func bind(with viewModel: MovieListItemCellModel?, thumbnailRepository: ThumbnailRepository?) {
         guard let viewModel = viewModel else { return }
         self.viewModel = viewModel
         self.thumbnailRepository = thumbnailRepository
-        titleLabel.attributedText = viewModel.title.applyTag()
+        titleLabel.attributedText = viewModel.atttributedTitle
         updateThumbnailImage(width: 200)
     }
     
@@ -74,9 +64,9 @@ class MovieListItemCell: UICollectionViewCell {
         }
     }
     
-    static func size(width: CGFloat, viewModel: MovieListItemViewModel?) -> CGSize {
-        guard let viewModel = viewModel else { return CGSize(width: width, height: 60) }
-        let itemHeight = viewModel.title.removeTag().calculateHeight(withConstrainedWidth: width)
-        return CGSize(width: width, height: itemHeight + 60)
+    static func size(width: CGFloat, viewModel: MovieListItemCellModel?) -> CGSize {
+        guard let viewModel = viewModel else { return CGSize(width: 0, height: 0) }
+        let itemHeight = CalculateString.calculateHeight(width: width, title: viewModel.title, font: UIFont.systemFont(ofSize: 16)) + 40
+        return CGSize(width: width - 40, height: itemHeight)
     }
 }
