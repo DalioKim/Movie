@@ -4,13 +4,9 @@ import UIKit
 
 struct MovieListViewModelActions {} // 추후 삭제 혹은 구현 예정
 
-enum MovieListItemCellModelLoading {
-    case fullScreen
-    case nextPage
-}
 
 protocol MovieListViewModelDelegate: AnyObject {
-    func didLoadData()
+    func updateItems()
 }
 
 protocol MovieListViewModelInput {
@@ -21,7 +17,6 @@ protocol MovieListViewModelInput {
 }
 
 protocol MovieListViewModelOutput {
-    var loading: MovieListItemCellModelLoading? { get }
     var isEmpty: Bool { get }
     var screenTitle: String { get }
     var emptyDataTitle: String { get }
@@ -38,7 +33,6 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     private let searchMovieUseCase: SearchMovieUseCase
     private let actions: MovieListViewModelActions?
     
-    var loading: MovieListItemCellModelLoading?
     var movies: [MovieListItemCellModel]
     weak var delegate: MovieListViewModelDelegate?
     
@@ -71,7 +65,7 @@ final class DefaultMovieListViewModel: MovieListViewModel {
         self.searchMovieUseCase = searchMovieUseCase
         self.actions = actions
         self.movies = movies
-        fetch(movieQuery: MovieQuery(query: "default"), loading: .fullScreen)
+        fetch(movieQuery: MovieQuery(query: "default"))
     }
     
     // MARK: - Private
@@ -90,7 +84,7 @@ final class DefaultMovieListViewModel: MovieListViewModel {
         movies.removeAll()
     }
     
-    private func fetch(movieQuery: MovieQuery, loading: MovieListItemCellModelLoading) {
+    private func fetch(movieQuery: MovieQuery) {
         moviesLoadTask = searchMovieUseCase.execute(
             requestValue: .init(query: movieQuery, page: nextPage),
             cached: appendPage,
@@ -103,7 +97,7 @@ final class DefaultMovieListViewModel: MovieListViewModel {
                     break
                 }
                 self.moviesLoadTask = nil
-                self.delegate?.didLoadData()
+                self.delegate?.updateItems()
             })
     }
 }
@@ -115,11 +109,11 @@ extension DefaultMovieListViewModel {
     func refresh(query: String) {
         guard !query.isEmpty else { return }
         resetPages()
-        fetch(movieQuery: MovieQuery(query: query), loading: .fullScreen)
+        fetch(movieQuery: MovieQuery(query: query))
     }
     
     func loadMore() {
-        fetch(movieQuery: MovieQuery(query: "default"), loading: .nextPage) //쿼리 저장방식 추가예정
+        fetch(movieQuery: MovieQuery(query: "default")) //쿼리 저장방식 추가예정
     }
     
     func didCancelSearch() {

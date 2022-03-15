@@ -53,7 +53,7 @@ class MovieListItemCell: UICollectionViewCell {
         guard let viewModel = viewModel else { return }
         self.viewModel = viewModel
         self.thumbnailRepository = thumbnailRepository
-        titleLabel.attributedText = viewModel.atttributedTitle
+        titleLabel.attributedText = viewModel.title.applyTag()
         updateThumbnailImage(width: 200)
     }
     
@@ -64,9 +64,8 @@ class MovieListItemCell: UICollectionViewCell {
         }
     }
     
-    static func size(width: CGFloat, viewModel: MovieListItemCellModel?) -> CGSize {
-        guard let viewModel = viewModel else { return CGSize(width: 0, height: 0) }
-        let itemHeight = CalculateString.calculateHeight(width: width, title: viewModel.title, font: UIFont.systemFont(ofSize: 16)) + 40
+    static func size(width: CGFloat, title: String) -> CGSize {
+        let itemHeight = CalculateString.calculateHeight(width: width, title: title.removeTag(), font: UIFont.systemFont(ofSize: 16)) + 40
         return CGSize(width: width - 40, height: itemHeight)
     }
 }

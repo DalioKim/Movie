@@ -58,7 +58,7 @@ class MovieListViewController: UIViewController {
 // MARK: -  ViewModel 대리자 패턴
 
 extension MovieListViewController: MovieListViewModelDelegate {
-    func didLoadData() {
+    func updateItems() {
         print("모델 카운트: \(viewModel.movies.count)")
         movieListView.reloadData()
     }
@@ -81,6 +81,7 @@ extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDat
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width
-        return MovieListItemCell.size(width: width, viewModel: viewModel.movies[safe: indexPath.item])
+        guard let title = viewModel.movies[safe: indexPath.item]?.title else { return CGSize(width: 0, height: 0) }
+        return MovieListItemCell.size(width: width, title: title)
     }
 }
