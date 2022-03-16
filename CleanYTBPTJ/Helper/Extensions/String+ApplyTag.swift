@@ -76,4 +76,10 @@ extension String {
         let tagInfo = ["wordRange": wordRange, "replaceTag": replaceTag, "attributes": attributes] as [String: Any]
         return tagInfo
     }
+    
+    func removeTag() -> String {
+        let tagRegex = "(<|</)[a-z0-9]*>+"
+        guard let tagInfo = searchTag(), let replaceTag = tagInfo["replaceTag"] as? String else { return self }
+        return self.replacingOccurrences(of: tagRegex, with: replaceTag, options: .regularExpression)
+    }
 }

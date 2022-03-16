@@ -1,70 +1,82 @@
 
 import UIKit
 
-class MovieListItemCell: UITableViewCell {
+class MovieListItemCell: UICollectionViewCell {
     
-    static let reuseIdentifier = String(describing: MovieListItemCell.self)
-    static let height = CGFloat(300)
+    // MARK: - nested type
     
-    private lazy var titleLabel: UILabel = {
-        let titleLabel = UILabel()
-        titleLabel.numberOfLines = -1
-        titleLabel.textAlignment = .center
-        return titleLabel
-    }()
-
-    private let thumbnailImageView = UIImageView()
-    
-    private weak var viewModel: MovieListItemViewModel?
-    private var thumbnailRepository: ThumbnailRepository?
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.configure()
+    enum Font {
+        static let titleFont = UIFont.systemFont(ofSize: 16)
+    }
+    enum Size {
+        static let defaultHeight: CGFloat = 60
+        static let thumbnailDefaultWidth: Int = 200
+        static let horizontalPadding: CGFloat = 20
+        static let verticalPadding: CGFloat = 0
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    static let reuseIdentifier = String(describing: MovieListItemCell.self)
+    
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [thumbnailImageView, titleLabel])
+        stackView.axis = .horizontal
+        stackView.spacing = 10
+        stackView.distribution = .fillProportionally
+        stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.layoutMargins = UIEdgeInsets(top: Size.verticalPadding, left: Size.horizontalPadding, bottom: Size.verticalPadding, right: Size.horizontalPadding)
+        return stackView
+    }()
+    private let titleLabel: UILabel = {
+        let titleLabel = UILabel()
+        titleLabel.numberOfLines = 2
+        titleLabel.textAlignment = .center
+        titleLabel.font = Font.titleFont
+        titleLabel.lineBreakMode = .byTruncatingTail
+        return titleLabel
+    }()
+    private let thumbnailImageView = UIImageView()
+    
+    private weak var viewModel: MovieListItemCellModel?
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupViews()
+    }
+    
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
         viewModel = nil
-        thumbnailRepository = nil
         thumbnailImageView.image = nil
         titleLabel.attributedText = nil
     }
     
-    func configure() {
-        self.contentView.addSubview(titleLabel)
-        self.contentView.addSubview(thumbnailImageView)
-        
-        titleLabel.snp.makeConstraints {
-            $0.left.equalToSuperview().offset(200)
-            $0.right.equalToSuperview().offset(-10)
-            $0.top.equalToSuperview().offset(0)
-            $0.bottom.equalToSuperview().offset(0)
-        }
-        thumbnailImageView.snp.makeConstraints {
-            $0.left.equalToSuperview().offset(10)
-            $0.right.equalToSuperview().offset(-170)
-            $0.top.equalToSuperview().offset(10)
-            $0.bottom.equalToSuperview().offset(-10)
+    func setupViews() {
+        contentView.addSubview(stackView)
+        stackView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
     
-    func bind(with viewModel: MovieListItemViewModel?, thumbnailRepository: ThumbnailRepository?) {
-        guard let viewModel = viewModel else { return }
-        self.viewModel = viewModel
-        self.thumbnailRepository = thumbnailRepository
-        titleLabel.attributedText = viewModel.title.applyTag()
-        updateThumbnailImage(width: 200)
+    func bind(with model: MovieListItemCellModel?) {
+        guard let model = model else { return }
+        self.viewModel = model
+        titleLabel.attributedText = model.title.applyTag()
+        updateThumbnailImage(width: Size.thumbnailDefaultWidth)
     }
     
     private func updateThumbnailImage(width: Int) {
         guard let thumbnailImagePath = viewModel?.thumbnailImagePath else { return }
-        thumbnailRepository?.fetchImage(with: thumbnailImagePath, width: width) { [weak self] in
+        DefaultThumbnailRepository.fetchImage(with: thumbnailImagePath, width: width) { [weak self] in
             self?.thumbnailImageView.image = $0
         }
+    }
+    
+    static func size(width: CGFloat, model: MovieListItemCellModel) -> CGSize {
+        let itemHeight = CalculateString.calculateHeight(width: width, title: model.title.removeTag(), font: Font.titleFont) + Size.defaultHeight
+        return CGSize(width: width, height: itemHeight)
     }
 }
