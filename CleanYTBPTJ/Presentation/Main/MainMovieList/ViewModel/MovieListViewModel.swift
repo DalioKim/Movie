@@ -4,7 +4,6 @@ import UIKit
 
 struct MovieListViewModelActions {} // 추후 삭제 혹은 구현 예정
 
-
 protocol MovieListViewModelDelegate: AnyObject {
     func updateItems()
 }
@@ -105,7 +104,6 @@ final class DefaultMovieListViewModel: MovieListViewModel {
 // MARK: - INPUT. View event methods
 
 extension DefaultMovieListViewModel {
-    
     func refresh(query: String) {
         guard !query.isEmpty else { return }
         resetPages()

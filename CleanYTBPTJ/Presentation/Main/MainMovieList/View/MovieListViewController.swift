@@ -19,12 +19,10 @@ class MovieListViewController: UIViewController {
     }()
     
     private var viewModel: MovieListViewModel!
-    private var thumbnailRepository: ThumbnailRepository?
     
-    static func create(with viewModel: MovieListViewModel, thumbnailRepository: ThumbnailRepository) -> MovieListViewController {
+    static func create(with viewModel: MovieListViewModel) -> MovieListViewController {
         let view = MovieListViewController()
         view.viewModel = viewModel
-        view.thumbnailRepository = thumbnailRepository
         return view
     }
     
@@ -73,7 +71,7 @@ extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDat
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieListItemCell.reuseIdentifier, for: indexPath) as? MovieListItemCell else { fatalError() }
-        cell.bind(with: viewModel.movies[safe: indexPath.item], thumbnailRepository: thumbnailRepository)
+        cell.bind(with: viewModel.movies[safe: indexPath.item])
         return cell
     }
     
@@ -81,7 +79,7 @@ extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDat
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width
-        guard let title = viewModel.movies[safe: indexPath.item]?.title else { return CGSize(width: 0, height: 0) }
-        return MovieListItemCell.size(width: width, title: title)
+        guard let model = viewModel.movies[safe: indexPath.item] else { return .zero }
+        return MovieListItemCell.size(width: width, model: model)
     }
 }
