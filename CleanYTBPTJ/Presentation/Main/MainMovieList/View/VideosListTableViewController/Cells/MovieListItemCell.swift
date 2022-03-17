@@ -1,5 +1,6 @@
 
 import UIKit
+import Kingfisher
 
 class MovieListItemCell: UICollectionViewCell {
     
@@ -65,13 +66,24 @@ class MovieListItemCell: UICollectionViewCell {
         guard let model = model else { return }
         self.viewModel = model
         titleLabel.attributedText = model.title.applyTag()
-        updateThumbnailImage(width: Size.thumbnailDefaultWidth)
+        updateThumbnailImage()
     }
     
-    private func updateThumbnailImage(width: Int) {
+    private func updateThumbnailImage() {
         guard let thumbnailImagePath = viewModel?.thumbnailImagePath else { return }
-        DefaultThumbnailRepository.fetchImage(with: thumbnailImagePath, width: width) { [weak self] in
-            self?.thumbnailImageView.image = $0
+        let cache = ImageCache.default
+        cache.retrieveImage(forKey: thumbnailImagePath, options: nil) { [weak self] result in
+            switch result {
+            case .success(let value):
+                if let image = value.image {
+                    self?.thumbnailImageView.image = image
+                } else {
+                    guard let imageURL = URL(string: thumbnailImagePath) else { return }
+                    self?.thumbnailImageView.kf.setImage(with: imageURL)
+                }
+            case .failure(let error):
+                print(error)
+            }
         }
     }
     

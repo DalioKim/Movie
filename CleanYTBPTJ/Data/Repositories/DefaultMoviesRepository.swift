@@ -11,10 +11,7 @@ final class DefaultMoviesRepository {
 }
 
 extension DefaultMoviesRepository: MoviesRepository {
-    func fetchMovieList(query: MovieQuery, page: Int, cached: @escaping (MoviesPage) -> Void,
-                        completion: @escaping (Result<MoviesPage, Error>) -> Void) -> CancelDelegate? {
-        
-        printIfDebug("networkTask - fetchMovieList")
+    func fetchMovieList(query: MovieQuery, page: Int, completion: @escaping (Result<[MovieListItemCellModel], Error>) -> Void) -> CancelDelegate? {
         let requestDTO = MovieRequestDTO(query: "마블")
         let task = RepositoryTask()
         let endpoint = APIEndpoints.getMovies(with: requestDTO)
@@ -23,7 +20,8 @@ extension DefaultMoviesRepository: MoviesRepository {
             switch result {
             case .success(let responseDTO):
                 printIfDebug("networkTask - fetchMovieList-success")
-                completion(.success(responseDTO.toDomain()))
+                let models = responseDTO.toDomain().movies.map { MovieListItemCellModel(movie: $0) }
+                completion(.success(models))
             case .failure(let error):
                 printIfDebug("networkTask - fetchMovieList-success")
                 completion(.failure(error))
