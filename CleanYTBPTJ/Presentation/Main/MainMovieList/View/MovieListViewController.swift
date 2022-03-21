@@ -18,12 +18,14 @@ class MovieListViewController: UIViewController {
         return movieListView
     }()
     
-    private var viewModel: MovieListViewModel!
+    private var viewModel: MovieListViewModel
     
-    static func create(with viewModel: MovieListViewModel) -> MovieListViewController {
-        let view = MovieListViewController()
-        view.viewModel = viewModel
-        return view
+    init(viewModel: MovieListViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {
