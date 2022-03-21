@@ -67,7 +67,7 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     }
     
     // MARK: - Private
-
+    
     private func resetPages() {
         currentPage = 0
         totalPageCount = 1
@@ -82,6 +82,7 @@ final class DefaultMovieListViewModel: MovieListViewModel {
                 switch result {
                 case .success(let models):
                     models.forEach { self.movies.append($0) }
+                    self.totalPageCount = self.movies.count / 10 //임시 페이지 계산방법
                 case .failure:
                     break
                 }
