@@ -23,12 +23,6 @@ final class MovieSceneDIContainer: MovieSearchFlowCoordinatorDependencies {
         return DefaultSearchMovieUseCase(moviesRepository: makeMoviesRepository())
     }
     
-    // MARK: - Repositories
-    func makeThumbnailRepository() -> ThumbnailRepository {
-        debugPrint("makeThumbnailRepository")
-        return DefaultThumbnailRepository(dataTransferService: dependencies.apiDataTransferService)
-    }
-    
     func makeMoviesRepository() -> MoviesRepository {
         debugPrint("makeMovieRepository")
         return DefaultMoviesRepository(dataTransferService: dependencies.apiDataTransferService)
@@ -38,7 +32,7 @@ final class MovieSceneDIContainer: MovieSearchFlowCoordinatorDependencies {
 
     func makeMovieListViewController(actions: MovieListViewModelActions) -> MovieListViewController {
         debugPrint("MovieSceneDIContainer makeMovieListViewController")
-        return MovieListViewController(viewModel: makeMovieListViewModel(actions: actions), thumbnailRepository: makeThumbnailRepository())
+        return MovieListViewController.create(with: makeMovieListViewModel(actions: actions))
     }
     
     func makeMovieListViewModel(actions: MovieListViewModelActions) -> MovieListViewModel {

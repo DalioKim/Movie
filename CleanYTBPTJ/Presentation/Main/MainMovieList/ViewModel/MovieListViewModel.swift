@@ -4,13 +4,8 @@ import UIKit
 
 struct MovieListViewModelActions {} // 추후 삭제 혹은 구현 예정
 
-enum MovieListItemViewModelLoading {
-    case fullScreen
-    case nextPage
-}
-
 protocol MovieListViewModelDelegate: AnyObject {
-    func didLoadData()
+    func updateItems()
 }
 
 protocol MovieListViewModelInput {
@@ -21,7 +16,6 @@ protocol MovieListViewModelInput {
 }
 
 protocol MovieListViewModelOutput {
-    var loading: MovieListItemViewModelLoading? { get }
     var isEmpty: Bool { get }
     var screenTitle: String { get }
     var emptyDataTitle: String { get }
@@ -30,7 +24,7 @@ protocol MovieListViewModelOutput {
 }
 
 protocol MovieListViewModel: MovieListViewModelInput, MovieListViewModelOutput {
-    var movies: [MovieListItemViewModel] { get set }
+    var movies: [MovieListItemCellModel] { get set }
 }
 
 final class DefaultMovieListViewModel: MovieListViewModel {
@@ -38,8 +32,7 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     private let searchMovieUseCase: SearchMovieUseCase
     private let actions: MovieListViewModelActions?
     
-    var loading: MovieListItemViewModelLoading?
-    var movies: [MovieListItemViewModel]
+    var movies: [MovieListItemCellModel]
     weak var delegate: MovieListViewModelDelegate?
     
     var currentPage: Int = 0
@@ -66,12 +59,12 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     
     init(searchMovieUseCase: SearchMovieUseCase,
          actions: MovieListViewModelActions? = nil,
-         movies: [MovieListItemViewModel] = [MovieListItemViewModel]()) {
+         movies: [MovieListItemCellModel] = [MovieListItemCellModel]()) {
         print("DefaultMoviesListViewModel init")
         self.searchMovieUseCase = searchMovieUseCase
         self.actions = actions
         self.movies = movies
-        fetch(movieQuery: MovieQuery(query: "default"), loading: .fullScreen)
+        fetch(movieQuery: MovieQuery(query: "default"))
     }
     
     // MARK: - Private
@@ -79,7 +72,7 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     private func appendPage(_ moviesPage: MoviesPage) {
         printIfDebug("debug appendPage")
         movies = moviesPage.movies.map {
-            MovieListItemViewModel(movie: $0)
+            MovieListItemCellModel(movie: $0)
         }
     }
     
@@ -90,7 +83,7 @@ final class DefaultMovieListViewModel: MovieListViewModel {
         movies.removeAll()
     }
     
-    private func fetch(movieQuery: MovieQuery, loading: MovieListItemViewModelLoading) {
+    private func fetch(movieQuery: MovieQuery) {
         moviesLoadTask = searchMovieUseCase.execute(
             requestValue: .init(query: movieQuery, page: nextPage),
             cached: appendPage,
@@ -103,7 +96,7 @@ final class DefaultMovieListViewModel: MovieListViewModel {
                     break
                 }
                 self.moviesLoadTask = nil
-                self.delegate?.didLoadData()
+                self.delegate?.updateItems()
             })
     }
 }
@@ -111,15 +104,14 @@ final class DefaultMovieListViewModel: MovieListViewModel {
 // MARK: - INPUT. View event methods
 
 extension DefaultMovieListViewModel {
-    
     func refresh(query: String) {
         guard !query.isEmpty else { return }
         resetPages()
-        fetch(movieQuery: MovieQuery(query: query), loading: .fullScreen)
+        fetch(movieQuery: MovieQuery(query: query))
     }
     
     func loadMore() {
-        fetch(movieQuery: MovieQuery(query: "default"), loading: .nextPage) //쿼리 저장방식 추가예정
+        fetch(movieQuery: MovieQuery(query: "default")) //쿼리 저장방식 추가예정
     }
     
     func didCancelSearch() {

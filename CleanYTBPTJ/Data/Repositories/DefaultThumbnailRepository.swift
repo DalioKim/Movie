@@ -13,17 +13,11 @@ final class DefaultThumbnailRepository {
 }
 
 extension DefaultThumbnailRepository: ThumbnailRepository {
-    
-    func fetchImage(with imagePath: String, width: Int, completion: @escaping (UIImage?) -> ()) {
-        
-        printIfDebug("fetchImage imagePath : \(imagePath)")
+    static func fetchImage(with imagePath: String, width: Int, completion: @escaping (UIImage?) -> ()) {
         guard let imageURL = URL(string: imagePath) else { return }
-        
         DispatchQueue.global(qos: .background).async {
             if let data = try? Data(contentsOf: imageURL) {
-                printIfDebug("fetchImage data : \(data)")
                 let image = UIImage(data: data)!
-                printIfDebug("fetchImage image : \(image)")
                 DispatchQueue.main.async { completion(image) }
             } else {
                 DispatchQueue.main.async { completion(nil) }
