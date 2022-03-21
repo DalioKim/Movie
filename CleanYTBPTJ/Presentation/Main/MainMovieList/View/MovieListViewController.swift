@@ -20,7 +20,7 @@ class MovieListViewController: UIViewController {
     
     private var viewModel: MovieListViewModel
     
-    init(viewModel: MovieListViewModel, thumbnailRepository: ThumbnailRepository) {
+    init(viewModel: MovieListViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }

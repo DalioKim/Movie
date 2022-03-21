@@ -32,7 +32,7 @@ final class MovieSceneDIContainer: MovieSearchFlowCoordinatorDependencies {
 
     func makeMovieListViewController(actions: MovieListViewModelActions) -> MovieListViewController {
         debugPrint("MovieSceneDIContainer makeMovieListViewController")
-        return MovieListViewController.create(with: makeMovieListViewModel(actions: actions))
+        return MovieListViewController(viewModel: makeMovieListViewModel(actions: actions))
     }
     
     func makeMovieListViewModel(actions: MovieListViewModelActions) -> MovieListViewModel {
