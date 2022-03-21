@@ -34,8 +34,15 @@ class MovieListItemCell: UICollectionViewCell {
         titleLabel.lineBreakMode = .byTruncatingTail
         return titleLabel
     }()
-    private let thumbnailImageView = UIImageView()
-    
+    private let thumbnailImageView: UIImageView = {
+        let thumbnailImageView = UIImageView()
+        thumbnailImageView.setContentHuggingPriority(.required, for: .horizontal)
+        thumbnailImageView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        thumbnailImageView.snp.makeConstraints {
+            $0.width.equalTo(100)
+        }
+        return thumbnailImageView
+    }()
     private weak var viewModel: MovieListItemCellModel?
     
     override init(frame: CGRect) {
