@@ -9,7 +9,7 @@ final class MovieSceneDIContainer: MovieSearchFlowCoordinatorDependencies {
     }
     
     private let dependencies: Dependencies
-
+    
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
         printIfDebug("MovieSceneDIContainer init")
@@ -22,23 +22,17 @@ final class MovieSceneDIContainer: MovieSearchFlowCoordinatorDependencies {
         debugPrint("makeSearchMovieUseCase")
         return DefaultSearchMovieUseCase(moviesRepository: makeMoviesRepository())
     }
-
-    // MARK: - Repositories
-    func makeThumbnailRepository() -> ThumbnailRepository {
-        debugPrint("makeThumbnailRepository")
-        return DefaultThumbnailRepository(dataTransferService: dependencies.apiDataTransferService)
-    }
-
+    
     func makeMoviesRepository() -> MoviesRepository {
         debugPrint("makeMovieRepository")
         return DefaultMoviesRepository(dataTransferService: dependencies.apiDataTransferService)
     }
-
+    
     // MARK: - Movie List
-    @discardableResult
+
     func makeMovieListViewController(actions: MovieListViewModelActions) -> MovieListViewController {
         debugPrint("MovieSceneDIContainer makeMovieListViewController")
-        return MovieListViewController.create(with: makeMovieListViewModel(actions: actions), thumbnailRepository: makeThumbnailRepository())
+        return MovieListViewController(viewModel: makeMovieListViewModel(actions: actions))
     }
     
     func makeMovieListViewModel(actions: MovieListViewModelActions) -> MovieListViewModel {
