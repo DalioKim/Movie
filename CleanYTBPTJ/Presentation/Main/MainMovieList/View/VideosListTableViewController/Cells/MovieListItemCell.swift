@@ -24,6 +24,8 @@ class MovieListItemCell: UICollectionViewCell {
         stackView.distribution = .fillProportionally
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.layoutMargins = UIEdgeInsets(top: Size.verticalPadding, left: Size.horizontalPadding, bottom: Size.verticalPadding, right: Size.horizontalPadding)
+        thumbnailImageView.widthAnchor.constraint(equalTo: stackView.widthAnchor, multiplier: 0.3).isActive = true
+        
         return stackView
     }()
     private let titleLabel: UILabel = {
@@ -34,15 +36,8 @@ class MovieListItemCell: UICollectionViewCell {
         titleLabel.lineBreakMode = .byTruncatingTail
         return titleLabel
     }()
-    private let thumbnailImageView: UIImageView = {
-        let thumbnailImageView = UIImageView()
-        thumbnailImageView.setContentHuggingPriority(.required, for: .horizontal)
-        thumbnailImageView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        thumbnailImageView.snp.makeConstraints {
-            $0.width.equalTo(100)
-        }
-        return thumbnailImageView
-    }()
+    private let thumbnailImageView = UIImageView()
+    
     private weak var viewModel: MovieListItemCellModel?
     
     override init(frame: CGRect) {
