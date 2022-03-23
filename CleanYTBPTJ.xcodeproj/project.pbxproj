@@ -433,6 +433,7 @@
 				E3F5FAEB2785C7EC00B8DF11 /* NetworkService.swift */,
 				E3F5FAF02785C85000B8DF11 /* Endpoint.swift */,
 				E3F5FAF52785C87E00B8DF11 /* NetworkConfigurable.swift */,
+				E346D28A27EB8B3400788494 /* ThumbnailAPI.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -764,6 +765,7 @@
 				E3F5FB7627872F3000B8DF11 /* MovieSearchFlowCoordinator.swift in Sources */,
 				E3F5FB982787E63200B8DF11 /* BackButtonEmptyTitleNavigationBarBehavior.swift in Sources */,
 				E3F5FA502784327500B8DF11 /* ConnectionError.swift in Sources */,
+				E346D28B27EB8B3400788494 /* ThumbnailAPI.swift in Sources */,
 				E3F5FAF12785C85000B8DF11 /* Endpoint.swift in Sources */,
 				E3F5FB0F2785CBB000B8DF11 /* CoreDataStorage.swift in Sources */,
 				E3F5FB182785CC8500B8DF11 /* RepositoryTask.swift in Sources */,
