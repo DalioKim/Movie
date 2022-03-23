@@ -9,10 +9,10 @@ class MovieListItemCell: UICollectionViewCell {
         static let titleFont = UIFont.systemFont(ofSize: 16)
     }
     enum Size {
-        static let defaultHeight: CGFloat = 60
+        static let imageHeight: CGFloat = 60
         static let thumbnailDefaultWidth: Int = 200
         static let horizontalPadding: CGFloat = 20
-        static let verticalPadding: CGFloat = 0
+        static let verticalPadding: CGFloat = 10
     }
     
     static let reuseIdentifier = String(describing: MovieListItemCell.self)
@@ -21,12 +21,14 @@ class MovieListItemCell: UICollectionViewCell {
         let stackView = UIStackView(arrangedSubviews: [thumbnailImageView, titleLabel])
         stackView.axis = .horizontal
         stackView.spacing = 10
-        stackView.distribution = .fillProportionally
+        stackView.alignment = .center
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.layoutMargins = UIEdgeInsets(top: Size.verticalPadding, left: Size.horizontalPadding, bottom: Size.verticalPadding, right: Size.horizontalPadding)
+        
         thumbnailImageView.snp.makeConstraints {
-            $0.width.equalTo(100)
+            $0.height.equalTo(Size.imageHeight)
         }
+        
         return stackView
     }()
     private let titleLabel: UILabel = {
@@ -80,7 +82,7 @@ class MovieListItemCell: UICollectionViewCell {
     
     static func size(width: CGFloat, model: MovieListItemCellModel) -> CGSize {
         let titleHeight = CalculateString.calculateHeight(width: 80, title: model.title.removeTag(), font: Font.titleFont)
-        let itemHeight = max(Size.defaultHeight, titleHeight) + 20
+        let itemHeight = max(Size.imageHeight, titleHeight) + (Size.verticalPadding * 2)
         return CGSize(width: width, height: itemHeight)
     }
 }
