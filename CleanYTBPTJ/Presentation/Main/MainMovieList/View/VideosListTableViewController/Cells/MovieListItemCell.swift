@@ -24,6 +24,9 @@ class MovieListItemCell: UICollectionViewCell {
         stackView.distribution = .fillProportionally
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.layoutMargins = UIEdgeInsets(top: Size.verticalPadding, left: Size.horizontalPadding, bottom: Size.verticalPadding, right: Size.horizontalPadding)
+        thumbnailImageView.snp.makeConstraints {
+            $0.width.equalTo(100)
+        }
         return stackView
     }()
     private let titleLabel: UILabel = {
