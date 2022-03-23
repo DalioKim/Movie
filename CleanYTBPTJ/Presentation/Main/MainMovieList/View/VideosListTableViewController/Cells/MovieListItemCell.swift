@@ -76,7 +76,8 @@ class MovieListItemCell: UICollectionViewCell {
     }
     
     static func size(width: CGFloat, model: MovieListItemCellModel) -> CGSize {
-        let itemHeight = CalculateString.calculateHeight(width: width, title: model.title.removeTag(), font: Font.titleFont) + Size.defaultHeight
+        let titleHeight = CalculateString.calculateHeight(width: 80, title: model.title.removeTag(), font: Font.titleFont)
+        let itemHeight = max(Size.defaultHeight, titleHeight) + 20
         return CGSize(width: width, height: itemHeight)
     }
 }
