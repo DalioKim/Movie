@@ -55,6 +55,7 @@
 		E3F5FC012789BA7500B8DF11 /* MovieResponseDTO+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5FC002789BA7500B8DF11 /* MovieResponseDTO+Mapping.swift */; };
 		E3F5FC0C2789C93A00B8DF11 /* MovieListItemCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5FC0B2789C93A00B8DF11 /* MovieListItemCellModel.swift */; };
 		E3F5FC1B278AED8E00B8DF11 /* DefaultThumbnailRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5FC1A278AED8E00B8DF11 /* DefaultThumbnailRepository.swift */; };
+		E3F7C80E27EAE46C000DEDD7 /* CalculateHeightTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F7C80D27EAE46C000DEDD7 /* CalculateHeightTest.swift */; };
 		EF97A2862AC649BFEADA1707 /* Pods_CleanYTBPTJ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C2111432D82A4E88FECA85E /* Pods_CleanYTBPTJ.framework */; };
 /* End PBXBuildFile section */
 
@@ -136,6 +137,7 @@
 		E3F5FC002789BA7500B8DF11 /* MovieResponseDTO+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MovieResponseDTO+Mapping.swift"; sourceTree = "<group>"; };
 		E3F5FC0B2789C93A00B8DF11 /* MovieListItemCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListItemCellModel.swift; sourceTree = "<group>"; };
 		E3F5FC1A278AED8E00B8DF11 /* DefaultThumbnailRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultThumbnailRepository.swift; sourceTree = "<group>"; };
+		E3F7C80D27EAE46C000DEDD7 /* CalculateHeightTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculateHeightTest.swift; sourceTree = "<group>"; };
 		EBDAACE014EAFC6D4BE836D5 /* Pods_CleanYTBPTJTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CleanYTBPTJTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -242,6 +244,7 @@
 			isa = PBXGroup;
 			children = (
 				E3F5F94B274A72C400B8DF11 /* CleanYTBPTJTests.swift */,
+				E3F7C80D27EAE46C000DEDD7 /* CalculateHeightTest.swift */,
 				E3F5F94D274A72C400B8DF11 /* Info.plist */,
 			);
 			path = CleanYTBPTJTests;
@@ -801,6 +804,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E3F5F94C274A72C400B8DF11 /* CleanYTBPTJTests.swift in Sources */,
+				E3F7C80E27EAE46C000DEDD7 /* CalculateHeightTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
