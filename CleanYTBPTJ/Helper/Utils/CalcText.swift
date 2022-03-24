@@ -15,7 +15,7 @@ class CalcText {
         ])
         return height(attributedText: attributedText, numberOfLines: numberOfLines, width: width)
     }
-
+    
     static func height(attributedText: NSAttributedString, numberOfLines: Int, width: CGFloat) -> CGFloat {
         let size = CGSize(width: width, height: .greatestFiniteMagnitude)
         if attributedText.string.isEmpty {
@@ -26,7 +26,7 @@ class CalcText {
         let paragraphStyle = (style.mutableCopy() as? NSMutableParagraphStyle) ?? NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = paragraphStyle.lineBreakMode == .byCharWrapping ? .byCharWrapping : .byWordWrapping
         attributedText.addAttributes([.paragraphStyle: paragraphStyle], range: NSRange(location: 0, length: attributedText.length))
-
+        
         let boundingSize = attributedText.boundingRect(with: size, options: [.usesFontLeading, .usesLineFragmentOrigin], context: nil)
         if numberOfLines == 0 {
             return boundingSize.height
@@ -42,5 +42,13 @@ class CalcText {
             return min(lineHeight * CGFloat(lineCount), boundingSize.height)
         }
         return boundingSize.height
+    }
+    
+    static func height(attributedText: NSAttributedString, lineBreakMode: NSLineBreakMode, numberOfLines: Int, width: CGFloat) -> CGFloat {
+        let label = UILabel()
+        label.lineBreakMode = lineBreakMode
+        label.numberOfLines = numberOfLines
+        label.attributedText = attributedText
+        return label.systemLayoutSizeFitting(CGSize(width: width, height: UIView.layoutFittingCompressedSize.height), withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel).height
     }
 }

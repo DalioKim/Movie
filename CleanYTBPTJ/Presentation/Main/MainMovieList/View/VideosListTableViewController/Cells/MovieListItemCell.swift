@@ -5,8 +5,9 @@ class MovieListItemCell: UICollectionViewCell {
     
     // MARK: - nested type
     
-    enum Font {
-        static let titleFont = UIFont.systemFont(ofSize: 16)
+    enum Style {
+        static let font = UIFont.systemFont(ofSize: 16)
+        static let lines = 10
     }
     enum Size {
         static let imageWidth: CGFloat = 40
@@ -33,9 +34,9 @@ class MovieListItemCell: UICollectionViewCell {
     }()
     private let titleLabel: UILabel = {
         let titleLabel = UILabel()
-        titleLabel.numberOfLines = 10
+        titleLabel.numberOfLines = Style.lines
         titleLabel.textAlignment = .left
-        titleLabel.font = Font.titleFont
+        titleLabel.font = Style.font
         titleLabel.lineBreakMode = .byTruncatingTail
         return titleLabel
     }()
@@ -67,8 +68,8 @@ class MovieListItemCell: UICollectionViewCell {
     func setupViews() {
         contentView.addSubview(stackView)
         stackView.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(UIEdgeInsets(top: Size.verticalPadding, left: Size.horizontalPadding,
-                                                           bottom: Size.verticalPadding, right: Size.horizontalPadding))
+            $0.leading.trailing.equalToSuperview().inset(Size.horizontalPadding)
+            $0.top.bottom.equalToSuperview().inset(Size.verticalPadding)
         }
     }
     
@@ -88,7 +89,7 @@ class MovieListItemCell: UICollectionViewCell {
     
     static func size(width: CGFloat, model: MovieListItemCellModel) -> CGSize {
         let titleWidth = width - Size.imageWidth - Size.spacing - (Size.horizontalPadding * 2)
-        let titleHeight = CalcText.height(attributedText: model.title.applyTag(), numberOfLines: 10, width: titleWidth)
+        let titleHeight = CalcText.height(attributedText: model.title.applyTag(), lineBreakMode: .byTruncatingTail, numberOfLines: Style.lines, width: titleWidth)
         let itemHeight = max(Size.imageHeight, titleHeight) + (Size.verticalPadding * 2)
         return CGSize(width: width, height: itemHeight)
     }
