@@ -3,7 +3,7 @@ import Foundation
 import UIKit
 
 extension String {
-    
+
     enum AttributedCase: String {
         case bold = "<b>"
         case h1 = "<h1>"
@@ -44,6 +44,10 @@ extension String {
                 return ""
             }
         }
+    }
+    
+    var handledLineBreak: [String] {
+        return self.components(separatedBy: "\n")
     }
     
     func applyTag() -> NSMutableAttributedString {

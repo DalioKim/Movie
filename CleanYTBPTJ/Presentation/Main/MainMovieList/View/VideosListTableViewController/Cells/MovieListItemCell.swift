@@ -9,8 +9,9 @@ class MovieListItemCell: UICollectionViewCell {
         static let titleFont = UIFont.systemFont(ofSize: 16)
     }
     enum Size {
+        static let imageWidth: CGFloat = 40
         static let imageHeight: CGFloat = 60
-        static let thumbnailDefaultWidth: Int = 200
+        static let titleWidth: CGFloat = 80
         static let horizontalPadding: CGFloat = 20
         static let verticalPadding: CGFloat = 10
     }
@@ -22,10 +23,9 @@ class MovieListItemCell: UICollectionViewCell {
         stackView.axis = .horizontal
         stackView.spacing = 10
         stackView.alignment = .center
-        stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.layoutMargins = UIEdgeInsets(top: Size.verticalPadding, left: Size.horizontalPadding, bottom: Size.verticalPadding, right: Size.horizontalPadding)
         
         thumbnailImageView.snp.makeConstraints {
+            $0.width.equalTo(Size.imageWidth)
             $0.height.equalTo(Size.imageHeight)
         }
         
@@ -33,13 +33,18 @@ class MovieListItemCell: UICollectionViewCell {
     }()
     private let titleLabel: UILabel = {
         let titleLabel = UILabel()
-        titleLabel.numberOfLines = 2
-        titleLabel.textAlignment = .center
+        titleLabel.numberOfLines = 10
+        titleLabel.textAlignment = .left
         titleLabel.font = Font.titleFont
         titleLabel.lineBreakMode = .byTruncatingTail
         return titleLabel
     }()
-    private let thumbnailImageView = UIImageView()
+    private let thumbnailImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        return imageView
+    }()
     
     private weak var viewModel: MovieListItemCellModel?
     
@@ -70,7 +75,7 @@ class MovieListItemCell: UICollectionViewCell {
         guard let model = model else { return }
         self.viewModel = model
         titleLabel.attributedText = model.title.applyTag()
-        updateThumbnailImage(width: Size.thumbnailDefaultWidth)
+        updateThumbnailImage(width: Int(Size.imageWidth))
     }
     
     private func updateThumbnailImage(width: Int) {
@@ -81,7 +86,7 @@ class MovieListItemCell: UICollectionViewCell {
     }
     
     static func size(width: CGFloat, model: MovieListItemCellModel) -> CGSize {
-        let titleHeight = CalculateString.calculateHeight(width: 80, title: model.title.removeTag(), font: Font.titleFont)
+        let titleHeight = CalculateString.calculateHeight(width: Size.titleWidth, title: model.title.removeTag(), font: Font.titleFont)
         let itemHeight = max(Size.imageHeight, titleHeight) + (Size.verticalPadding * 2)
         return CGSize(width: width, height: itemHeight)
     }
