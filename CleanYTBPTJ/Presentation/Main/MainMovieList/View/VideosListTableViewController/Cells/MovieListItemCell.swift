@@ -82,14 +82,8 @@ class MovieListItemCell: UICollectionViewCell {
         guard let model = model else { return }
         self.viewModel = model
         titleLabel.attributedText = model.title.applyTag()
-        updateThumbnailImage()
-    }
-    
-    private func updateThumbnailImage() {
-        guard let thumbnailImagePath = viewModel?.thumbnailImagePath else { return }
-        ThumbnailAPI.fetchImage(with: thumbnailImagePath) { [weak self] in
-            self?.thumbnailImageView.image = $0
-        }
+        guard let imagePath = viewModel?.thumbnailImagePath else { return }
+        thumbnailImageView.setImage(imagePath)
     }
     
     static func size(width: CGFloat, model: MovieListItemCellModel) -> CGSize {
