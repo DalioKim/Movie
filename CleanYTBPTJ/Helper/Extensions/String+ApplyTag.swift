@@ -46,10 +46,6 @@ extension String {
         }
     }
     
-    var handledLineBreak: [String] {
-        return self.components(separatedBy: "\n")
-    }
-    
     func applyTag() -> NSMutableAttributedString {
         let tagRegex = "(<|</)[a-z0-9]*>+"
         guard let tagInfo = searchTag(),

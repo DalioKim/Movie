@@ -11,9 +11,9 @@ class MovieListItemCell: UICollectionViewCell {
     enum Size {
         static let imageWidth: CGFloat = 40
         static let imageHeight: CGFloat = 60
-        static let titleWidth: CGFloat = 80
         static let horizontalPadding: CGFloat = 20
         static let verticalPadding: CGFloat = 10
+        static let spacing: CGFloat = 10
     }
     
     static let reuseIdentifier = String(describing: MovieListItemCell.self)
@@ -21,7 +21,7 @@ class MovieListItemCell: UICollectionViewCell {
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [thumbnailImageView, titleLabel])
         stackView.axis = .horizontal
-        stackView.spacing = 10
+        stackView.spacing = Size.spacing
         stackView.alignment = .center
         
         thumbnailImageView.snp.makeConstraints {
@@ -67,7 +67,8 @@ class MovieListItemCell: UICollectionViewCell {
     func setupViews() {
         contentView.addSubview(stackView)
         stackView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.edges.equalToSuperview().inset(UIEdgeInsets(top: Size.verticalPadding, left: Size.horizontalPadding,
+                                                           bottom: Size.verticalPadding, right: Size.horizontalPadding))
         }
     }
     
@@ -86,8 +87,10 @@ class MovieListItemCell: UICollectionViewCell {
     }
     
     static func size(width: CGFloat, model: MovieListItemCellModel) -> CGSize {
-        let titleHeight = CalculateString.calculateHeight(width: Size.titleWidth, title: model.title.removeTag(), font: Font.titleFont)
+        let titleWidth = width - Size.imageWidth - Size.spacing - (Size.horizontalPadding * 2)
+        let titleHeight = CalcText.height(attributedText: model.title.applyTag(), numberOfLines: 10, width: titleWidth)
         let itemHeight = max(Size.imageHeight, titleHeight) + (Size.verticalPadding * 2)
         return CGSize(width: width, height: itemHeight)
     }
 }
+
