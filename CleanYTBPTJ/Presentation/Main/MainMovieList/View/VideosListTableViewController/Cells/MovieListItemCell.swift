@@ -66,8 +66,8 @@ class MovieListItemCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         viewModel = nil
-        thumbnailImageView.image = nil
         titleLabel.attributedText = nil
+        thumbnailImageView.clear()
     }
     
     func setupViews() {

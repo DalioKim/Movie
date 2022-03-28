@@ -14,6 +14,7 @@
 		E34E159527CE36EC00F53F2E /* String+ApplyTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = E34E159427CE36EC00F53F2E /* String+ApplyTag.swift */; };
 		E36A966F2799517700EC90C6 /* DefaultMoviesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36A966E2799517700EC90C6 /* DefaultMoviesRepository.swift */; };
 		E3AEE7E227E1E30900DB230C /* UIEdgeInsets+ComputedProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AEE7E127E1E30900DB230C /* UIEdgeInsets+ComputedProperty.swift */; };
+		E3BE460C27F1FBBA0093FC0C /* CalcText.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3BE460B27F1FBBA0093FC0C /* CalcText.swift */; };
 		E3F488A027C8BB8E00F77C4B /* Array+Safe.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F4889F27C8BB8E00F77C4B /* Array+Safe.swift */; };
 		E3F488A227C8BBDB00F77C4B /* DateFormatter+DateStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F488A127C8BBDB00F77C4B /* DateFormatter+DateStyle.swift */; };
 		E3F5F935274A72C000B8DF11 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5F934274A72C000B8DF11 /* AppDelegate.swift */; };
@@ -87,6 +88,7 @@
 		E34E159427CE36EC00F53F2E /* String+ApplyTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+ApplyTag.swift"; sourceTree = "<group>"; };
 		E36A966E2799517700EC90C6 /* DefaultMoviesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultMoviesRepository.swift; sourceTree = "<group>"; };
 		E3AEE7E127E1E30900DB230C /* UIEdgeInsets+ComputedProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+ComputedProperty.swift"; sourceTree = "<group>"; };
+		E3BE460B27F1FBBA0093FC0C /* CalcText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcText.swift; sourceTree = "<group>"; };
 		E3F4889F27C8BB8E00F77C4B /* Array+Safe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Safe.swift"; sourceTree = "<group>"; };
 		E3F488A127C8BBDB00F77C4B /* DateFormatter+DateStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+DateStyle.swift"; sourceTree = "<group>"; };
 		E3F5F931274A72C000B8DF11 /* CleanYTBPTJ.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CleanYTBPTJ.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -238,7 +240,6 @@
 			isa = PBXGroup;
 			children = (
 				E3F5F94B274A72C400B8DF11 /* CleanYTBPTJTests.swift */,
-				E3F7C80D27EAE46C000DEDD7 /* CalculateHeightTest.swift */,
 				E3F5F94D274A72C400B8DF11 /* Info.plist */,
 			);
 			path = CleanYTBPTJTests;
@@ -342,7 +343,7 @@
 				E3F5FA742784368A00B8DF11 /* Observable.swift */,
 				E3F5FA4F2784327500B8DF11 /* ConnectionError.swift */,
 				E3F5FA6F2784360D00B8DF11 /* Cancellable.swift */,
-				E346D29227EC82E900788494 /* CalcText.swift */,
+				E3BE460B27F1FBBA0093FC0C /* CalcText.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -761,12 +762,12 @@
 				E3F5FA892785997500B8DF11 /* MovieListItemCell.swift in Sources */,
 				E3F5FBAB2788086E00B8DF11 /* EnterMainUseCase.swift in Sources */,
 				E3F5FA4227842EFB00B8DF11 /* SearchMovieUseCase.swift in Sources */,
-				E346D29327EC82E900788494 /* CalcText.swift in Sources */,
 				E3F5FB2D2787061F00B8DF11 /* MovieSceneDIContainer.swift in Sources */,
 				E3F5FB7627872F3000B8DF11 /* MovieSearchFlowCoordinator.swift in Sources */,
 				E3F5FB982787E63200B8DF11 /* BackButtonEmptyTitleNavigationBarBehavior.swift in Sources */,
 				E3F5FA502784327500B8DF11 /* ConnectionError.swift in Sources */,
 				E3F5FAF12785C85000B8DF11 /* Endpoint.swift in Sources */,
+				E3BE460C27F1FBBA0093FC0C /* CalcText.swift in Sources */,
 				E3F5FB0F2785CBB000B8DF11 /* CoreDataStorage.swift in Sources */,
 				E3F5FB182785CC8500B8DF11 /* RepositoryTask.swift in Sources */,
 				E3F5FB922787E5DA00B8DF11 /* UIViewController+AddBehaviors.swift in Sources */,
@@ -796,7 +797,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E3F5F94C274A72C400B8DF11 /* CleanYTBPTJTests.swift in Sources */,
-				E3F7C80E27EAE46C000DEDD7 /* CalculateHeightTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

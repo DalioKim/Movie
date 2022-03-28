@@ -8,30 +8,51 @@
 import Kingfisher
 
 extension UIImageView {
-    func setImage(_ imagePath: String) {
-        getCacheImage(imagePath) { image in
+    func setImage(_ imagePath: String?, errorImage: UIImage? = nil) {
+        getCacheImage(imagePath) { [weak self] image in
             switch image {
             case .some(let image):
-                self.image = image
+                self?.image = image
             case .none:
-                guard let imageURL = URL(string: imagePath) else { return }
+                guard let imagePath = imagePath, let imageURL = URL(string: imagePath) else {
+                    self?.image = errorImage
+                    return
+                }
                 let resource = ImageResource(downloadURL: imageURL, cacheKey: imagePath)
-                self.kf.indicatorType = .activity
-                self.kf.setImage(with: resource)
+                self?.kf.indicatorType = .activity
+                self?.kf.setImage(with: resource) { [weak self] result in
+                    if case let .failure(error) = result, !error.isTaskCancelled {
+                        self?.image = errorImage
+                    }
+                }
             }
         }
     }
     
-    private func getCacheImage(_ imagePath: String, completion: @escaping ((UIImage?) -> Void)) {
-        let cache = ImageCache.default
-        cache.retrieveImage(forKey: imagePath, options: nil) { result in
+    func clear() {
+        self.kf.cancelDownloadTask()
+        self.image = nil
+    }
+    
+    private func getCacheImage(_ imagePath: String?, completion: @escaping ((UIImage?) -> Void)) {
+        guard let imagePath = imagePath else {
+            completion(nil)
+            return
+        }
+        ImageCache.default.retrieveImage(forKey: imagePath, options: [.cacheMemoryOnly]) { result in
             switch result {
             case .success(let value):
-                guard let image = value.image else { return completion(nil) }
-                completion(image)
+                completion(value.image)
             case .failure(_):
-                self.image = nil
+                completion(nil)
             }
         }
     }
+    
+    static func initializeKingfisher() {
+        ImageCache.default.memoryStorage.config.totalCostLimit = 300 * 1024 * 1024
+        ImageCache.default.memoryStorage.config.countLimit = 100
+        ImageCache.default.memoryStorage.config.expiration = .days(30)
+    }
+    
 }
