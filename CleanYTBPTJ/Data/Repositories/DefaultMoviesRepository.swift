@@ -15,7 +15,7 @@ extension DefaultMoviesRepository: MoviesRepository {
                         completion: @escaping (Result<MoviesPage, Error>) -> Void) -> CancelDelegate? {
         
         printIfDebug("networkTask - fetchMovieList")
-        let requestDTO = MovieRequestDTO(query: "마블")
+        let requestDTO = MovieRequestDTO(query: query.value)
         let task = RepositoryTask()
         let endpoint = APIEndpoints.getMovies(with: requestDTO)
         
