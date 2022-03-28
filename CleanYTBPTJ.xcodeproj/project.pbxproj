@@ -10,10 +10,10 @@
 		0C73AC71F1E6BB8A962B205A /* Pods_CleanYTBPTJ_CleanYTBPTJUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A6ABF33FC0B00E5F6A0FED /* Pods_CleanYTBPTJ_CleanYTBPTJUITests.framework */; };
 		98368CE86C7DEA3D288F45DB /* Pods_CleanYTBPTJTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBDAACE014EAFC6D4BE836D5 /* Pods_CleanYTBPTJTests.framework */; };
 		CEF7D85027B8AC7B00C63D68 /* StoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF7D84F27B8AC7B00C63D68 /* StoryboardInstantiable.swift */; };
+		E346D29327EC82E900788494 /* CalcText.swift in Sources */ = {isa = PBXBuildFile; fileRef = E346D29227EC82E900788494 /* CalcText.swift */; };
 		E34E159527CE36EC00F53F2E /* String+ApplyTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = E34E159427CE36EC00F53F2E /* String+ApplyTag.swift */; };
 		E36A966F2799517700EC90C6 /* DefaultMoviesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36A966E2799517700EC90C6 /* DefaultMoviesRepository.swift */; };
 		E3AEE7E227E1E30900DB230C /* UIEdgeInsets+ComputedProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AEE7E127E1E30900DB230C /* UIEdgeInsets+ComputedProperty.swift */; };
-		E3E49BDD27DF63DE00B57B8D /* CalculateString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E49BDC27DF63DD00B57B8D /* CalculateString.swift */; };
 		E3F488A027C8BB8E00F77C4B /* Array+Safe.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F4889F27C8BB8E00F77C4B /* Array+Safe.swift */; };
 		E3F488A227C8BBDB00F77C4B /* DateFormatter+DateStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F488A127C8BBDB00F77C4B /* DateFormatter+DateStyle.swift */; };
 		E3F5F935274A72C000B8DF11 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5F934274A72C000B8DF11 /* AppDelegate.swift */; };
@@ -55,6 +55,7 @@
 		E3F5FC012789BA7500B8DF11 /* MovieResponseDTO+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5FC002789BA7500B8DF11 /* MovieResponseDTO+Mapping.swift */; };
 		E3F5FC0C2789C93A00B8DF11 /* MovieListItemCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5FC0B2789C93A00B8DF11 /* MovieListItemCellModel.swift */; };
 		E3F5FC1B278AED8E00B8DF11 /* DefaultThumbnailRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5FC1A278AED8E00B8DF11 /* DefaultThumbnailRepository.swift */; };
+		E3F7C80E27EAE46C000DEDD7 /* CalculateHeightTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F7C80D27EAE46C000DEDD7 /* CalculateHeightTest.swift */; };
 		EF97A2862AC649BFEADA1707 /* Pods_CleanYTBPTJ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C2111432D82A4E88FECA85E /* Pods_CleanYTBPTJ.framework */; };
 /* End PBXBuildFile section */
 
@@ -85,10 +86,10 @@
 		BDE225084A05C44C159F96DC /* Pods-CleanYTBPTJTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CleanYTBPTJTests.release.xcconfig"; path = "Target Support Files/Pods-CleanYTBPTJTests/Pods-CleanYTBPTJTests.release.xcconfig"; sourceTree = "<group>"; };
 		BE9579CD6B377CADAFCA46BE /* Pods-CleanYTBPTJ-CleanYTBPTJUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CleanYTBPTJ-CleanYTBPTJUITests.release.xcconfig"; path = "Target Support Files/Pods-CleanYTBPTJ-CleanYTBPTJUITests/Pods-CleanYTBPTJ-CleanYTBPTJUITests.release.xcconfig"; sourceTree = "<group>"; };
 		CEF7D84F27B8AC7B00C63D68 /* StoryboardInstantiable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardInstantiable.swift; sourceTree = "<group>"; };
+		E346D29227EC82E900788494 /* CalcText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcText.swift; sourceTree = "<group>"; };
 		E34E159427CE36EC00F53F2E /* String+ApplyTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+ApplyTag.swift"; sourceTree = "<group>"; };
 		E36A966E2799517700EC90C6 /* DefaultMoviesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultMoviesRepository.swift; sourceTree = "<group>"; };
 		E3AEE7E127E1E30900DB230C /* UIEdgeInsets+ComputedProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+ComputedProperty.swift"; sourceTree = "<group>"; };
-		E3E49BDC27DF63DD00B57B8D /* CalculateString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculateString.swift; sourceTree = "<group>"; };
 		E3F4889F27C8BB8E00F77C4B /* Array+Safe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Safe.swift"; sourceTree = "<group>"; };
 		E3F488A127C8BBDB00F77C4B /* DateFormatter+DateStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+DateStyle.swift"; sourceTree = "<group>"; };
 		E3F5F931274A72C000B8DF11 /* CleanYTBPTJ.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CleanYTBPTJ.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -136,6 +137,7 @@
 		E3F5FC002789BA7500B8DF11 /* MovieResponseDTO+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MovieResponseDTO+Mapping.swift"; sourceTree = "<group>"; };
 		E3F5FC0B2789C93A00B8DF11 /* MovieListItemCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListItemCellModel.swift; sourceTree = "<group>"; };
 		E3F5FC1A278AED8E00B8DF11 /* DefaultThumbnailRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultThumbnailRepository.swift; sourceTree = "<group>"; };
+		E3F7C80D27EAE46C000DEDD7 /* CalculateHeightTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculateHeightTest.swift; sourceTree = "<group>"; };
 		EBDAACE014EAFC6D4BE836D5 /* Pods_CleanYTBPTJTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CleanYTBPTJTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -242,6 +244,7 @@
 			isa = PBXGroup;
 			children = (
 				E3F5F94B274A72C400B8DF11 /* CleanYTBPTJTests.swift */,
+				E3F7C80D27EAE46C000DEDD7 /* CalculateHeightTest.swift */,
 				E3F5F94D274A72C400B8DF11 /* Info.plist */,
 			);
 			path = CleanYTBPTJTests;
@@ -345,7 +348,7 @@
 				E3F5FA742784368A00B8DF11 /* Observable.swift */,
 				E3F5FA4F2784327500B8DF11 /* ConnectionError.swift */,
 				E3F5FA6F2784360D00B8DF11 /* Cancellable.swift */,
-				E3E49BDC27DF63DD00B57B8D /* CalculateString.swift */,
+				E346D29227EC82E900788494 /* CalcText.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -764,6 +767,7 @@
 				E3F5FA892785997500B8DF11 /* MovieListItemCell.swift in Sources */,
 				E3F5FBAB2788086E00B8DF11 /* EnterMainUseCase.swift in Sources */,
 				E3F5FA4227842EFB00B8DF11 /* SearchMovieUseCase.swift in Sources */,
+				E346D29327EC82E900788494 /* CalcText.swift in Sources */,
 				E3F5FB2D2787061F00B8DF11 /* MovieSceneDIContainer.swift in Sources */,
 				E3F5FB7627872F3000B8DF11 /* MovieSearchFlowCoordinator.swift in Sources */,
 				E3F5FB982787E63200B8DF11 /* BackButtonEmptyTitleNavigationBarBehavior.swift in Sources */,
@@ -771,7 +775,6 @@
 				E3F5FA502784327500B8DF11 /* ConnectionError.swift in Sources */,
 				E3F5FA972785A4F200B8DF11 /* ThumbnailRepository.swift in Sources */,
 				E3F5FAF12785C85000B8DF11 /* Endpoint.swift in Sources */,
-				E3E49BDD27DF63DE00B57B8D /* CalculateString.swift in Sources */,
 				E3F5FB0F2785CBB000B8DF11 /* CoreDataStorage.swift in Sources */,
 				E3F5FB182785CC8500B8DF11 /* RepositoryTask.swift in Sources */,
 				E3F5FB922787E5DA00B8DF11 /* UIViewController+AddBehaviors.swift in Sources */,
@@ -801,6 +804,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E3F5F94C274A72C400B8DF11 /* CleanYTBPTJTests.swift in Sources */,
+				E3F7C80E27EAE46C000DEDD7 /* CalculateHeightTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

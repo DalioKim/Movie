@@ -3,7 +3,7 @@ import Foundation
 import UIKit
 
 extension String {
-    
+
     enum AttributedCase: String {
         case bold = "<b>"
         case h1 = "<h1>"
