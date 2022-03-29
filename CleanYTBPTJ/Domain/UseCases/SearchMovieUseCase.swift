@@ -16,7 +16,7 @@ final class DefaultSearchMovieUseCase: SearchMovieUseCase {
     
     func execute(requestValue: SearchMovieUseCaseRequestValue,
                  completion: @escaping (Result<[MovieListItemCellModel], Error>) -> Void) -> CancelDelegate? {
-
+        
         return moviesRepository.fetchMovieList(
             query: requestValue.query,
             page: requestValue.page,

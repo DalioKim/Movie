@@ -1,6 +1,5 @@
 
 import UIKit
-import Kingfisher
 
 class MovieListItemCell: UICollectionViewCell {
     
