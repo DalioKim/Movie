@@ -66,8 +66,8 @@ class MovieListItemCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         viewModel = nil
-        thumbnailImageView.image = nil
         titleLabel.attributedText = nil
+        thumbnailImageView.clear()
     }
     
     func setupViews() {
@@ -82,14 +82,7 @@ class MovieListItemCell: UICollectionViewCell {
         guard let model = model else { return }
         self.viewModel = model
         titleLabel.attributedText = model.title.applyTag()
-        updateThumbnailImage(width: Int(Size.Thumbnail.width))
-    }
-    
-    private func updateThumbnailImage(width: Int) {
-        guard let thumbnailImagePath = viewModel?.thumbnailImagePath else { return }
-        DefaultThumbnailRepository.fetchImage(with: thumbnailImagePath, width: width) { [weak self] in
-            self?.thumbnailImageView.image = $0
-        }
+        thumbnailImageView.setImage(viewModel?.thumbnailImagePath)
     }
     
     static func size(width: CGFloat, model: MovieListItemCellModel) -> CGSize {

@@ -9,3 +9,15 @@ struct Movie: Equatable {
 struct MoviesPage: Equatable {
     let movies: [Movie]
 }
+
+enum MovieQuery: Equatable {
+    case initial
+    case search(value: String)
+    
+    var value: String {
+        switch self {
+        case .initial: return "마블"
+        case .search(let value): return value
+        }
+    }
+}
