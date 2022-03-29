@@ -12,7 +12,7 @@ final class DefaultMoviesRepository {
 
 extension DefaultMoviesRepository: MoviesRepository {
     func fetchMovieList(query: MovieQuery, page: Int, completion: @escaping (Result<[MovieListItemCellModel], Error>) -> Void) -> CancelDelegate? {
-        let requestDTO = MovieRequestDTO(query: "마블")
+        let requestDTO = MovieRequestDTO(query: query.value)
         let task = RepositoryTask()
         let endpoint = APIEndpoints.getMovies(with: requestDTO)
         
