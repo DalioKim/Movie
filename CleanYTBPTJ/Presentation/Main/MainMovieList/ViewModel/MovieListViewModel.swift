@@ -81,7 +81,7 @@ final class DefaultMovieListViewModel: MovieListViewModel {
                 guard let self = self else { return }
                 switch result {
                 case .success(let models):
-                    self.movies = self.totalPageCount == 0 ? models : self.movies + models
+                    self.movies = models
                     self.totalPageCount = self.movies.count / 10 //임시 페이지 계산방법
                 case .failure:
                     break
