@@ -66,10 +66,8 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     // MARK: - Private
     
     private func fetch(movieQuery: MovieQuery) {
-        moviesLoadTask = searchMovieUseCase.execute(
-            requestValue: .init(query: movieQuery, page: nextPage),
-            completion: { [weak self] result in
-                guard let self = self else { return }
+        MovieAPI.fetchMovieList(movieQuery)
+            .subscribe { [weak self] result in
                 switch result {
                 case .success(let models):
                     self.cellModelsRelay.accept(models)

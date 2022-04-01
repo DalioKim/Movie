@@ -241,6 +241,7 @@
 		E3ECEAD127F49FA300252551 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				E39E582427F6C84600FE0ED5 /* String+GetURLRequest.swift */,
 				E3ECEAD227F4A2C700252551 /* Cancellable.swift */,
 				E3F5FB41278709DB00B8DF11 /* APIEndpoints.swift */,
 			);
@@ -371,6 +372,7 @@
 		E3F5FAE52785C79500B8DF11 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				E39E581F27F6ACAE00FE0ED5 /* MovieAPI.swift */,
 				E3F5FAEB2785C7EC00B8DF11 /* NetworkService.swift */,
 				E3F5FAF52785C87E00B8DF11 /* NetworkConfigurable.swift */,
 				E3F5FAF02785C85000B8DF11 /* Endpoint.swift */,
@@ -671,10 +673,12 @@
 				E3F5FB42278709DB00B8DF11 /* APIEndpoints.swift in Sources */,
 				E3F5FA892785997500B8DF11 /* MovieListItemCell.swift in Sources */,
 				E3F5FA4227842EFB00B8DF11 /* SearchMovieUseCase.swift in Sources */,
+				E39E582527F6C84600FE0ED5 /* String+GetURLRequest.swift in Sources */,
 				E3F5FB2D2787061F00B8DF11 /* MovieSceneDIContainer.swift in Sources */,
 				E35EDEBB27FD3B3C00B52EBD /* NSObject+ClassName.swift in Sources */,
 				E3F5FB7627872F3000B8DF11 /* MovieSearchFlowCoordinator.swift in Sources */,
 				E3F5FB982787E63200B8DF11 /* BackButtonEmptyTitleNavigationBarBehavior.swift in Sources */,
+				E39E582027F6ACAE00FE0ED5 /* MovieAPI.swift in Sources */,
 				E3F5FAF12785C85000B8DF11 /* Endpoint.swift in Sources */,
 				E3BE460C27F1FBBA0093FC0C /* CalcText.swift in Sources */,
 				E3F5FB182785CC8500B8DF11 /* RepositoryTask.swift in Sources */,
