@@ -8,6 +8,8 @@ target 'CleanYTBPTJ' do
   pod 'SnapKit', '~> 5.0.0' 
   pod 'Alamofire', '4.7.3'  
   pod 'Kingfisher'
+  pod 'RxSwift'
+  pod 'RxCocoa'
 
 
   # Pods for CleanYTBPTJ

@@ -12,6 +12,7 @@
 		E346D28F27EC2E2A00788494 /* UIImageView+Kingfisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E346D28E27EC2E2A00788494 /* UIImageView+Kingfisher.swift */; };
 		E34E159527CE36EC00F53F2E /* String+ApplyTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = E34E159427CE36EC00F53F2E /* String+ApplyTag.swift */; };
 		E36A966F2799517700EC90C6 /* DefaultMoviesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36A966E2799517700EC90C6 /* DefaultMoviesRepository.swift */; };
+		E39E582C27F6EC7E00FE0ED5 /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39E582B27F6EC7E00FE0ED5 /* Bindable.swift */; };
 		E3AEE7E227E1E30900DB230C /* UIEdgeInsets+ComputedProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AEE7E127E1E30900DB230C /* UIEdgeInsets+ComputedProperty.swift */; };
 		E3BE460C27F1FBBA0093FC0C /* CalcText.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3BE460B27F1FBBA0093FC0C /* CalcText.swift */; };
 		E3ECEAD327F4A2C700252551 /* Cancellable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ECEAD227F4A2C700252551 /* Cancellable.swift */; };
@@ -80,6 +81,7 @@
 		E346D28E27EC2E2A00788494 /* UIImageView+Kingfisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Kingfisher.swift"; sourceTree = "<group>"; };
 		E34E159427CE36EC00F53F2E /* String+ApplyTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+ApplyTag.swift"; sourceTree = "<group>"; };
 		E36A966E2799517700EC90C6 /* DefaultMoviesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultMoviesRepository.swift; sourceTree = "<group>"; };
+		E39E582B27F6EC7E00FE0ED5 /* Bindable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bindable.swift; sourceTree = "<group>"; };
 		E3AEE7E127E1E30900DB230C /* UIEdgeInsets+ComputedProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+ComputedProperty.swift"; sourceTree = "<group>"; };
 		E3BE460B27F1FBBA0093FC0C /* CalcText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcText.swift; sourceTree = "<group>"; };
 		E3ECEAD227F4A2C700252551 /* Cancellable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cancellable.swift; sourceTree = "<group>"; };
@@ -183,6 +185,22 @@
 				E3F5FA9B2785A5EF00B8DF11 /* Extensions */,
 			);
 			path = Helper;
+			sourceTree = "<group>";
+		};
+		E39E582927F6EC7E00FE0ED5 /* Commons */ = {
+			isa = PBXGroup;
+			children = (
+				E39E582A27F6EC7E00FE0ED5 /* Model */,
+			);
+			path = Commons;
+			sourceTree = "<group>";
+		};
+		E39E582A27F6EC7E00FE0ED5 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E39E582B27F6EC7E00FE0ED5 /* Bindable.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		E3ECEACE27F49E7700252551 /* Foundation */ = {
@@ -292,6 +310,7 @@
 		E3F5F9FE2756520000B8DF11 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				E39E582927F6EC7E00FE0ED5 /* Commons */,
 				E3F5F967274A740100B8DF11 /* Main */,
 				E3F5FA4027842ECF00B8DF11 /* UseCases */,
 			);
@@ -660,6 +679,7 @@
 				E3F5F937274A72C000B8DF11 /* SceneDelegate.swift in Sources */,
 				E36A966F2799517700EC90C6 /* DefaultMoviesRepository.swift in Sources */,
 				E3F5F980274A82D000B8DF11 /* MovieListViewController.swift in Sources */,
+				E39E582C27F6EC7E00FE0ED5 /* Bindable.swift in Sources */,
 				E3F5FA9D2785A60100B8DF11 /* UIImageView+ImageSizeAfterAspectFit.swift in Sources */,
 				E3F5FAE72785C7A500B8DF11 /* DataTransferService.swift in Sources */,
 				E3F5FB7027872DB500B8DF11 /* AppFlowCoordinator.swift in Sources */,

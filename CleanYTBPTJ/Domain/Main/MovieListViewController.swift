@@ -1,6 +1,8 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
 class MovieListViewController: UIViewController {
     
@@ -19,6 +21,7 @@ class MovieListViewController: UIViewController {
     }()
     
     private var viewModel: MovieListViewModel
+    private let disposeBag = DisposeBag()
     
     init(viewModel: MovieListViewModel) {
         self.viewModel = viewModel
@@ -32,17 +35,23 @@ class MovieListViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupBehaviours()
-        bind(to: viewModel)
+        bindMovieListView()
     }
     
-    private func bind(to viewModel: MovieListViewModel) {
-        debugPrint("viewModel: \(viewModel)")
-        (viewModel as? DefaultMovieListViewModel).flatMap { $0.delegate = self }
+    private func bindMovieListView() {
+        movieListView.rx.setDelegate(self).disposed(by: disposeBag)
+        guard let viewModel = viewModel as? DefaultMovieListViewModel else { return }
+        viewModel.cellModelsObs
+            .bind(to: movieListView.rx.items) { [weak self] movieListView, index, cellModel in
+                let indexPath = IndexPath(item: index, section: 0)
+                let cell = movieListView.dequeueReusableCell(withReuseIdentifier: MovieListItemCell.reuseIdentifier, for: indexPath)
+                (cell as? Bindable).map { $0.bind(cellModel) }
+                return cell
+            }
+            .disposed(by: disposeBag)
     }
     
     private func setupViews() {
-        movieListView.delegate = self
-        movieListView.dataSource = self
         view.addSubview(movieListView)
         movieListView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -55,33 +64,14 @@ class MovieListViewController: UIViewController {
     }
 }
 
-// MARK: -  ViewModel 대리자 패턴
+// MARK: - UICollectionViewDelegateFlowLayout
 
-extension MovieListViewController: MovieListViewModelDelegate {
-    func updateItems() {
-        print("모델 카운트: \(viewModel.movies.count)")
-        movieListView.reloadData()
-    }
-}
-
-// MARK: -  CollectionViewDelegate
-
-extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.movies.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieListItemCell.reuseIdentifier, for: indexPath) as? MovieListItemCell else { fatalError() }
-        cell.bind(with: viewModel.movies[safe: indexPath.item])
-        return cell
-    }
-    
-    // MARK: - UICollectionViewDelegateFlowLayout
-    
+extension MovieListViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width
-        guard let model = viewModel.movies[safe: indexPath.item] else { return .zero }
-        return MovieListItemCell.size(width: width, model: model)
+        guard let viewModel = viewModel as? DefaultMovieListViewModel else { return .zero }
+        guard viewModel.cellModels.indices ~= indexPath.item else { return .zero }
+        let cellModel = viewModel.cellModels[indexPath.item]
+        return MovieListItemCell.size(width: width, model: cellModel)
     }
 }
