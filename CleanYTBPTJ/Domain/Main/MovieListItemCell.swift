@@ -99,3 +99,12 @@ extension MovieListItemCell {
         return CGSize(width: width, height: itemHeight)
     }
 }
+
+extension MovieListItemCell: Bindable {
+    func bind(_ model: Any?) {
+        guard let model = model as? MovieListItemCellModel else { return }
+        self.viewModel = model
+        titleLabel.attributedText = model.title.applyTag()
+        thumbnailImageView.setImage(viewModel?.thumbnailImagePath)
+    }
+}
