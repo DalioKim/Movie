@@ -40,7 +40,6 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     var hasMorePages: Bool { currentPage < totalPageCount }
     var nextPage: Int { hasMorePages ? currentPage + 1 : currentPage }
     
-    private var pages: [MoviesPage] = []
     private var moviesLoadTask: CancelDelegate? {
         willSet {
             moviesLoadTask?.cancel()
@@ -69,29 +68,21 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     
     // MARK: - Private
     
-    private func appendPage(_ moviesPage: MoviesPage) {
-        printIfDebug("debug appendPage")
-        movies = moviesPage.movies.map {
-            MovieListItemCellModel(movie: $0)
-        }
-    }
-    
     private func resetPages() {
         currentPage = 0
         totalPageCount = 1
-        pages.removeAll()
         movies.removeAll()
     }
     
     private func fetch(movieQuery: MovieQuery) {
         moviesLoadTask = searchMovieUseCase.execute(
             requestValue: .init(query: movieQuery, page: nextPage),
-            cached: appendPage,
             completion: { [weak self] result in
                 guard let self = self else { return }
                 switch result {
-                case .success(let page):
-                    self.appendPage(page)
+                case .success(let models):
+                    self.movies = models
+                    self.totalPageCount = self.movies.count / 10 //임시 페이지 계산방법
                 case .failure:
                     break
                 }
