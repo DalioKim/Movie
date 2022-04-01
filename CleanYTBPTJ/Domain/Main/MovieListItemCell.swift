@@ -1,5 +1,6 @@
 
 import UIKit
+import RxSwift
 
 class MovieListItemCell: UICollectionViewCell {
     
@@ -53,6 +54,7 @@ class MovieListItemCell: UICollectionViewCell {
     }()
     
     private weak var viewModel: MovieListItemCellModel?
+    private var disposeBag = DisposeBag()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -68,6 +70,7 @@ class MovieListItemCell: UICollectionViewCell {
         viewModel = nil
         titleLabel.attributedText = nil
         thumbnailImageView.clear()
+        disposeBag = DisposeBag()
     }
     
     func setupViews() {
@@ -77,7 +80,7 @@ class MovieListItemCell: UICollectionViewCell {
             $0.top.bottom.equalToSuperview().inset(Size.verticalPadding)
         }
     }
-
+    
     static func size(width: CGFloat, model: MovieListItemCellModel) -> CGSize {
         let titleWidth = width - Size.Thumbnail.width - Size.spacing - (Size.horizontalPadding * 2)
         let titleHeight = CalcText.height(attributedText: model.title.applyTag(), lineBreakMode: Style.Title.lineBreakMode, numberOfLines: Style.Title.lines, width: titleWidth)
