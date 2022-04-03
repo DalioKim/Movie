@@ -65,8 +65,14 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     
     // MARK: - Private
     
-    private func fetch(movieQuery: MovieQuery) {
-        MovieAPI.fetchMovieList(movieQuery)
+    private func resetPages() {
+        currentPage = 0
+        totalPageCount = 1
+        movies.removeAll()
+    }
+    
+    private func fetch(movieQuery: API) {
+        API.fetchMovieList(movieQuery)
             .subscribe { [weak self] result in
                 switch result {
                 case .success(let models):

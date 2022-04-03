@@ -1,14 +1,6 @@
 
 import Foundation
 
-public enum NetworkError: Error {
-    case error(statusCode: Int, data: Data?)
-    case notConnected
-    case cancelled
-    case generic(Error)
-    case urlGeneration
-}
-
 enum resultType {
     case objectType(_: [String: AnyObject])
     case stringType(_: String)
