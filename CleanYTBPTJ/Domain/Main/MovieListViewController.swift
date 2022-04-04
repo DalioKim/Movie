@@ -11,13 +11,13 @@ class MovieListViewController: UIViewController {
         let imageDataTransferService: DataTransferService
     }
     
-    private let movieListView: UICollectionView = {
+    private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.sectionInset = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
-        let movieListView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        movieListView.register(MovieListItemCell.self, forCellWithReuseIdentifier: MovieListItemCell.reuseIdentifier)
-        return movieListView
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.register(MovieListItemCell.self, forCellWithReuseIdentifier: MovieListItemCell.reuseIdentifier)
+        return collectionView
     }()
     
     private var viewModel: MovieListViewModel
@@ -35,16 +35,17 @@ class MovieListViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupBehaviours()
-        bindMovieListView()
+        bindCollectionView()
     }
     
-    private func bindMovieListView() {
-        movieListView.rx.setDelegate(self).disposed(by: disposeBag)
+    private func bindCollectionView() {
+        collectionView.rx.setDelegate(self).disposed(by: disposeBag)
         guard let viewModel = viewModel as? DefaultMovieListViewModel else { return }
         viewModel.cellModelsObs
-            .bind(to: movieListView.rx.items) { [weak self] movieListView, index, cellModel in
+            .compactMap { $0 }
+            .bind(to: collectionView.rx.items) { [weak self] collectionView, index, cellModel in
                 let indexPath = IndexPath(item: index, section: 0)
-                let cell = movieListView.dequeueReusableCell(withReuseIdentifier: MovieListItemCell.reuseIdentifier, for: indexPath)
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieListItemCell.reuseIdentifier, for: indexPath)
                 (cell as? Bindable).map { $0.bind(cellModel) }
                 return cell
             }
@@ -52,8 +53,8 @@ class MovieListViewController: UIViewController {
     }
     
     private func setupViews() {
-        view.addSubview(movieListView)
-        movieListView.snp.makeConstraints {
+        view.addSubview(collectionView)
+        collectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
     }
@@ -68,10 +69,13 @@ class MovieListViewController: UIViewController {
 
 extension MovieListViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = collectionView.frame.width
-        guard let viewModel = viewModel as? DefaultMovieListViewModel else { return .zero }
-        guard viewModel.cellModels.indices ~= indexPath.item else { return .zero }
-        let cellModel = viewModel.cellModels[indexPath.item]
+        var width = collectionView.frame.size.width
+        if #available(iOS 11.0, *) {
+            width -= collectionView.safeAreaInsets.left + collectionView.safeAreaInsets.right
+        }
+        guard let viewModel = viewModel as? DefaultMovieListViewModel, let cellModels = viewModel.cellModels else { return .zero }
+        guard cellModels.indices ~= indexPath.item else { return .zero }
+        let cellModel = cellModels[indexPath.item]
         return MovieListItemCell.size(width: width, model: cellModel)
     }
 }

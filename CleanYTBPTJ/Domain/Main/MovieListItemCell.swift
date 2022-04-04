@@ -54,7 +54,6 @@ class MovieListItemCell: UICollectionViewCell {
     }()
     
     private weak var viewModel: MovieListItemCellModel?
-    private var disposeBag = DisposeBag()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -70,7 +69,6 @@ class MovieListItemCell: UICollectionViewCell {
         viewModel = nil
         titleLabel.attributedText = nil
         thumbnailImageView.clear()
-        disposeBag = DisposeBag()
     }
     
     func setupViews() {
