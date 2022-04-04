@@ -9,7 +9,7 @@ target 'CleanYTBPTJ' do
   pod 'Alamofire', '4.7.3'  
   pod 'Kingfisher'
   pod 'RxSwift'
-  pod 'RxCocoa'
+  pod 'RxRelay'
 
 
   # Pods for CleanYTBPTJ

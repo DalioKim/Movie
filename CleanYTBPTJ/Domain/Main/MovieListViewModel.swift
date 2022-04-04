@@ -68,11 +68,11 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     private func resetPages() {
         currentPage = 0
         totalPageCount = 1
-        movies.removeAll()
     }
     
-    private func fetch(movieQuery: API) {
+    private func fetch(_ movieQuery: APITarget) {
         API.fetchMovieList(movieQuery)
+            .observe(on: MainScheduler.instance)
             .subscribe { [weak self] result in
                 switch result {
                 case .success(let models):
@@ -94,7 +94,7 @@ extension DefaultMovieListViewModel {
     }
     
     func loadMore() {
-        fetch(movieQuery: .search(value: "임시")) //쿼리 저장방식 추가예정
+        fetch(.search(MovieRequest(query: "임시"))) //쿼리 저장방식 추가예정
     }
     
     func didCancelSearch() {
