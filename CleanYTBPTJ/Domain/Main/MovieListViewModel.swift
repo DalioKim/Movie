@@ -94,7 +94,7 @@ extension DefaultMovieListViewModel {
     }
     
     func loadMore() {
-        fetch(.search(MovieRequest(query: "임시"))) //쿼리 저장방식 추가예정
+        fetch(.search("임시")) //쿼리 저장방식 추가예정
     }
     
     func didCancelSearch() {

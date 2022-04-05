@@ -18,11 +18,10 @@ public protocol TargetType {
 }
 
 enum APITarget: Codable {
-    case search(MovieRequest)
+    case search(_: String)
 }
 
 extension APITarget {
-    static let defaultQuery = "마블"
     static private let clientId = "TWoWW_E7wbQRF4USjpy9"
     static private let clientKey = "Q0kcELtfaA"
 }
@@ -49,10 +48,11 @@ extension APITarget: TargetType {
     
     var task: [URLQueryItem] {
         switch self {
-        case .search(let request):
-            return request.toDictionary().map {
-                URLQueryItem(name: $0.key, value: "\($0.value)")
-            }
+        case .search(let query):
+            return ["query": query]
+                .toDictionary().map {
+                    URLQueryItem(name: $0.key, value: "\($0.value)")
+                }
         }
     }
     

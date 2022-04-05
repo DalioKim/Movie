@@ -19,8 +19,13 @@ class API {
                     single(.failure(NetworkError.noData))
                     return
                 }
-                guard let response = try? JSONDecoder().decode(MovieResponseDTO.self, from: data) else { fatalError() }
-                single(.success(response))
+                
+                do {
+                    let response = try JSONDecoder().decode(MovieResponseDTO.self, from: data)
+                    single(.success(response))
+                } catch let error {
+                    single(.failure(error))
+                }
             }.resume()
             return Disposables.create()
         }

@@ -21,7 +21,3 @@ enum MovieQuery: Equatable {
         }
     }
 }
-
-struct MovieRequest: Codable, Equatable {
-    let query: String
-}

@@ -26,7 +26,6 @@
 		E3F5F937274A72C000B8DF11 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5F936274A72C000B8DF11 /* SceneDelegate.swift */; };
 		E3F5F93E274A72C300B8DF11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E3F5F93D274A72C300B8DF11 /* Assets.xcassets */; };
 		E3F5F941274A72C300B8DF11 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E3F5F93F274A72C300B8DF11 /* LaunchScreen.storyboard */; };
-		E3F5F94C274A72C400B8DF11 /* CleanYTBPTJTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5F94B274A72C400B8DF11 /* CleanYTBPTJTests.swift */; };
 		E3F5F957274A72C400B8DF11 /* CleanYTBPTJUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5F956274A72C400B8DF11 /* CleanYTBPTJUITests.swift */; };
 		E3F5F980274A82D000B8DF11 /* MovieListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5F97E274A82D000B8DF11 /* MovieListViewController.swift */; };
 		E3F5FA162779F15100B8DF11 /* MovieListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5FA152779F15100B8DF11 /* MovieListViewModel.swift */; };
@@ -102,7 +101,6 @@
 		E3F5F940274A72C300B8DF11 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E3F5F942274A72C300B8DF11 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E3F5F947274A72C400B8DF11 /* CleanYTBPTJTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CleanYTBPTJTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		E3F5F94B274A72C400B8DF11 /* CleanYTBPTJTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleanYTBPTJTests.swift; sourceTree = "<group>"; };
 		E3F5F94D274A72C400B8DF11 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E3F5F952274A72C400B8DF11 /* CleanYTBPTJUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CleanYTBPTJUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3F5F956274A72C400B8DF11 /* CleanYTBPTJUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleanYTBPTJUITests.swift; sourceTree = "<group>"; };
@@ -283,7 +281,6 @@
 		E3F5F94A274A72C400B8DF11 /* CleanYTBPTJTests */ = {
 			isa = PBXGroup;
 			children = (
-				E3F5F94B274A72C400B8DF11 /* CleanYTBPTJTests.swift */,
 				E3F5F94D274A72C400B8DF11 /* Info.plist */,
 			);
 			path = CleanYTBPTJTests;
@@ -705,7 +702,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E3F5F94C274A72C400B8DF11 /* CleanYTBPTJTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
