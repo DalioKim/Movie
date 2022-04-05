@@ -6,10 +6,7 @@ import RxCocoa
 
 class MovieListViewController: UIViewController {
     
-    struct Dependencies {
-        let apiDataTransferService: DataTransferService
-        let imageDataTransferService: DataTransferService
-    }
+    // MARK: - private
     
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -22,6 +19,8 @@ class MovieListViewController: UIViewController {
     
     private var viewModel: MovieListViewModel
     private let disposeBag = DisposeBag()
+    
+    // MARK: - Init
     
     init(viewModel: MovieListViewModel) {
         self.viewModel = viewModel
@@ -38,12 +37,13 @@ class MovieListViewController: UIViewController {
         bindCollectionView()
     }
     
+    // MARK: - private
+    
     private func bindCollectionView() {
         collectionView.rx.setDelegate(self).disposed(by: disposeBag)
-        guard let viewModel = viewModel as? DefaultMovieListViewModel else { return }
-        viewModel.cellModelsObs
+        viewModel.movies
             .compactMap { $0 }
-            .bind(to: collectionView.rx.items) { [weak self] collectionView, index, cellModel in
+            .drive(collectionView.rx.items) { collectionView, index, cellModel in
                 let indexPath = IndexPath(item: index, section: 0)
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieListItemCell.reuseIdentifier, for: indexPath)
                 (cell as? Bindable).map { $0.bind(cellModel) }
@@ -69,13 +69,9 @@ class MovieListViewController: UIViewController {
 
 extension MovieListViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        var width = collectionView.frame.size.width
-        if #available(iOS 11.0, *) {
-            width -= collectionView.safeAreaInsets.left + collectionView.safeAreaInsets.right
-        }
-        guard let viewModel = viewModel as? DefaultMovieListViewModel, let cellModels = viewModel.cellModels else { return .zero }
-        guard cellModels.indices ~= indexPath.item else { return .zero }
+        guard let cellModels = viewModel.cellModels, cellModels.indices ~= indexPath.item else { return .zero }
         let cellModel = cellModels[indexPath.item]
+        let width = collectionView.frame.size.width - ((collectionViewLayout as? UICollectionViewFlowLayout)?.sectionInset.horizontal ?? 0)
         return MovieListItemCell.size(width: width, model: cellModel)
     }
 }

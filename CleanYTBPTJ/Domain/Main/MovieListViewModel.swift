@@ -11,7 +11,10 @@ protocol MovieListViewModelInput {
     func didSelectItem(at index: Int)
 }
 
-protocol MovieListViewModel: MovieListViewModelInput {} // 제거 예정
+protocol MovieListViewModel: MovieListViewModelInput {  // 삭제 예정
+    var cellModels: [MovieListItemCellModel]? { get }
+    var movies: Driver<[MovieListItemCellModel]?> { get }
+}
 
 final class DefaultMovieListViewModel: MovieListViewModel {
     
@@ -21,36 +24,36 @@ final class DefaultMovieListViewModel: MovieListViewModel {
         case showFeature(itemNo: Int)
     }
     
-    private let searchMovieUseCase: SearchMovieUseCase
+    // MARK: - private
     
-    var currentPage: Int = 0
-    var totalPageCount: Int = 1
-    var nextPage: Int { (cellModels?.count ?? 0) > 10 ? currentPage + 1 : currentPage }
-    
+    private let searchMovieUseCase: SearchMovieUseCase // 삭제 예정
     private var moviesLoadTask: CancelDelegate? {
         willSet {
             moviesLoadTask?.cancel()
         }
     }
     
-    // MARK: - Rx
+    private let moviesRelay = BehaviorRelay<[MovieListItemCellModel]?>(value: nil)
+    private let viewActionRelay = PublishRelay<ViewAction>() // 사용 예정
+    private let disposeBag = DisposeBag() // 사용 예정
     
-    var cellModelsObs: Observable<[MovieListItemCellModel]?> {
-        cellModelsRelay.asObservable()
+    // MARK: - Observer
+    
+    var movies: Driver<[MovieListItemCellModel]?> {
+        moviesRelay.asDriver()
     }
     var cellModels: [MovieListItemCellModel]? {
-        cellModelsRelay.value
+        moviesRelay.value
     }
-    
-    var viewActionObs: Observable<ViewAction> {
+    var viewActionObs: Observable<ViewAction> {  // 사용 예정
         viewActionRelay.asObservable()
     }
     
-    private let cellModelsRelay = BehaviorRelay<[MovieListItemCellModel]?>(value: nil)
-    private let viewActionRelay = PublishRelay<ViewAction>()
-
-    private let disposeBag = DisposeBag()
+    // MARK: - paging
     
+    var currentPage: Int = 0
+    var totalPageCount: Int = 1
+    var nextPage: Int { (cellModels?.count ?? 0) > 10 ? currentPage + 1 : currentPage }
     
     // MARK: - Init
     
@@ -69,7 +72,7 @@ final class DefaultMovieListViewModel: MovieListViewModel {
                 guard let self = self else { return }
                 switch result {
                 case .success(let models):
-                    self.cellModelsRelay.accept(models)
+                    self.moviesRelay.accept(models)
                 case .failure:
                     break
                 }
@@ -83,7 +86,7 @@ final class DefaultMovieListViewModel: MovieListViewModel {
 extension DefaultMovieListViewModel {
     func refresh(query: String) {
         guard !query.isEmpty else { return }
-        fetch(movieQuery: .search(value: "임시"))
+        fetch(movieQuery: .search(value: query))
     }
     
     func loadMore() {

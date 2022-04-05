@@ -3,6 +3,7 @@ import UIKit
 import RxSwift
 
 class MovieListItemCell: UICollectionViewCell {
+    static let reuseIdentifier = String(describing: MovieListItemCell.self)
     
     // MARK: - nested type
     
@@ -23,7 +24,7 @@ class MovieListItemCell: UICollectionViewCell {
         }
     }
     
-    static let reuseIdentifier = String(describing: MovieListItemCell.self)
+    // MARK: - private
     
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [thumbnailImageView, titleLabel])
@@ -53,7 +54,9 @@ class MovieListItemCell: UICollectionViewCell {
         return imageView
     }()
     
-    private weak var viewModel: MovieListItemCellModel?
+    private weak var model: MovieListItemCellModel?
+    
+    // MARK: - Init
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -66,7 +69,7 @@ class MovieListItemCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        viewModel = nil
+        model = nil
         titleLabel.attributedText = nil
         thumbnailImageView.clear()
     }
@@ -78,20 +81,22 @@ class MovieListItemCell: UICollectionViewCell {
             $0.top.bottom.equalToSuperview().inset(Size.verticalPadding)
         }
     }
-    
-    static func size(width: CGFloat, model: MovieListItemCellModel) -> CGSize {
-        let titleWidth = width - Size.Thumbnail.width - Size.spacing - (Size.horizontalPadding * 2)
-        let titleHeight = CalcText.height(attributedText: model.title.applyTag(), lineBreakMode: Style.Title.lineBreakMode, numberOfLines: Style.Title.lines, width: titleWidth)
-        let itemHeight = max(Size.Thumbnail.height, titleHeight) + (Size.verticalPadding * 2)
-        return CGSize(width: width, height: itemHeight)
-    }
 }
 
 extension MovieListItemCell: Bindable {
     func bind(_ model: Any?) {
         guard let model = model as? MovieListItemCellModel else { return }
-        self.viewModel = model
+        self.model = model
         titleLabel.attributedText = model.title.applyTag()
-        thumbnailImageView.setImage(viewModel?.thumbnailImagePath)
+        thumbnailImageView.setImage(model.thumbnailImagePath)
+    }
+}
+
+extension MovieListItemCell {
+    static func size(width: CGFloat, model: MovieListItemCellModel) -> CGSize {
+        let titleWidth = width - Size.Thumbnail.width - Size.spacing - (Size.horizontalPadding * 2)
+        let titleHeight = CalcText.height(attributedText: model.title.applyTag(), lineBreakMode: Style.Title.lineBreakMode, numberOfLines: Style.Title.lines, width: titleWidth)
+        let itemHeight = max(Size.Thumbnail.height, titleHeight) + (Size.verticalPadding * 2)
+        return CGSize(width: width, height: itemHeight)
     }
 }
