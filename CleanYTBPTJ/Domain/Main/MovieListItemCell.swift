@@ -3,6 +3,7 @@ import UIKit
 import RxSwift
 
 class MovieListItemCell: UICollectionViewCell {
+    static let reuseIdentifier = String(describing: MovieListItemCell.self)
     
     // MARK: - nested type
     
@@ -103,8 +104,17 @@ extension MovieListItemCell {
 extension MovieListItemCell: Bindable {
     func bind(_ model: Any?) {
         guard let model = model as? MovieListItemCellModel else { return }
-        self.viewModel = model
+        self.model = model
         titleLabel.attributedText = model.title.applyTag()
-        thumbnailImageView.setImage(viewModel?.thumbnailImagePath)
+        thumbnailImageView.setImage(model.thumbnailImagePath)
+    }
+}
+
+extension MovieListItemCell {
+    static func size(width: CGFloat, model: MovieListItemCellModel) -> CGSize {
+        let titleWidth = width - Size.Thumbnail.width - Size.spacing - (Size.horizontalPadding * 2)
+        let titleHeight = CalcText.height(attributedText: model.title.applyTag(), lineBreakMode: Style.Title.lineBreakMode, numberOfLines: Style.Title.lines, width: titleWidth)
+        let itemHeight = max(Size.Thumbnail.height, titleHeight) + (Size.verticalPadding * 2)
+        return CGSize(width: width, height: itemHeight)
     }
 }
