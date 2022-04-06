@@ -18,7 +18,7 @@ public protocol TargetType {
 }
 
 enum APITarget: Codable {
-    case search(_: String)
+    case search(query: String)
 }
 
 extension APITarget {

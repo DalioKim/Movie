@@ -14,4 +14,5 @@ public enum NetworkError: Error {
     case generic(Error)
     case urlGeneration
     case noData
+    case parseError
 }

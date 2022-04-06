@@ -60,7 +60,8 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     init(searchMovieUseCase: SearchMovieUseCase) {
         print("DefaultMoviesListViewModel init")
         self.searchMovieUseCase = searchMovieUseCase
-        fetch(movieQuery: .initial)
+        self.actions = actions
+        fetch(.search(query: "마블")) // FIXED: 임시
     }
     
     // MARK: - Private
@@ -91,10 +92,12 @@ extension DefaultMovieListViewModel {
     func refresh(query: String) {
         guard !query.isEmpty else { return }
         fetch(movieQuery: .search(value: query))
+        resetPages()
+        fetch(.search(query: "마블")) // FIXED: 임시
     }
     
     func loadMore() {
-        fetch(.search("임시")) //쿼리 저장방식 추가예정
+        fetch(.search(query: "마블")) // FIXED: 임시
     }
     
     func didCancelSearch() {
