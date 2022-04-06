@@ -3,7 +3,6 @@ import UIKit
 import RxSwift
 
 class MovieListItemCell: UICollectionViewCell {
-    static let reuseIdentifier = String(describing: MovieListItemCell.self)
     
     // MARK: - nested type
     
