@@ -1,12 +1,8 @@
 
 import Foundation
 import UIKit
-
-struct MovieListViewModelActions {} // 추후 삭제 혹은 구현 예정
-
-protocol MovieListViewModelDelegate: AnyObject {
-    func updateItems()
-}
+import RxSwift
+import RxCocoa
 
 protocol MovieListViewModelInput {
     func refresh(query: String)
@@ -15,64 +11,59 @@ protocol MovieListViewModelInput {
     func didSelectItem(at index: Int)
 }
 
-protocol MovieListViewModelOutput {
-    var isEmpty: Bool { get }
-    var screenTitle: String { get }
-    var emptyDataTitle: String { get }
-    var errorTitle: String { get }
-    var searchBarPlaceholder: String { get }
-}
-
-protocol MovieListViewModel: MovieListViewModelInput, MovieListViewModelOutput {
-    var movies: [MovieListItemCellModel] { get set }
+protocol MovieListViewModel: MovieListViewModelInput {  // 삭제 예정
+    var cellModels: [MovieListItemCellModel] { get }
+    var cellModelsObs: Observable<[MovieListItemCellModel]> { get }
 }
 
 final class DefaultMovieListViewModel: MovieListViewModel {
     
-    private let searchMovieUseCase: SearchMovieUseCase
-    private let actions: MovieListViewModelActions?
+    enum ViewAction {
+        case popViewController
+        case showDetail(viewModel: DefaultMovieListViewModel)
+        case showFeature(itemNo: Int)
+    }
     
-    var movies: [MovieListItemCellModel]
-    weak var delegate: MovieListViewModelDelegate?
+    // MARK: - private
     
-    var currentPage: Int = 0
-    var totalPageCount: Int = 1
-    var hasMorePages: Bool { currentPage < totalPageCount }
-    var nextPage: Int { hasMorePages ? currentPage + 1 : currentPage }
-    
+    private let searchMovieUseCase: SearchMovieUseCase // 삭제 예정
     private var moviesLoadTask: CancelDelegate? {
         willSet {
             moviesLoadTask?.cancel()
         }
     }
     
-    // MARK: - OUTPUT
+    private let cellModelsRelay = BehaviorRelay<[MovieListItemCellModel]?>(value: nil)
+    private let viewActionRelay = PublishRelay<ViewAction>() // 사용 예정
+    private let disposeBag = DisposeBag() // 사용 예정
     
-    var isEmpty: Bool { movies.isEmpty }
-    let screenTitle = NSLocalizedString("Movies", comment: "")
-    let emptyDataTitle = NSLocalizedString("Search results", comment: "")
-    let errorTitle = NSLocalizedString("Error", comment: "")
-    let searchBarPlaceholder = NSLocalizedString("Search Movies", comment: "")
+    // MARK: - Observer
+    
+    var cellModelsObs: Observable<[MovieListItemCellModel]> {
+        cellModelsRelay.map { $0 ?? [] }
+    }
+    var cellModels: [MovieListItemCellModel] {
+        cellModelsRelay.value ?? []
+    }
+    var viewActionObs: Observable<ViewAction> {  // 사용 예정
+        viewActionRelay.asObservable()
+    }
+    
+    // MARK: - paging
+    
+    var currentPage: Int = 0
+    var totalPageCount: Int = 1
+    var nextPage: Int { (cellModels.count > 10) ? currentPage + 1 : currentPage }
     
     // MARK: - Init
     
-    init(searchMovieUseCase: SearchMovieUseCase,
-         actions: MovieListViewModelActions? = nil,
-         movies: [MovieListItemCellModel] = [MovieListItemCellModel]()) {
+    init(searchMovieUseCase: SearchMovieUseCase) {
         print("DefaultMoviesListViewModel init")
         self.searchMovieUseCase = searchMovieUseCase
-        self.actions = actions
-        self.movies = movies
         fetch(movieQuery: .initial)
     }
     
     // MARK: - Private
-    
-    private func resetPages() {
-        currentPage = 0
-        totalPageCount = 1
-        movies.removeAll()
-    }
     
     private func fetch(movieQuery: MovieQuery) {
         moviesLoadTask = searchMovieUseCase.execute(
@@ -81,13 +72,11 @@ final class DefaultMovieListViewModel: MovieListViewModel {
                 guard let self = self else { return }
                 switch result {
                 case .success(let models):
-                    self.movies = models
-                    self.totalPageCount = self.movies.count / 10 //임시 페이지 계산방법
+                    self.cellModelsRelay.accept(models)
                 case .failure:
                     break
                 }
                 self.moviesLoadTask = nil
-                self.delegate?.updateItems()
             })
     }
 }
@@ -97,8 +86,7 @@ final class DefaultMovieListViewModel: MovieListViewModel {
 extension DefaultMovieListViewModel {
     func refresh(query: String) {
         guard !query.isEmpty else { return }
-        resetPages()
-        fetch(movieQuery: .search(value: "임시"))
+        fetch(movieQuery: .search(value: query))
     }
     
     func loadMore() {

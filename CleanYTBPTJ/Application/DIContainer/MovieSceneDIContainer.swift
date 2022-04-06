@@ -12,9 +12,6 @@ final class MovieSceneDIContainer: MovieSearchFlowCoordinatorDependencies {
     
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
-        printIfDebug("MovieSceneDIContainer init")
-        let actions = MovieListViewModelActions()
-        makeMovieListViewController(actions: actions)
     }
     
     // MARK: - Use Cases
@@ -30,13 +27,11 @@ final class MovieSceneDIContainer: MovieSearchFlowCoordinatorDependencies {
     
     // MARK: - Movie List
 
-    func makeMovieListViewController(actions: MovieListViewModelActions) -> MovieListViewController {
-        debugPrint("MovieSceneDIContainer makeMovieListViewController")
-        return MovieListViewController(viewModel: makeMovieListViewModel(actions: actions))
+    func makeMovieListViewController() -> MovieListViewController {
+        return MovieListViewController(viewModel: makeMovieListViewModel())
     }
     
-    func makeMovieListViewModel(actions: MovieListViewModelActions) -> MovieListViewModel {
-        debugPrint("makeMovieListViewModel")
+    func makeMovieListViewModel() -> MovieListViewModel {
         return DefaultMovieListViewModel(searchMovieUseCase: makeSearchMovieUseCase())
     }
     
@@ -45,4 +40,3 @@ final class MovieSceneDIContainer: MovieSearchFlowCoordinatorDependencies {
         return MovieSearchFlowCoordinator(navigationController: navigationController, dependencies: self)
     }
 }
-

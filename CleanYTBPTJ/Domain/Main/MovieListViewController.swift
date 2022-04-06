@@ -1,24 +1,26 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
 class MovieListViewController: UIViewController {
     
-    struct Dependencies {
-        let apiDataTransferService: DataTransferService
-        let imageDataTransferService: DataTransferService
-    }
+    // MARK: - private
     
-    private let movieListView: UICollectionView = {
+    private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.sectionInset = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
-        let movieListView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        movieListView.register(MovieListItemCell.self, forCellWithReuseIdentifier: MovieListItemCell.reuseIdentifier)
-        return movieListView
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.register(MovieListItemCell.self, forCellWithReuseIdentifier: MovieListItemCell.className)
+        return collectionView
     }()
     
     private var viewModel: MovieListViewModel
+    private let disposeBag = DisposeBag()
+    
+    // MARK: - Init
     
     init(viewModel: MovieListViewModel) {
         self.viewModel = viewModel
@@ -32,19 +34,26 @@ class MovieListViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupBehaviours()
-        bind(to: viewModel)
+        bindCollectionView()
     }
     
-    private func bind(to viewModel: MovieListViewModel) {
-        debugPrint("viewModel: \(viewModel)")
-        (viewModel as? DefaultMovieListViewModel).flatMap { $0.delegate = self }
+    // MARK: - private
+    
+    private func bindCollectionView() {
+        collectionView.rx.setDelegate(self).disposed(by: disposeBag)
+        viewModel.cellModelsObs
+            .bind(to: collectionView.rx.items) { collectionView, index, cellModel in
+                let indexPath = IndexPath(item: index, section: 0)
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieListItemCell.className, for: indexPath)
+                (cell as? Bindable).map { $0.bind(cellModel) }
+                return cell
+            }
+            .disposed(by: disposeBag)
     }
     
     private func setupViews() {
-        movieListView.delegate = self
-        movieListView.dataSource = self
-        view.addSubview(movieListView)
-        movieListView.snp.makeConstraints {
+        view.addSubview(collectionView)
+        collectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
     }
@@ -55,33 +64,13 @@ class MovieListViewController: UIViewController {
     }
 }
 
-// MARK: -  ViewModel 대리자 패턴
+// MARK: - UICollectionViewDelegateFlowLayout
 
-extension MovieListViewController: MovieListViewModelDelegate {
-    func updateItems() {
-        print("모델 카운트: \(viewModel.movies.count)")
-        movieListView.reloadData()
-    }
-}
-
-// MARK: -  CollectionViewDelegate
-
-extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.movies.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieListItemCell.reuseIdentifier, for: indexPath) as? MovieListItemCell else { fatalError() }
-        cell.bind(with: viewModel.movies[safe: indexPath.item])
-        return cell
-    }
-    
-    // MARK: - UICollectionViewDelegateFlowLayout
-    
+extension MovieListViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = collectionView.frame.width
-        guard let model = viewModel.movies[safe: indexPath.item] else { return .zero }
-        return MovieListItemCell.size(width: width, model: model)
+        guard viewModel.cellModels.indices ~= indexPath.item else { return .zero }
+        let cellModel = viewModel.cellModels[indexPath.item]
+        let width = collectionView.frame.size.width - collectionViewLayout.sectionInsets.horizontal
+        return MovieListItemCell.size(width: width, model: cellModel)
     }
 }
