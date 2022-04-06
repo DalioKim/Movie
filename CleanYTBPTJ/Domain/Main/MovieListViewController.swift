@@ -13,7 +13,7 @@ class MovieListViewController: UIViewController {
         layout.scrollDirection = .vertical
         layout.sectionInset = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.register(MovieListItemCell.self, forCellWithReuseIdentifier: MovieListItemCell.reuseIdentifier)
+        collectionView.register(MovieListItemCell.self, forCellWithReuseIdentifier: MovieListItemCell.className)
         return collectionView
     }()
     
@@ -41,11 +41,10 @@ class MovieListViewController: UIViewController {
     
     private func bindCollectionView() {
         collectionView.rx.setDelegate(self).disposed(by: disposeBag)
-        viewModel.movies
-            .compactMap { $0 }
-            .drive(collectionView.rx.items) { collectionView, index, cellModel in
+        viewModel.cellModelsObs
+            .bind(to: collectionView.rx.items) { collectionView, index, cellModel in
                 let indexPath = IndexPath(item: index, section: 0)
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieListItemCell.reuseIdentifier, for: indexPath)
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieListItemCell.className, for: indexPath)
                 (cell as? Bindable).map { $0.bind(cellModel) }
                 return cell
             }
@@ -69,9 +68,9 @@ class MovieListViewController: UIViewController {
 
 extension MovieListViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        guard let cellModels = viewModel.cellModels, cellModels.indices ~= indexPath.item else { return .zero }
-        let cellModel = cellModels[indexPath.item]
-        let width = collectionView.frame.size.width - ((collectionViewLayout as? UICollectionViewFlowLayout)?.sectionInset.horizontal ?? 0)
+        guard viewModel.cellModels.indices ~= indexPath.item else { return .zero }
+        let cellModel = viewModel.cellModels[indexPath.item]
+        let width = collectionView.frame.size.width - collectionViewLayout.sectionInsets.horizontal
         return MovieListItemCell.size(width: width, model: cellModel)
     }
 }

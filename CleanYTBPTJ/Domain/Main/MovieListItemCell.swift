@@ -3,7 +3,6 @@ import UIKit
 import RxSwift
 
 class MovieListItemCell: UICollectionViewCell {
-    static let reuseIdentifier = String(describing: MovieListItemCell.self)
     
     // MARK: - nested type
     
@@ -54,7 +53,7 @@ class MovieListItemCell: UICollectionViewCell {
         return imageView
     }()
     
-    private weak var model: MovieListItemCellModel?
+    private weak var cellModel: MovieListItemCellModel?
     
     // MARK: - Init
     
@@ -69,7 +68,7 @@ class MovieListItemCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        model = nil
+        cellModel = nil
         titleLabel.attributedText = nil
         thumbnailImageView.clear()
     }
@@ -86,7 +85,7 @@ class MovieListItemCell: UICollectionViewCell {
 extension MovieListItemCell: Bindable {
     func bind(_ model: Any?) {
         guard let model = model as? MovieListItemCellModel else { return }
-        self.model = model
+        self.cellModel = model
         titleLabel.attributedText = model.title.applyTag()
         thumbnailImageView.setImage(model.thumbnailImagePath)
     }
