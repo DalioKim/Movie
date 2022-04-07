@@ -63,14 +63,8 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     
     // MARK: - Private
     
-    private func resetPages() {
-        currentPage = 0
-        totalPageCount = 1
-    }
-    
     private func fetch(_ movieQuery: APITarget) {
         API.fetchMovieList(movieQuery)
-            .observe(on: MainScheduler.instance)
             .subscribe { [weak self] result in
                 guard let self = self else { return }
                 switch result {
@@ -89,7 +83,6 @@ final class DefaultMovieListViewModel: MovieListViewModel {
 extension DefaultMovieListViewModel {
     func refresh(query: String) {
         guard !query.isEmpty else { return }
-        resetPages()
         fetch(.search(query: "마블")) // FIXED: 임시
     }
     
