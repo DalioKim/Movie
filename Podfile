@@ -10,6 +10,7 @@ target 'CleanYTBPTJ' do
   pod 'Kingfisher'
   pod 'RxSwift'
   pod 'RxRelay'
+  pod 'RxCocoa'
 
 
   # Pods for CleanYTBPTJ

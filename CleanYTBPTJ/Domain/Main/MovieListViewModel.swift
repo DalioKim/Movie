@@ -3,6 +3,7 @@ import Foundation
 import UIKit
 import RxSwift
 import RxCocoa
+import RxRelay
 
 protocol MovieListViewModelInput {
     func refresh(query: String)
@@ -26,7 +27,6 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     
     // MARK: - private
     
-    private let searchMovieUseCase: SearchMovieUseCase // 삭제 예정
     private var moviesLoadTask: CancelDelegate? {
         willSet {
             moviesLoadTask?.cancel()
@@ -57,10 +57,7 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     
     // MARK: - Init
     
-    init(searchMovieUseCase: SearchMovieUseCase) {
-        print("DefaultMoviesListViewModel init")
-        self.searchMovieUseCase = searchMovieUseCase
-        self.actions = actions
+    init() {
         fetch(.search(query: "마블")) // FIXED: 임시
     }
     
@@ -75,14 +72,15 @@ final class DefaultMovieListViewModel: MovieListViewModel {
         API.fetchMovieList(movieQuery)
             .observe(on: MainScheduler.instance)
             .subscribe { [weak self] result in
+                guard let self = self else { return }
                 switch result {
                 case .success(let models):
-                    self.cellModelsRelay.accept(models)
+                    let cellModels = models.items.map { MovieListItemCellModel(movie: Movie(title: $0.title, path: $0.image)) }
+                    self.cellModelsRelay.accept(cellModels)
                 case .failure:
                     break
                 }
-                self.moviesLoadTask = nil
-            })
+            }
     }
 }
 
@@ -91,7 +89,6 @@ final class DefaultMovieListViewModel: MovieListViewModel {
 extension DefaultMovieListViewModel {
     func refresh(query: String) {
         guard !query.isEmpty else { return }
-        fetch(movieQuery: .search(value: query))
         resetPages()
         fetch(.search(query: "마블")) // FIXED: 임시
     }
