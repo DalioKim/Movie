@@ -20,6 +20,7 @@
 		E3B41E5B27FEBF3E0053C625 /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B41E5A27FEBF3E0053C625 /* Bindable.swift */; };
 		E3B41E5D27FEC33D0053C625 /* NSObject+ClassName.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B41E5C27FEC33D0053C625 /* NSObject+ClassName.swift */; };
 		E3BE460C27F1FBBA0093FC0C /* CalcText.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3BE460B27F1FBBA0093FC0C /* CalcText.swift */; };
+		E3D0D78F27FEDC0D00D3CEC2 /* FetchStatusType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D0D78E27FEDC0D00D3CEC2 /* FetchStatusType.swift */; };
 		E3ECEAD327F4A2C700252551 /* Cancellable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ECEAD227F4A2C700252551 /* Cancellable.swift */; };
 		E3F488A027C8BB8E00F77C4B /* Array+Safe.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F4889F27C8BB8E00F77C4B /* Array+Safe.swift */; };
 		E3F488A227C8BBDB00F77C4B /* DateFormatter+DateStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F488A127C8BBDB00F77C4B /* DateFormatter+DateStyle.swift */; };
@@ -93,6 +94,7 @@
 		E3B41E5A27FEBF3E0053C625 /* Bindable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bindable.swift; sourceTree = "<group>"; };
 		E3B41E5C27FEC33D0053C625 /* NSObject+ClassName.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSObject+ClassName.swift"; sourceTree = "<group>"; };
 		E3BE460B27F1FBBA0093FC0C /* CalcText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcText.swift; sourceTree = "<group>"; };
+		E3D0D78E27FEDC0D00D3CEC2 /* FetchStatusType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchStatusType.swift; sourceTree = "<group>"; };
 		E3ECEAD227F4A2C700252551 /* Cancellable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cancellable.swift; sourceTree = "<group>"; };
 		E3F4889F27C8BB8E00F77C4B /* Array+Safe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Safe.swift"; sourceTree = "<group>"; };
 		E3F488A127C8BBDB00F77C4B /* DateFormatter+DateStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+DateStyle.swift"; sourceTree = "<group>"; };
@@ -346,6 +348,7 @@
 		E3F5FA332779FCBB00B8DF11 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				E3D0D78E27FEDC0D00D3CEC2 /* FetchStatusType.swift */,
 				E3BE460B27F1FBBA0093FC0C /* CalcText.swift */,
 				E3F5FB972787E63200B8DF11 /* BackButtonEmptyTitleNavigationBarBehavior.swift */,
 				E3F5FB9F2787E66900B8DF11 /* BlackStyleNavigationBarBehavior.swift */,
@@ -690,6 +693,7 @@
 				E3F5FA892785997500B8DF11 /* MovieListItemCell.swift in Sources */,
 				E3F5FA4227842EFB00B8DF11 /* SearchMovieUseCase.swift in Sources */,
 				E3F5FB2D2787061F00B8DF11 /* MovieSceneDIContainer.swift in Sources */,
+				E3D0D78F27FEDC0D00D3CEC2 /* FetchStatusType.swift in Sources */,
 				E3A1BE0A27FAD3A500568487 /* APITarget.swift in Sources */,
 				E3F5FB7627872F3000B8DF11 /* MovieSearchFlowCoordinator.swift in Sources */,
 				E3F5FB982787E63200B8DF11 /* BackButtonEmptyTitleNavigationBarBehavior.swift in Sources */,

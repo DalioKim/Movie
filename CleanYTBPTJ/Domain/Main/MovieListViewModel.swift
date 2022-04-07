@@ -33,12 +33,14 @@ final class DefaultMovieListViewModel: MovieListViewModel {
         }
     }
     
+    // MARK: - Relay & Observer
+
     private let cellModelsRelay = BehaviorRelay<[MovieListItemCellModel]?>(value: nil)
     private let viewActionRelay = PublishRelay<ViewAction>() // 사용 예정
     private let disposeBag = DisposeBag() // 사용 예정
-    
-    // MARK: - Observer
-    
+    private let fetchStatusTypeRelay = BehaviorRelay<FetchStatusType>(value: .none(.initial))
+    private let fetch = PublishRelay<FetchType>()
+        
     var cellModelsObs: Observable<[MovieListItemCellModel]> {
         cellModelsRelay.map { $0 ?? [] }
     }
@@ -47,6 +49,9 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     }
     var viewActionObs: Observable<ViewAction> {  // 사용 예정
         viewActionRelay.asObservable()
+    }
+    var fetchStatusTypeObs: Observable<FetchStatusType> {
+        fetchStatusTypeRelay.asObservable()
     }
     
     // MARK: - paging
@@ -58,24 +63,39 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     // MARK: - Init
     
     init() {
-        fetch(.search(query: "마블")) // FIXED: 임시
+        bindFetch(query: "마블") // FIXED: 임시
+        fetch.accept(.initial)
     }
     
     // MARK: - Private
     
-    private func fetch(_ movieQuery: APITarget) {
-        API.fetchMovieList(movieQuery)
-            .subscribe { [weak self] result in
+    private func bindFetch(query: String) {
+        fetch
+            .do(onNext: { [weak self] in
+                self?.fetchStatusTypeRelay.accept(.fetching($0))
+            })
+            .flatMapLatest { fetchType -> Observable<(fetchType: FetchType, result: Result<[MovieListItemCellModel], Error>)> in
+                return API.fetchMovieList(APITarget.search(query: query))
+                    .asObservable()
+                    .map {
+                        $0.items.map { MovieListItemCellModel(movie: Movie(title: $0.title, path: $0.image)) }
+                    }
+                    .map { (fetchType, .success($0)) }
+                    .catch { .just((fetchType, .failure($0))) }
+            }
+            .subscribe(onNext: { [weak self] fetchType, result in
                 guard let self = self else { return }
                 switch result {
-                case .success(let models):
-                    let cellModels = models.items.map { MovieListItemCellModel(movie: Movie(title: $0.title, path: $0.image)) }
-                    self.cellModelsRelay.accept(cellModels)
-                case .failure:
-                    break
+                case .success(let result):
+                    let list = fetchType == .more ? (self.cellModelsRelay.value ?? []) + result : result
+                    self.cellModelsRelay.accept(list)
+                    self.fetchStatusTypeRelay.accept(.success(fetchType))
+                case .failure(let error):
+                    self.fetchStatusTypeRelay.accept(.failure(fetchType, error: error))
                 }
-            }
+            }).disposed(by: disposeBag)
     }
+    
 }
 
 // MARK: - INPUT. View event methods
@@ -83,11 +103,11 @@ final class DefaultMovieListViewModel: MovieListViewModel {
 extension DefaultMovieListViewModel {
     func refresh(query: String) {
         guard !query.isEmpty else { return }
-        fetch(.search(query: "마블")) // FIXED: 임시
+        bindFetch(query: "마블") // FIXED: 임시
     }
     
     func loadMore() {
-        fetch(.search(query: "마블")) // FIXED: 임시
+        bindFetch(query: "마블") // FIXED: 임시
     }
     
     func didCancelSearch() {
