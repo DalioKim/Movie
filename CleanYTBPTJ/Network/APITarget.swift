@@ -12,9 +12,9 @@ public protocol TargetType {
     var baseURL: URL { get }
     var path: String { get }
     var method: HTTPMethod { get }
-    var task: [URLQueryItem] { get }
+    var task: Parameters { get }
     var headers: [String: String]? { get }
-    var endPoint: URLRequest { get }
+    var endPoint: URLRequest? { get }
 }
 
 enum APITarget: Codable {
@@ -28,8 +28,7 @@ extension APITarget {
 
 extension APITarget: TargetType {
     var baseURL: URL {
-        guard let url = URL(string: "https://openapi.naver.com") else { fatalError() }
-        return url
+        return URL(string: "https://openapi.naver.com") ?? URL(fileURLWithPath: "")
     }
     
     var path: String {
@@ -46,13 +45,10 @@ extension APITarget: TargetType {
         }
     }
     
-    var task: [URLQueryItem] {
+    var task: Parameters {
         switch self {
         case .search(let query):
             return ["query": query]
-                .toDictionary().map {
-                    URLQueryItem(name: $0.key, value: "\($0.value)")
-                }
         }
     }
     
@@ -63,31 +59,10 @@ extension APITarget: TargetType {
         }
     }
     
-    var endPoint: URLRequest {
-        let urlSting = baseURL.absoluteString + path
-        guard var urlComponents = URLComponents(string:urlSting) else { fatalError() }
-        urlComponents.queryItems = task
-        guard let url = urlComponents.url else { fatalError() }
-        var request = URLRequest(url: url)
+    var endPoint: URLRequest? {
+        var request = URLRequest(url: URL(string: baseURL.absoluteString + path) ?? URL(fileURLWithPath: ""))
         request.httpMethod = method.rawValue
         request.allHTTPHeaderFields = headers
-        return request
-    }
-}
-
-private extension Encodable {
-    func toDictionary() -> [String: Any] {
-        do {
-            let jsonEncoder = JSONEncoder()
-            let encodedData = try jsonEncoder.encode(self)
-            
-            let dictionaryData = try JSONSerialization.jsonObject(
-                with: encodedData,
-                options: .allowFragments
-            ) as? [String: Any]
-            return dictionaryData ?? [:]
-        } catch {
-            return [:]
-        }
+        return try? URLEncoding.queryString.encode(request, with: task)
     }
 }

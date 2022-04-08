@@ -34,13 +34,14 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     }
     
     // MARK: - Relay & Observer
-
+    
     private let cellModelsRelay = BehaviorRelay<[MovieListItemCellModel]?>(value: nil)
     private let viewActionRelay = PublishRelay<ViewAction>() // 사용 예정
     private let disposeBag = DisposeBag() // 사용 예정
     private let fetchStatusTypeRelay = BehaviorRelay<FetchStatusType>(value: .none(.initial))
     private let fetch = PublishRelay<FetchType>()
-        
+    private let queryRelay = BehaviorRelay<String>(value: "마블")
+    
     var cellModelsObs: Observable<[MovieListItemCellModel]> {
         cellModelsRelay.map { $0 ?? [] }
     }
@@ -63,18 +64,15 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     // MARK: - Init
     
     init() {
-        bindFetch(query: "마블") // FIXED: 임시
+        bindFetch()
         fetch.accept(.initial)
     }
     
     // MARK: - Private
     
-    private func bindFetch(query: String) {
-        fetch
-            .do(onNext: { [weak self] in
-                self?.fetchStatusTypeRelay.accept(.fetching($0))
-            })
-            .flatMapLatest { fetchType -> Observable<(fetchType: FetchType, result: Result<[MovieListItemCellModel], Error>)> in
+    private func bindFetch() {
+        Observable.combineLatest(fetch, queryRelay)
+            .flatMapLatest { (fetchType, query) -> Observable<(fetchType: FetchType, result: Result<[MovieListItemCellModel], Error>)> in
                 return API.fetchMovieList(APITarget.search(query: query))
                     .asObservable()
                     .map {
@@ -103,11 +101,12 @@ final class DefaultMovieListViewModel: MovieListViewModel {
 extension DefaultMovieListViewModel {
     func refresh(query: String) {
         guard !query.isEmpty else { return }
-        bindFetch(query: "마블") // FIXED: 임시
+        fetch.accept(.refresh)
+        queryRelay.accept(query)
     }
     
     func loadMore() {
-        bindFetch(query: "마블") // FIXED: 임시
+        fetch.accept(.more)
     }
     
     func didCancelSearch() {

@@ -10,7 +10,11 @@ import RxSwift
 class API {
     static func fetchMovieList<T>(_ apiTarget: T) -> Single<MovieResponseDTO> where T: TargetType {
         Single.create { single in
-            URLSession.shared.dataTask(with: apiTarget.endPoint) { data, result, error in
+            guard let request = apiTarget.endPoint else {
+                single(.failure(NetworkError.urlGeneration))
+                return Disposables.create()
+            }
+            URLSession.shared.dataTask(with: request) { data, result, error in
                 if let error = error {
                     single(.failure(error))
                     return
