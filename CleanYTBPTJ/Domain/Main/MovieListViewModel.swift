@@ -37,7 +37,7 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     
     private let cellModelsRelay = BehaviorRelay<[MovieListItemCellModel]?>(value: nil)
     private let viewActionRelay = PublishRelay<ViewAction>() // 사용 예정
-    private let disposeBag = DisposeBag() // 사용 예정
+    private let disposeBag = DisposeBag()
     private let fetchStatusTypeRelay = BehaviorRelay<FetchStatusType>(value: .none(.initial))
     private let fetch = PublishRelay<FetchType>()
     private let queryRelay = BehaviorRelay<String>(value: "마블")
@@ -93,7 +93,6 @@ final class DefaultMovieListViewModel: MovieListViewModel {
                 }
             }).disposed(by: disposeBag)
     }
-    
 }
 
 // MARK: - INPUT. View event methods
