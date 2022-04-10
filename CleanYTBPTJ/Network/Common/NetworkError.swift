@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum NetworkError: Error {
+internal enum NetworkError: Error {
     case error(statusCode: Int, data: Data?)
     case notConnected
     case cancelled

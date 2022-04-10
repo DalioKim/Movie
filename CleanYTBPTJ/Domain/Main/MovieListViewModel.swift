@@ -72,24 +72,24 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     
     private func bindFetch() {
         Observable.combineLatest(fetch, queryRelay)
-            .flatMapLatest { (fetchType, query) -> Observable<(fetchType: FetchType, result: Result<[MovieListItemCellModel], Error>)> in
+            .flatMapLatest { [weak self] (fetchType, query) -> Observable<(Result<[MovieListItemCellModel], Error>)> in
+                self?.fetchStatusTypeRelay.accept(.success(fetchType))
                 return API.fetchMovieList(APITarget.search(query: query))
                     .asObservable()
                     .map {
                         $0.items.map { MovieListItemCellModel(movie: Movie(title: $0.title, path: $0.image)) }
                     }
-                    .map { (fetchType, .success($0)) }
-                    .catch { .just((fetchType, .failure($0))) }
+                    .map { (.success($0)) }
+                    .catch { .just((.failure($0))) }
             }
-            .subscribe(onNext: { [weak self] fetchType, result in
+            .subscribe(onNext: { [weak self] result in
                 guard let self = self else { return }
                 switch result {
                 case .success(let result):
-                    let list = fetchType == .more ? (self.cellModelsRelay.value ?? []) + result : result
+                    let list = self.fetchStatusTypeRelay.value.type == .more ? (self.cellModelsRelay.value ?? []) + result : result
                     self.cellModelsRelay.accept(list)
-                    self.fetchStatusTypeRelay.accept(.success(fetchType))
-                case .failure(let error):
-                    self.fetchStatusTypeRelay.accept(.failure(fetchType, error: error))
+                case .failure(_):
+                    break
                 }
             }).disposed(by: disposeBag)
     }
