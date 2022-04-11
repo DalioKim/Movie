@@ -22,15 +22,15 @@ protocol DataTransferErrorResolver {
     func resolve(error: NetworkError) -> Error
 }
 
-public protocol ResponseDecoder {
+protocol ResponseDecoder {
     func decode<T: Decodable>(_ data: Data) throws -> T
 }
 
-public protocol DataTransferErrorLogger {
+protocol DataTransferErrorLogger {
     func log(error: Error)
 }
 
-public final class DefaultDataTransferService {
+final class DefaultDataTransferService {
     
     private let networkService: NetworkService
     private let errorResolver: DataTransferErrorResolver
@@ -96,19 +96,19 @@ extension DefaultDataTransferService: DataTransferService {
 }
 
 // MARK: - Logger
-public final class DefaultDataTransferErrorLogger: DataTransferErrorLogger {
+final class DefaultDataTransferErrorLogger: DataTransferErrorLogger {
     
-    public init() {} //추후 삭제 혹은 구현 예정
+    init() {} //추후 삭제 혹은 구현 예정
     
-    public func log(error: Error) {
+    func log(error: Error) {
         printIfDebug("\(error)")
     }
 }
 
 // MARK: - Error Resolver
-public class DefaultDataTransferErrorResolver: DataTransferErrorResolver {
+class DefaultDataTransferErrorResolver: DataTransferErrorResolver {
     
-    public init() {} //추후 삭제 혹은 구현 예정
+    init() {} //추후 삭제 혹은 구현 예정
     
     func resolve(error: NetworkError) -> Error {
         return error
@@ -116,26 +116,26 @@ public class DefaultDataTransferErrorResolver: DataTransferErrorResolver {
 }
 
 // MARK: - Response Decoders
-public class JSONResponseDecoder: ResponseDecoder {
+class JSONResponseDecoder: ResponseDecoder {
     
     private let jsonDecoder = JSONDecoder()
     
-    public init() {} //추후 삭제 혹은 구현 예정
+    init() {} //추후 삭제 혹은 구현 예정
     
-    public func decode<T: Decodable>(_ data: Data) throws -> T {
+    func decode<T: Decodable>(_ data: Data) throws -> T {
         return try jsonDecoder.decode(T.self, from: data)
     }
 }
 
-public class RawDataResponseDecoder: ResponseDecoder {
+class RawDataResponseDecoder: ResponseDecoder {
     
-    public init() {} //추후 삭제 혹은 구현 예정
+    init() {} //추후 삭제 혹은 구현 예정
     
     enum CodingKeys: String, CodingKey {
         case `default` = ""
     }
     
-    public func decode<T: Decodable>(_ data: Data) throws -> T {
+    func decode<T: Decodable>(_ data: Data) throws -> T {
         if T.self is Data.Type, let data = data as? T {
             return data
         } else {
