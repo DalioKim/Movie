@@ -72,8 +72,10 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     
     private func bindFetch() {
         Observable.combineLatest(fetch, queryRelay)
-            .flatMapLatest { [weak self] (fetchType, query) -> Observable<(Result<[MovieListItemCellModel], Error>)> in
-                self?.fetchStatusTypeRelay.accept(.success(fetchType))
+            .do(onNext: { [weak self] (fetchType, _) in
+                self?.fetchStatusTypeRelay.accept(.fetching(fetchType))
+            })
+            .flatMapLatest { (fetchType, query) -> Observable<(Result<[MovieListItemCellModel], Error>)> in
                 return API.fetchMovieList(APITarget.search(query: query))
                     .asObservable()
                     .map {
@@ -84,12 +86,14 @@ final class DefaultMovieListViewModel: MovieListViewModel {
             }
             .subscribe(onNext: { [weak self] result in
                 guard let self = self else { return }
+                let fetchType = self.fetchStatusTypeRelay.value.type
                 switch result {
-                case .success(let result):
-                    let list = self.fetchStatusTypeRelay.value.type == .more ? (self.cellModelsRelay.value ?? []) + result : result
+                case .success(let models):
+                    let list = fetchType == .more ? (self.cellModelsRelay.value ?? []) + models : models
                     self.cellModelsRelay.accept(list)
-                case .failure(_):
-                    break
+                    self.fetchStatusTypeRelay.accept(.success(fetchType))
+                case .failure(let error):
+                    self.fetchStatusTypeRelay.accept(.failure(fetchType, error: error))
                 }
             }).disposed(by: disposeBag)
     }

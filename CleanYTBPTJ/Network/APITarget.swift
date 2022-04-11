@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
-public protocol TargetType {
+protocol TargetType {
     var baseURL: URL { get }
     var path: String { get }
     var method: HTTPMethod { get }

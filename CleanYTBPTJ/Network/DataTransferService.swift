@@ -1,14 +1,14 @@
 
 import Foundation
 
-public enum DataTransferError: Error {
+enum DataTransferError: Error {
     case noResponse
     case parsing(Error)
     case networkFailure(NetworkError)
     case resolvedNetworkFailure(Error)
 }
 
-public protocol DataTransferService {
+protocol DataTransferService {
     typealias CompletionHandler<T> = (Result<T, DataTransferError>) -> Void
     
     @discardableResult
@@ -18,7 +18,7 @@ public protocol DataTransferService {
     func request<E: ResponseRequestable>(with endpoint: E, completion: @escaping CompletionHandler<Void>) -> NetworkCancelDelegate? where E.Response == Void
 }
 
-public protocol DataTransferErrorResolver {
+protocol DataTransferErrorResolver {
     func resolve(error: NetworkError) -> Error
 }
 
@@ -36,9 +36,9 @@ public final class DefaultDataTransferService {
     private let errorResolver: DataTransferErrorResolver
     private let errorLogger: DataTransferErrorLogger
     
-    public init(with networkService: NetworkService,
-                errorResolver: DataTransferErrorResolver = DefaultDataTransferErrorResolver(),
-                errorLogger: DataTransferErrorLogger = DefaultDataTransferErrorLogger()) {
+    init(with networkService: NetworkService,
+         errorResolver: DataTransferErrorResolver = DefaultDataTransferErrorResolver(),
+         errorLogger: DataTransferErrorLogger = DefaultDataTransferErrorLogger()) {
         self.networkService = networkService
         self.errorResolver = errorResolver
         self.errorLogger = errorLogger
@@ -47,7 +47,7 @@ public final class DefaultDataTransferService {
 
 extension DefaultDataTransferService: DataTransferService {
     
-    public func request<T: Decodable, E: ResponseRequestable>(with endpoint: E, completion: @escaping CompletionHandler<T>) -> NetworkCancelDelegate? where E.Response == T {
+    func request<T: Decodable, E: ResponseRequestable>(with endpoint: E, completion: @escaping CompletionHandler<T>) -> NetworkCancelDelegate? where E.Response == T {
         return self.networkService.request(endpoint: endpoint) { [weak self] result in
             guard let self = self else { return }
             switch result {
@@ -62,7 +62,7 @@ extension DefaultDataTransferService: DataTransferService {
         }
     }
     
-    public func request<E>(with endpoint: E, completion: @escaping CompletionHandler<Void>) -> NetworkCancelDelegate? where E: ResponseRequestable, E.Response == Void {
+    func request<E>(with endpoint: E, completion: @escaping CompletionHandler<Void>) -> NetworkCancelDelegate? where E: ResponseRequestable, E.Response == Void {
         return self.networkService.request(endpoint: endpoint) { [weak self] result in
             guard let self = self else { return }
             switch result {
@@ -99,7 +99,7 @@ extension DefaultDataTransferService: DataTransferService {
 public final class DefaultDataTransferErrorLogger: DataTransferErrorLogger {
     
     public init() {} //추후 삭제 혹은 구현 예정
-
+    
     public func log(error: Error) {
         printIfDebug("\(error)")
     }
@@ -109,8 +109,8 @@ public final class DefaultDataTransferErrorLogger: DataTransferErrorLogger {
 public class DefaultDataTransferErrorResolver: DataTransferErrorResolver {
     
     public init() {} //추후 삭제 혹은 구현 예정
-
-    public func resolve(error: NetworkError) -> Error {
+    
+    func resolve(error: NetworkError) -> Error {
         return error
     }
 }
@@ -119,9 +119,9 @@ public class DefaultDataTransferErrorResolver: DataTransferErrorResolver {
 public class JSONResponseDecoder: ResponseDecoder {
     
     private let jsonDecoder = JSONDecoder()
-
+    
     public init() {} //추후 삭제 혹은 구현 예정
-
+    
     public func decode<T: Decodable>(_ data: Data) throws -> T {
         return try jsonDecoder.decode(T.self, from: data)
     }

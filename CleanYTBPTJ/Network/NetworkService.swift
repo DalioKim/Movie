@@ -13,7 +13,7 @@ public protocol NetworkCancelDelegate {
 
 extension URLSessionTask: NetworkCancelDelegate {} //추후 삭제 혹은 구현 예정
 
-public protocol NetworkService {
+protocol NetworkService {
     typealias CompletionHandler = (Result<Data?, NetworkError>) -> Void
     
     func request(endpoint: Requestable, completion: @escaping CompletionHandler) -> NetworkCancelDelegate?
@@ -80,7 +80,7 @@ public final class DefaultNetworkService {
 
 extension DefaultNetworkService: NetworkService {
     
-    public func request(endpoint: Requestable, completion: @escaping CompletionHandler) -> NetworkCancelDelegate? {
+    func request(endpoint: Requestable, completion: @escaping CompletionHandler) -> NetworkCancelDelegate? {
         printIfDebug("networkTask - extensionDefaultNetworkService-request")
         do {
             let urlRequest = try endpoint.urlRequest(with: config)
