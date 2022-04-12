@@ -1,7 +1,7 @@
 
 import Foundation
 
-public enum HTTPMethodType: String {
+enum HTTPMethodType: String {
     case get     = "GET"
     case head    = "HEAD"
     case post    = "POST"
@@ -10,25 +10,25 @@ public enum HTTPMethodType: String {
     case delete  = "DELETE"
 }
 
-public enum BodyEncoding {
+enum BodyEncoding {
     case jsonSerializationData
     case stringEncodingAscii
 }
 
-public class Endpoint<R>: ResponseRequestable {
+class Endpoint<R>: ResponseRequestable {
     
-    public typealias Response = R
+    typealias Response = R
     
-    public let path: String
-    public let isFullPath: Bool
-    public let method: HTTPMethodType
-    public let headerParamaters: [String: String]
-    public let queryParametersEncodable: Encodable?
-    public let queryParameters: [String: Any]
-    public let bodyParamatersEncodable: Encodable?
-    public let bodyParamaters: [String: Any]
-    public let bodyEncoding: BodyEncoding
-    public let responseDecoder: ResponseDecoder
+    let path: String
+    let isFullPath: Bool
+    let method: HTTPMethodType
+    let headerParamaters: [String: String]
+    let queryParametersEncodable: Encodable?
+    let queryParameters: [String: Any]
+    let bodyParamatersEncodable: Encodable?
+    let bodyParamaters: [String: Any]
+    let bodyEncoding: BodyEncoding
+    let responseDecoder: ResponseDecoder
     
     init(path: String,
          isFullPath: Bool = false,
@@ -53,7 +53,7 @@ public class Endpoint<R>: ResponseRequestable {
     }
 }
 
-public protocol Requestable {
+protocol Requestable {
     var path: String { get }
     var isFullPath: Bool { get }
     var method: HTTPMethodType { get }
@@ -67,7 +67,7 @@ public protocol Requestable {
     func urlRequest(with networkConfig: NetworkConfigurable) throws -> URLRequest
 }
 
-public protocol ResponseRequestable: Requestable {
+protocol ResponseRequestable: Requestable {
     associatedtype Response
     
     var responseDecoder: ResponseDecoder { get }
@@ -82,13 +82,13 @@ extension Requestable {
     func url(with config: NetworkConfigurable) throws -> URL {
         
         printIfDebug("debug url")
-
+        
         let baseURL = config.baseURL.absoluteString.last != "/" ? config.baseURL.absoluteString + "/" : config.baseURL.absoluteString
         let endpoint = isFullPath ? path : baseURL.appending(path)
         
         guard var urlComponents = URLComponents(string: endpoint) else { throw RequestGenerationError.components }
         var urlQueryItems = [URLQueryItem]()
-
+        
         let queryParameters = try queryParametersEncodable?.toDictionary() ?? self.queryParameters
         queryParameters.forEach {
             urlQueryItems.append(URLQueryItem(name: $0.key, value: "\($0.value)"))
@@ -101,18 +101,18 @@ extension Requestable {
         return url
     }
     
-    public func urlRequest(with config: NetworkConfigurable) throws -> URLRequest {
+    func urlRequest(with config: NetworkConfigurable) throws -> URLRequest {
         printIfDebug("debug urlRequest")
-
+        
         let url = try self.url(with: config)
         printIfDebug("debug url: \(url)")
         printIfDebug("debug config: \(config)")
-
+        
         var urlRequest = URLRequest(url: url)
         var allHeaders: [String: String] = config.headers
         headerParamaters.forEach { allHeaders.updateValue($1, forKey: $0) }
         printIfDebug("debug allHeaders: \(config.headers)")
-    
+        
         let bodyParamaters = try bodyParamatersEncodable?.toDictionary() ?? self.bodyParamaters
         if !bodyParamaters.isEmpty {
             urlRequest.httpBody = encodeBody(bodyParamaters: bodyParamaters, bodyEncoding: bodyEncoding)
@@ -135,8 +135,8 @@ extension Requestable {
 private extension Dictionary {
     var queryString: String {
         return self.map { "\($0.key)=\($0.value)" }
-            .joined(separator: "&")
-            .addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed) ?? ""
+        .joined(separator: "&")
+        .addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed) ?? ""
     }
 }
 

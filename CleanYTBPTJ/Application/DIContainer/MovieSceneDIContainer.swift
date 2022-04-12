@@ -32,7 +32,7 @@ final class MovieSceneDIContainer: MovieSearchFlowCoordinatorDependencies {
     }
     
     func makeMovieListViewModel() -> MovieListViewModel {
-        return DefaultMovieListViewModel(searchMovieUseCase: makeSearchMovieUseCase())
+        return DefaultMovieListViewModel()
     }
     
     // MARK: - Flow Coordinators

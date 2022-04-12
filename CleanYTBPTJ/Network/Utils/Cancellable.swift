@@ -1,6 +1,6 @@
 
 import Foundation
 
-public protocol CancelDelegate {
+protocol CancelDelegate {
     func cancel()
 }

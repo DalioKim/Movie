@@ -3,6 +3,7 @@ import Foundation
 import UIKit
 import RxSwift
 import RxCocoa
+import RxRelay
 
 protocol MovieListViewModelInput {
     func refresh(query: String)
@@ -26,18 +27,20 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     
     // MARK: - private
     
-    private let searchMovieUseCase: SearchMovieUseCase // 삭제 예정
     private var moviesLoadTask: CancelDelegate? {
         willSet {
             moviesLoadTask?.cancel()
         }
     }
     
+    // MARK: - Relay & Observer
+    
     private let cellModelsRelay = BehaviorRelay<[MovieListItemCellModel]?>(value: nil)
     private let viewActionRelay = PublishRelay<ViewAction>() // 사용 예정
-    private let disposeBag = DisposeBag() // 사용 예정
-    
-    // MARK: - Observer
+    private let disposeBag = DisposeBag()
+    private let fetchStatusTypeRelay = BehaviorRelay<FetchStatusType>(value: .none(.initial))
+    private let fetch = PublishRelay<FetchType>()
+    private let queryRelay = BehaviorRelay<String>(value: "마블")
     
     var cellModelsObs: Observable<[MovieListItemCellModel]> {
         cellModelsRelay.map { $0 ?? [] }
@@ -48,6 +51,9 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     var viewActionObs: Observable<ViewAction> {  // 사용 예정
         viewActionRelay.asObservable()
     }
+    var fetchStatusTypeObs: Observable<FetchStatusType> {
+        fetchStatusTypeRelay.asObservable()
+    }
     
     // MARK: - paging
     
@@ -57,27 +63,39 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     
     // MARK: - Init
     
-    init(searchMovieUseCase: SearchMovieUseCase) {
-        print("DefaultMoviesListViewModel init")
-        self.searchMovieUseCase = searchMovieUseCase
-        fetch(movieQuery: .initial)
+    init() {
+        bindFetch()
+        fetch.accept(.initial)
     }
     
     // MARK: - Private
     
-    private func fetch(movieQuery: MovieQuery) {
-        moviesLoadTask = searchMovieUseCase.execute(
-            requestValue: .init(query: movieQuery, page: nextPage),
-            completion: { [weak self] result in
+    private func bindFetch() {
+        Observable.combineLatest(fetch, queryRelay)
+            .do(onNext: { [weak self] (fetchType, _) in
+                self?.fetchStatusTypeRelay.accept(.fetching(fetchType))
+            })
+            .flatMapLatest { (fetchType, query) -> Observable<(Result<[MovieListItemCellModel], Error>)> in
+                return API.fetchMovieList(APITarget.search(query: query))
+                    .asObservable()
+                    .map {
+                        $0.items.map { MovieListItemCellModel(movie: Movie(title: $0.title, path: $0.image)) }
+                    }
+                    .map { (.success($0)) }
+                    .catch { .just((.failure($0))) }
+            }
+            .subscribe(onNext: { [weak self] result in
                 guard let self = self else { return }
+                let fetchType = self.fetchStatusTypeRelay.value.type
                 switch result {
                 case .success(let models):
-                    self.cellModelsRelay.accept(models)
-                case .failure:
-                    break
+                    let list = fetchType == .more ? (self.cellModelsRelay.value ?? []) + models : models
+                    self.cellModelsRelay.accept(list)
+                    self.fetchStatusTypeRelay.accept(.success(fetchType))
+                case .failure(let error):
+                    self.fetchStatusTypeRelay.accept(.failure(fetchType, error: error))
                 }
-                self.moviesLoadTask = nil
-            })
+            }).disposed(by: disposeBag)
     }
 }
 
@@ -86,11 +104,12 @@ final class DefaultMovieListViewModel: MovieListViewModel {
 extension DefaultMovieListViewModel {
     func refresh(query: String) {
         guard !query.isEmpty else { return }
-        fetch(movieQuery: .search(value: query))
+        fetch.accept(.refresh)
+        queryRelay.accept(query)
     }
     
     func loadMore() {
-        fetch(movieQuery: .search(value: "임시")) //쿼리 저장방식 추가예정
+        fetch.accept(.more)
     }
     
     func didCancelSearch() {

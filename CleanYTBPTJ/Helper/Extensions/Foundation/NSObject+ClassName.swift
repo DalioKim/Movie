@@ -9,7 +9,7 @@ import Foundation
 
 @objc
 extension NSObject {
-    public class var className: String {
+    class var className: String {
         String(describing: self)
     }
 }

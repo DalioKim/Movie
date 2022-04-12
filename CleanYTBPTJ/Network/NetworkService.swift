@@ -1,39 +1,31 @@
 
 import Foundation
 
-public enum NetworkError: Error {
-    case error(statusCode: Int, data: Data?)
-    case notConnected
-    case cancelled
-    case generic(Error)
-    case urlGeneration
-}
-
 enum resultType {
     case objectType(_: [String: AnyObject])
     case stringType(_: String)
     case none
 }
 
-public protocol NetworkCancelDelegate {
+protocol NetworkCancelDelegate {
     func cancel()
 }
 
 extension URLSessionTask: NetworkCancelDelegate {} //추후 삭제 혹은 구현 예정
 
-public protocol NetworkService {
+protocol NetworkService {
     typealias CompletionHandler = (Result<Data?, NetworkError>) -> Void
     
     func request(endpoint: Requestable, completion: @escaping CompletionHandler) -> NetworkCancelDelegate?
 }
 
-public protocol NetworkSessionManager {
+protocol NetworkSessionManager {
     typealias CompletionHandler = (Data?, URLResponse?, Error?) -> Void
     
     func request(_ request: URLRequest, completion: @escaping CompletionHandler) -> NetworkCancelDelegate
 }
 
-public protocol NetworkErrorLogger {
+protocol NetworkErrorLogger {
     func log(request: URLRequest)
     func log(responseData data: Data?, response: URLResponse?)
     func log(error: Error)
@@ -41,15 +33,15 @@ public protocol NetworkErrorLogger {
 
 // MARK: - Implementation
 
-public final class DefaultNetworkService {
+final class DefaultNetworkService {
     
     private let config: NetworkConfigurable
     private let sessionManager: NetworkSessionManager
     private let logger: NetworkErrorLogger
     
-    public init(config: NetworkConfigurable,
-                sessionManager: NetworkSessionManager = DefaultNetworkSessionManager(),
-                logger: NetworkErrorLogger = DefaultNetworkErrorLogger()) {
+    init(config: NetworkConfigurable,
+         sessionManager: NetworkSessionManager = DefaultNetworkSessionManager(),
+         logger: NetworkErrorLogger = DefaultNetworkErrorLogger()) {
         self.sessionManager = sessionManager
         self.config = config
         self.logger = logger
@@ -88,7 +80,7 @@ public final class DefaultNetworkService {
 
 extension DefaultNetworkService: NetworkService {
     
-    public func request(endpoint: Requestable, completion: @escaping CompletionHandler) -> NetworkCancelDelegate? {
+    func request(endpoint: Requestable, completion: @escaping CompletionHandler) -> NetworkCancelDelegate? {
         printIfDebug("networkTask - extensionDefaultNetworkService-request")
         do {
             let urlRequest = try endpoint.urlRequest(with: config)
@@ -103,12 +95,12 @@ extension DefaultNetworkService: NetworkService {
 
 // MARK: - Default Network Session Manager
 
-public class DefaultNetworkSessionManager: NetworkSessionManager {
+class DefaultNetworkSessionManager: NetworkSessionManager {
     
-    public init() {} //추후 삭제 혹은 구현 예정
+    init() {} //추후 삭제 혹은 구현 예정
     
-    public func request(_ request: URLRequest,
-                        completion: @escaping CompletionHandler) -> NetworkCancelDelegate {
+    func request(_ request: URLRequest,
+                 completion: @escaping CompletionHandler) -> NetworkCancelDelegate {
         let task = URLSession.shared.dataTask(with: request, completionHandler: completion)
         task.resume()
         return task
@@ -117,9 +109,9 @@ public class DefaultNetworkSessionManager: NetworkSessionManager {
 
 // MARK: - Logger
 
-public final class DefaultNetworkErrorLogger: NetworkErrorLogger {
+final class DefaultNetworkErrorLogger: NetworkErrorLogger {
     
-    public init() {} //추후 삭제 혹은 구현 예정
+    init() {} //추후 삭제 혹은 구현 예정
     
     let classified = { (httpBody: Data) -> resultType in
         if let objectType = try? JSONSerialization.jsonObject(with: httpBody, options: []) as? [String: AnyObject] {
@@ -131,7 +123,7 @@ public final class DefaultNetworkErrorLogger: NetworkErrorLogger {
         }
     }
     
-    public func log(request: URLRequest) {
+    func log(request: URLRequest) {
         guard let httpBody = request.httpBody else { return } // request에 httpBody 없음
         switch classified(httpBody) {
         case .objectType(_: let objectPrint):
@@ -143,14 +135,14 @@ public final class DefaultNetworkErrorLogger: NetworkErrorLogger {
         }
     }
     
-    public func log(responseData data: Data?, response: URLResponse?) {
+    func log(responseData data: Data?, response: URLResponse?) {
         guard let data = data else { return }
         if let dataDict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
             printIfDebug("responseData: \(String(describing: dataDict))")
         }
     }
     
-    public func log(error: Error) {
+    func log(error: Error) {
         printIfDebug("\(error)")
     }
 }
@@ -159,9 +151,9 @@ public final class DefaultNetworkErrorLogger: NetworkErrorLogger {
 
 extension NetworkError {
     
-    public var isNotFoundError: Bool { return hasStatusCode(404) }
+    var isNotFoundError: Bool { return hasStatusCode(404) }
     
-    public func hasStatusCode(_ codeError: Int) -> Bool {
+    func hasStatusCode(_ codeError: Int) -> Bool {
         switch self {
         case let .error(code, _):
             return code == codeError
