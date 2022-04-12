@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0C73AC71F1E6BB8A962B205A /* Pods_CleanYTBPTJ_CleanYTBPTJUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A6ABF33FC0B00E5F6A0FED /* Pods_CleanYTBPTJ_CleanYTBPTJUITests.framework */; };
 		98368CE86C7DEA3D288F45DB /* Pods_CleanYTBPTJTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBDAACE014EAFC6D4BE836D5 /* Pods_CleanYTBPTJTests.framework */; };
+		E31AC26828056CAE00BF80DA /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31AC26728056CAE00BF80DA /* Bindable.swift */; };
 		E346D28F27EC2E2A00788494 /* UIImageView+Kingfisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E346D28E27EC2E2A00788494 /* UIImageView+Kingfisher.swift */; };
 		E34E159527CE36EC00F53F2E /* String+ApplyTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = E34E159427CE36EC00F53F2E /* String+ApplyTag.swift */; };
 		E35EDEBD27FD3B4A00B52EBD /* UICollectionViewLayout+SectionInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35EDEBC27FD3B4A00B52EBD /* UICollectionViewLayout+SectionInsets.swift */; };
@@ -17,7 +18,6 @@
 		E3A1BE0A27FAD3A500568487 /* APITarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A1BE0927FAD3A500568487 /* APITarget.swift */; };
 		E3A1BE0D27FAD3DB00568487 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A1BE0C27FAD3DB00568487 /* NetworkError.swift */; };
 		E3AEE7E227E1E30900DB230C /* UIEdgeInsets+ComputedProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AEE7E127E1E30900DB230C /* UIEdgeInsets+ComputedProperty.swift */; };
-		E3B41E5B27FEBF3E0053C625 /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B41E5A27FEBF3E0053C625 /* Bindable.swift */; };
 		E3B41E5D27FEC33D0053C625 /* NSObject+ClassName.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B41E5C27FEC33D0053C625 /* NSObject+ClassName.swift */; };
 		E3BE460C27F1FBBA0093FC0C /* CalcText.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3BE460B27F1FBBA0093FC0C /* CalcText.swift */; };
 		E3D0D78F27FEDC0D00D3CEC2 /* FetchStatusType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D0D78E27FEDC0D00D3CEC2 /* FetchStatusType.swift */; };
@@ -83,6 +83,7 @@
 		9C2111432D82A4E88FECA85E /* Pods_CleanYTBPTJ.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CleanYTBPTJ.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDE225084A05C44C159F96DC /* Pods-CleanYTBPTJTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CleanYTBPTJTests.release.xcconfig"; path = "Target Support Files/Pods-CleanYTBPTJTests/Pods-CleanYTBPTJTests.release.xcconfig"; sourceTree = "<group>"; };
 		BE9579CD6B377CADAFCA46BE /* Pods-CleanYTBPTJ-CleanYTBPTJUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CleanYTBPTJ-CleanYTBPTJUITests.release.xcconfig"; path = "Target Support Files/Pods-CleanYTBPTJ-CleanYTBPTJUITests/Pods-CleanYTBPTJ-CleanYTBPTJUITests.release.xcconfig"; sourceTree = "<group>"; };
+		E31AC26728056CAE00BF80DA /* Bindable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bindable.swift; sourceTree = "<group>"; };
 		E346D28E27EC2E2A00788494 /* UIImageView+Kingfisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Kingfisher.swift"; sourceTree = "<group>"; };
 		E34E159427CE36EC00F53F2E /* String+ApplyTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+ApplyTag.swift"; sourceTree = "<group>"; };
 		E35EDEBC27FD3B4A00B52EBD /* UICollectionViewLayout+SectionInsets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionViewLayout+SectionInsets.swift"; sourceTree = "<group>"; };
@@ -91,7 +92,6 @@
 		E3A1BE0927FAD3A500568487 /* APITarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APITarget.swift; sourceTree = "<group>"; };
 		E3A1BE0C27FAD3DB00568487 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		E3AEE7E127E1E30900DB230C /* UIEdgeInsets+ComputedProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+ComputedProperty.swift"; sourceTree = "<group>"; };
-		E3B41E5A27FEBF3E0053C625 /* Bindable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bindable.swift; sourceTree = "<group>"; };
 		E3B41E5C27FEC33D0053C625 /* NSObject+ClassName.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSObject+ClassName.swift"; sourceTree = "<group>"; };
 		E3BE460B27F1FBBA0093FC0C /* CalcText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcText.swift; sourceTree = "<group>"; };
 		E3D0D78E27FEDC0D00D3CEC2 /* FetchStatusType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchStatusType.swift; sourceTree = "<group>"; };
@@ -197,29 +197,28 @@
 			path = Helper;
 			sourceTree = "<group>";
 		};
+		E31AC26528056C9500BF80DA /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				E31AC26628056CA100BF80DA /* Model */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		E31AC26628056CA100BF80DA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E31AC26728056CAE00BF80DA /* Bindable.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		E3A1BE0B27FAD3C600568487 /* Common */ = {
 			isa = PBXGroup;
 			children = (
 				E3A1BE0C27FAD3DB00568487 /* NetworkError.swift */,
 			);
 			path = Common;
-			sourceTree = "<group>";
-		};
-		E3B41E5827FEBF3E0053C625 /* Commons */ = {
-			isa = PBXGroup;
-			children = (
-				E3B41E5927FEBF3E0053C625 /* Model */,
-			);
-			name = Commons;
-			path = ../../../RxVC/CleanYTBPTJ/Domain/Commons;
-			sourceTree = "<group>";
-		};
-		E3B41E5927FEBF3E0053C625 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				E3B41E5A27FEBF3E0053C625 /* Bindable.swift */,
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		E3ECEACE27F49E7700252551 /* Foundation */ = {
@@ -330,7 +329,7 @@
 		E3F5F9FE2756520000B8DF11 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
-				E3B41E5827FEBF3E0053C625 /* Commons */,
+				E31AC26528056C9500BF80DA /* Common */,
 				E3F5F967274A740100B8DF11 /* Main */,
 				E3F5FA4027842ECF00B8DF11 /* UseCases */,
 			);
@@ -685,9 +684,9 @@
 				E3F5FBEA2789AA2400B8DF11 /* MoviesRepository.swift in Sources */,
 				E346D28F27EC2E2A00788494 /* UIImageView+Kingfisher.swift in Sources */,
 				E3F5FAEC2785C7ED00B8DF11 /* NetworkService.swift in Sources */,
+				E31AC26828056CAE00BF80DA /* Bindable.swift in Sources */,
 				E370085327F9702500F6205D /* API.swift in Sources */,
 				E3A1BE0D27FAD3DB00568487 /* NetworkError.swift in Sources */,
-				E3B41E5B27FEBF3E0053C625 /* Bindable.swift in Sources */,
 				E3AEE7E227E1E30900DB230C /* UIEdgeInsets+ComputedProperty.swift in Sources */,
 				E3F5FB42278709DB00B8DF11 /* APIEndpoints.swift in Sources */,
 				E3F5FA892785997500B8DF11 /* MovieListItemCell.swift in Sources */,
