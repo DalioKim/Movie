@@ -6,29 +6,29 @@
 //
 
 import RxSwift
+import Moya
 
 class API {
-    static func fetchMovieList<T>(_ apiTarget: T) -> Single<MovieResponseDTO> where T: TargetType {
+    static private let disposeBag = DisposeBag()
+    
+    static func fetchMovieList(query: String) -> Single<MovieResponseDTO> {
         Single.create { single in
-            guard let request = apiTarget.endPoint else {
-                single(.failure(NetworkError.urlGeneration))
-                return Disposables.create()
-            }
-            URLSession.shared.dataTask(with: request) { data, result, error in
-                if let error = error {
-                    single(.failure(error))
-                    return
-                }
-                guard let data = data else {
-                    single(.failure(NetworkError.noData))
-                    return
-                }
-                guard let response = try? JSONDecoder().decode(MovieResponseDTO.self, from: data) else {
-                    single(.failure(NetworkError.parseError))
-                    return
-                }
-                single(.success(response))
-            }.resume()
+            let plugin: PluginType = NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))
+            let provider = MoyaProvider<APITarget>(plugins: [plugin])
+            provider.rx.request(.search(query: query))
+                .filterSuccessfulStatusCodes()
+                .subscribe { result in
+                    switch result {
+                    case .success(let response):
+                        guard let cellModels = try? JSONDecoder().decode(MovieResponseDTO.self, from: response.data) else {
+                            single(.failure(NetworkError.parseError))
+                            return
+                        }
+                        single(.success(cellModels))
+                    case .failure(let error):
+                        single(.failure(error))
+                    }
+                }.disposed(by: disposeBag)
             return Disposables.create()
         }
     }
