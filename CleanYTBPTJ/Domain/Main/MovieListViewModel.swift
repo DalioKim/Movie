@@ -15,6 +15,7 @@ protocol MovieListViewModelInput {
 protocol MovieListViewModel: MovieListViewModelInput {  // 삭제 예정
     var cellModels: [MovieListItemCellModel] { get }
     var cellModelsObs: Observable<[MovieListItemCellModel]> { get }
+    var searchRelay: BehaviorRelay<String> { get }
 }
 
 final class DefaultMovieListViewModel: MovieListViewModel {
@@ -26,13 +27,14 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     }
     
     // MARK: - Relay & Observer
+    private let disposeBag = DisposeBag()
     
     private let cellModelsRelay = BehaviorRelay<[MovieListItemCellModel]?>(value: nil)
     private let viewActionRelay = PublishRelay<ViewAction>() // 사용 예정
-    private let disposeBag = DisposeBag()
     private let fetchStatusTypeRelay = BehaviorRelay<FetchStatusType>(value: .none(.initial))
     private let fetch = PublishRelay<FetchType>()
     private let queryRelay = BehaviorRelay<String>(value: "마블")
+    let searchRelay = BehaviorRelay<String>(value: "")
     
     var cellModelsObs: Observable<[MovieListItemCellModel]> {
         cellModelsRelay.map { $0 ?? [] }
@@ -57,6 +59,7 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     
     init() {
         bindFetch()
+        bindSearch()
         fetch.accept(.initial)
     }
     
@@ -88,6 +91,16 @@ final class DefaultMovieListViewModel: MovieListViewModel {
                     self.fetchStatusTypeRelay.accept(.failure(fetchType, error: error))
                 }
             }).disposed(by: disposeBag)
+    }
+    
+    private func bindSearch() {
+        searchRelay
+            .filter { $0.count > 1 }
+            .throttle(.milliseconds(1000), scheduler: MainScheduler.instance)
+            .distinctUntilChanged()
+            .subscribe { [weak self] (query) in
+                self?.refresh(query: query)
+            }.disposed(by: disposeBag)
     }
 }
 

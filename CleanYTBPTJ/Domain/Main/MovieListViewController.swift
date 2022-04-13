@@ -76,14 +76,9 @@ class MovieListViewController: UIViewController {
     }
     
     private func bindSearchBar() {
-        searchBar.rx.text
-            .orEmpty
-            .filter { $0.count > 1 }
-            .throttle(.milliseconds(1000), scheduler: MainScheduler.instance)
-            .distinctUntilChanged()
-            .subscribe { [weak self] (query) in
-                self?.viewModel.refresh(query: query)
-            }.disposed(by: disposeBag)
+        searchBar.rx.text.orEmpty
+            .bind(to: viewModel.searchRelay)
+            .disposed(by: disposeBag)
     }
 }
 
