@@ -9,26 +9,20 @@ import RxSwift
 import Moya
 
 class API {
-    static private let disposeBag = DisposeBag()
-    
     static func fetchMovieList(query: String) -> Single<MovieResponseDTO> {
         Single.create { single in
-            let plugin: PluginType = NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))
-            let provider = MoyaProvider<APITarget>(plugins: [plugin])
+            let provider = MoyaProvider<APITarget>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
             provider.rx.request(.search(query: query))
                 .filterSuccessfulStatusCodes()
+                .map(MovieResponseDTO.self)
                 .subscribe { result in
                     switch result {
                     case .success(let response):
-                        guard let cellModels = try? JSONDecoder().decode(MovieResponseDTO.self, from: response.data) else {
-                            single(.failure(NetworkError.parseError))
-                            return
-                        }
-                        single(.success(cellModels))
+                        single(.success(response))
                     case .failure(let error):
                         single(.failure(error))
                     }
-                }.disposed(by: disposeBag)
+                }
             return Disposables.create()
         }
     }
