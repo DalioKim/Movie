@@ -15,7 +15,7 @@ protocol MovieListViewModelInput {
 protocol MovieListViewModel: MovieListViewModelInput {  // 삭제 예정
     var cellModels: [MovieListItemCellModel] { get }
     var cellModelsObs: Observable<[MovieListItemCellModel]> { get }
-    var searchRelay: BehaviorRelay<String> { get }
+    var searchSubject: PublishSubject<String?> { get }
 }
 
 final class DefaultMovieListViewModel: MovieListViewModel {
@@ -34,7 +34,7 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     private let fetchStatusTypeRelay = BehaviorRelay<FetchStatusType>(value: .none(.initial))
     private let fetch = PublishRelay<FetchType>()
     private let queryRelay = BehaviorRelay<String>(value: "마블")
-    let searchRelay = BehaviorRelay<String>(value: "")
+    let searchSubject = PublishSubject<String?>()
     
     var cellModelsObs: Observable<[MovieListItemCellModel]> {
         cellModelsRelay.map { $0 ?? [] }
@@ -94,9 +94,10 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     }
     
     private func bindSearch() {
-        searchRelay
+        searchSubject
+            .compactMap { $0 }
             .filter { $0.count > 1 }
-            .throttle(.milliseconds(1000), scheduler: MainScheduler.instance)
+            .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
             .subscribe { [weak self] (query) in
                 self?.refresh(query: query)

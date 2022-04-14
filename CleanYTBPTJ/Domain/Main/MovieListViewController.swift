@@ -58,15 +58,15 @@ class MovieListViewController: UIViewController {
         view.addSubview(collectionView)
         
         searchBar.snp.makeConstraints {
-            $0.width.equalTo(200)
-            $0.height.equalTo(40)
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             $0.centerX.equalToSuperview()
+            $0.width.equalTo(200)
+            $0.height.equalTo(40)
         }
         collectionView.snp.makeConstraints {
             $0.top.equalTo(searchBar.snp.bottom).offset(10)
             $0.bottom.equalToSuperview().inset(10)
-            $0.width.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
         }
     }
     
@@ -76,8 +76,8 @@ class MovieListViewController: UIViewController {
     }
     
     private func bindSearchBar() {
-        searchBar.rx.text.orEmpty
-            .bind(to: viewModel.searchRelay)
+        searchBar.rx.text
+            .bind(to: viewModel.searchSubject)
             .disposed(by: disposeBag)
     }
 }
