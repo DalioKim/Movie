@@ -67,27 +67,27 @@ final class DefaultMovieListViewModel: MovieListViewModel {
             .do(onNext: { [weak self] (fetchType, _) in
                 self?.fetchStatusTypeRelay.accept(.fetching(fetchType))
             })
-            .flatMapLatest { (fetchType, query) -> Observable<(Result<[MovieListItemCellModel], Error>)> in
+            .flatMapLatest { (_, query) in
                 return API.fetchMovieList(query: query)
                     .asObservable()
                     .map {
                         $0.items.map { MovieListItemCellModel(movie: Movie(title: $0.title, path: $0.image)) }
                     }
-                    .map { (.success($0)) }
-                    .catch { .just((.failure($0))) }
             }
-            .subscribe(onNext: { [weak self] result in
+            .subscribe { [weak self] result in
                 guard let self = self else { return }
                 let fetchType = self.fetchStatusTypeRelay.value.type
                 switch result {
-                case .success(let models):
+                case .next(let models):
                     let list = fetchType == .more ? (self.cellModelsRelay.value ?? []) + models : models
                     self.cellModelsRelay.accept(list)
                     self.fetchStatusTypeRelay.accept(.success(fetchType))
-                case .failure(let error):
+                case .error(let error):
                     self.fetchStatusTypeRelay.accept(.failure(fetchType, error: error))
+                case .completed:
+                    break
                 }
-            }).disposed(by: disposeBag)
+            }.disposed(by: disposeBag)
     }
 }
 
