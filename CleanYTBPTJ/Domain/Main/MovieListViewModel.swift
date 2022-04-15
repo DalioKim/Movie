@@ -68,7 +68,7 @@ final class DefaultMovieListViewModel: MovieListViewModel {
                 self?.fetchStatusTypeRelay.accept(.fetching(fetchType))
             })
             .flatMapLatest { (_, query) -> Observable<Result<[MovieListItemCellModel], Error>> in
-                return API.request(APITarget.search(query: query))
+                return API.search(query)
                     .asObservable()
                     .map {
                         $0.items.map { MovieListItemCellModel(movie: Movie(title: $0.title, path: $0.image)) }

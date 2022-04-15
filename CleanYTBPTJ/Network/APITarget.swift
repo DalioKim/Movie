@@ -7,10 +7,6 @@
 
 import Moya
 
-protocol DecodableResponseTargetType: TargetType {
-    associatedtype ResponseType: Decodable
-}
-
 enum APITarget {
     case search(query: String)
 }
@@ -20,9 +16,7 @@ extension APITarget {
     static private let clientKey = "Q0kcELtfaA"
 }
 
-extension APITarget: DecodableResponseTargetType {
-    typealias ResponseType = MovieResponseDTO
-    
+extension APITarget: TargetType {
     var baseURL: URL {
         return URL(string: "https://openapi.naver.com") ?? URL(fileURLWithPath: "")
     }
