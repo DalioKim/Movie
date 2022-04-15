@@ -9,7 +9,7 @@ protocol MovieListViewModelInput {
     func loadMore()
     func didCancelSearch()
     func didSelectItem(at index: Int)
-    func bindSearchText(_ obs: Observable<ControlProperty<String?>.Element>)
+    func search(_ query: String?)
 }
 
 protocol MovieListViewModel: MovieListViewModelInput {  // 삭제 예정
@@ -99,8 +99,7 @@ final class DefaultMovieListViewModel: MovieListViewModel {
             }).disposed(by: disposeBag)
     }
     
-    private func refresh(query: String) {
-        guard !query.isEmpty else { return }
+    private func refresh(_ query: String) {
         self.query = query
         fetch.accept(.refresh)
     }
@@ -120,12 +119,8 @@ extension DefaultMovieListViewModel {
         print("\(index)번 아이템")
     }
     
-    func bindSearchText(_ searchObs: Observable<ControlProperty<String?>.Element>) {
-        searchObs
-            .compactMap { $0 }
-            .filter { $0.count > 1 }
-            .subscribe(onNext: { [weak self] in
-                self?.refresh(query: $0)
-            }).disposed(by: disposeBag)
+    func search(_ query: String?) {
+        guard let query = query, query.count > 1 else { return }
+        refresh(query)
     }
 }
