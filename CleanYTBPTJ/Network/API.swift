@@ -6,30 +6,14 @@
 //
 
 import RxSwift
+import Moya
 
 class API {
-    static func fetchMovieList<T>(_ apiTarget: T) -> Single<MovieResponseDTO> where T: TargetType {
-        Single.create { single in
-            guard let request = apiTarget.endPoint else {
-                single(.failure(NetworkError.urlGeneration))
-                return Disposables.create()
-            }
-            URLSession.shared.dataTask(with: request) { data, result, error in
-                if let error = error {
-                    single(.failure(error))
-                    return
-                }
-                guard let data = data else {
-                    single(.failure(NetworkError.noData))
-                    return
-                }
-                guard let response = try? JSONDecoder().decode(MovieResponseDTO.self, from: data) else {
-                    single(.failure(NetworkError.parseError))
-                    return
-                }
-                single(.success(response))
-            }.resume()
-            return Disposables.create()
-        }
+    static private let provider = MoyaProvider<APITarget>()
+        
+    static func search(_ query: String) -> Single<MovieResponseDTO> {
+        return API.provider.rx.request(.search(query: query))
+            .filterSuccessfulStatusCodes()
+            .map(MovieResponseDTO.self)
     }
 }

@@ -5,19 +5,9 @@
 //  Created by 김동현 on 2022/04/04.
 //
 
-import Foundation
-import Alamofire
+import Moya
 
-protocol TargetType {
-    var baseURL: URL { get }
-    var path: String { get }
-    var method: HTTPMethod { get }
-    var task: Parameters { get }
-    var headers: [String: String]? { get }
-    var endPoint: URLRequest? { get }
-}
-
-enum APITarget: Codable {
+enum APITarget {
     case search(query: String)
 }
 
@@ -34,21 +24,21 @@ extension APITarget: TargetType {
     var path: String {
         switch self {
         case .search:
-            return "/v1/search/movie.json?"
+            return "/v1/search/movie.json"
         }
     }
     
-    var method: HTTPMethod {
+    var method: Moya.Method {
         switch self {
         case .search:
             return .get
         }
     }
     
-    var task: Parameters {
+    var task: Task {
         switch self {
         case .search(let query):
-            return ["query": query]
+            return .requestParameters(parameters: ["query": query], encoding: URLEncoding.queryString)
         }
     }
     
@@ -57,12 +47,5 @@ extension APITarget: TargetType {
         case .search:
             return ["X-Naver-Client-Id": APITarget.clientId, "X-Naver-Client-Secret": APITarget.clientKey]
         }
-    }
-    
-    var endPoint: URLRequest? {
-        var request = URLRequest(url: URL(string: baseURL.absoluteString + path) ?? URL(fileURLWithPath: ""))
-        request.httpMethod = method.rawValue
-        request.allHTTPHeaderFields = headers
-        return try? URLEncoding.queryString.encode(request, with: task)
     }
 }

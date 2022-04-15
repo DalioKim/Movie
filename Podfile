@@ -6,12 +6,12 @@ target 'CleanYTBPTJ' do
   use_frameworks!
 
   pod 'SnapKit', '~> 5.0.0' 
-  pod 'Alamofire', '4.7.3'  
-  pod 'Kingfisher'
+  pod 'Alamofire' 
+  pod 'Kingfisher', '~> 6.3.0' 
   pod 'RxSwift'
   pod 'RxRelay'
   pod 'RxCocoa'
-
+  pod 'Moya/RxSwift'
 
   # Pods for CleanYTBPTJ
 

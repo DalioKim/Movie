@@ -25,14 +25,6 @@ final class DefaultMovieListViewModel: MovieListViewModel {
         case showFeature(itemNo: Int)
     }
     
-    // MARK: - private
-    
-    private var moviesLoadTask: CancelDelegate? {
-        willSet {
-            moviesLoadTask?.cancel()
-        }
-    }
-    
     // MARK: - Relay & Observer
     
     private let cellModelsRelay = BehaviorRelay<[MovieListItemCellModel]?>(value: nil)
@@ -75,13 +67,13 @@ final class DefaultMovieListViewModel: MovieListViewModel {
             .do(onNext: { [weak self] (fetchType, _) in
                 self?.fetchStatusTypeRelay.accept(.fetching(fetchType))
             })
-            .flatMapLatest { (fetchType, query) -> Observable<(Result<[MovieListItemCellModel], Error>)> in
-                return API.fetchMovieList(APITarget.search(query: query))
+            .flatMapLatest { (_, query) -> Observable<Result<[MovieListItemCellModel], Error>> in
+                return API.search(query)
                     .asObservable()
                     .map {
                         $0.items.map { MovieListItemCellModel(movie: Movie(title: $0.title, path: $0.image)) }
                     }
-                    .map { (.success($0)) }
+                    .map { .success($0) }
                     .catch { .just((.failure($0))) }
             }
             .subscribe(onNext: { [weak self] result in
@@ -112,10 +104,7 @@ extension DefaultMovieListViewModel {
         fetch.accept(.more)
     }
     
-    func didCancelSearch() {
-        moviesLoadTask?.cancel()
-        moviesLoadTask = nil
-    }
+    func didCancelSearch() {} //구현 예정
     
     //didSelectItem 기능 추가 예정
     func didSelectItem(at index: Int) {
