@@ -16,7 +16,7 @@ class MovieListViewController: UIViewController {
         collectionView.register(MovieListItemCell.self, forCellWithReuseIdentifier: MovieListItemCell.className)
         return collectionView
     }()
-    private var searchBar = UISearchBar()
+    private let searchBar = UISearchBar()
     
     private var viewModel: MovieListViewModel
     private let disposeBag = DisposeBag()
@@ -81,7 +81,8 @@ class MovieListViewController: UIViewController {
             .withLatestFrom(searchBar.rx.text)
             .subscribe(onNext: { [weak self] in
                 self?.viewModel.search($0)
-            }).disposed(by: disposeBag)
+            })
+            .disposed(by: disposeBag)
     }
 }
 

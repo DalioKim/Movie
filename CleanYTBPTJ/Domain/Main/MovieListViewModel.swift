@@ -9,6 +9,7 @@ protocol MovieListViewModelInput {
     func loadMore()
     func didCancelSearch()
     func didSelectItem(at index: Int)
+    func refresh()
     func search(_ query: String?)
 }
 
@@ -68,11 +69,12 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     
     private func bindFetch() {
         fetch
-            .do(onNext: { [weak self] (fetchType) in
+            .do(onNext: { [weak self] fetchType in
                 self?.fetchStatusTypeRelay.accept(.fetching(fetchType))
             })
-            .flatMapLatest { [weak self] (_) -> Observable<Result<[MovieListItemCellModel], Error>> in
-                return API.search(self?.query ?? "마블")
+            .flatMapLatest { [weak self] _ -> Observable<Result<[MovieListItemCellModel], Error>> in
+                guard let self = self else { return .empty() }
+                return API.search(self.query)
                     .asObservable()
                     .map {
                         $0.items.map { MovieListItemCellModel(movie: Movie(title: $0.title, path: $0.image)) }
@@ -91,12 +93,8 @@ final class DefaultMovieListViewModel: MovieListViewModel {
                 case .failure(let error):
                     self.fetchStatusTypeRelay.accept(.failure(fetchType, error: error))
                 }
-            }).disposed(by: disposeBag)
-    }
-    
-    private func refresh(_ query: String) {
-        self.query = query
-        fetch.accept(.refresh)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
@@ -114,8 +112,13 @@ extension DefaultMovieListViewModel {
         print("\(index)번 아이템")
     }
     
+    func refresh() {
+        fetch.accept(.refresh)
+    }
+    
     func search(_ query: String?) {
         guard let query = query, query.count > 1 else { return }
-        refresh(query)
+        self.query = query
+        refresh()
     }
 }
