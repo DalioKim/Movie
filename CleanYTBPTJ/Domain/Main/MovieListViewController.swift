@@ -76,9 +76,7 @@ class MovieListViewController: UIViewController {
     }
     
     private func bindSearchBar() {
-        searchBar.rx.text
-            .bind(to: viewModel.searchSubject)
-            .disposed(by: disposeBag)
+        viewModel.bindSearchText(searchBar.rx.searchButtonClicked.asObservable().withLatestFrom(searchBar.rx.text))
     }
 }
 

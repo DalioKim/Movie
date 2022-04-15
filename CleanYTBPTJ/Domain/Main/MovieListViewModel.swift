@@ -6,16 +6,15 @@ import RxCocoa
 import RxRelay
 
 protocol MovieListViewModelInput {
-    func refresh(query: String)
     func loadMore()
     func didCancelSearch()
     func didSelectItem(at index: Int)
+    func bindSearchText(_ obs: Observable<ControlProperty<String?>.Element>)
 }
 
 protocol MovieListViewModel: MovieListViewModelInput {  // 삭제 예정
     var cellModels: [MovieListItemCellModel] { get }
     var cellModelsObs: Observable<[MovieListItemCellModel]> { get }
-    var searchSubject: PublishSubject<String?> { get }
 }
 
 final class DefaultMovieListViewModel: MovieListViewModel {
@@ -26,6 +25,16 @@ final class DefaultMovieListViewModel: MovieListViewModel {
         case showFeature(itemNo: Int)
     }
     
+    // MARK: - private
+    
+    private var moviesLoadTask: CancelDelegate? {
+        willSet {
+            moviesLoadTask?.cancel()
+        }
+    }
+    
+    private var query = "마블"
+    
     // MARK: - Relay & Observer
     private let disposeBag = DisposeBag()
     
@@ -33,8 +42,6 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     private let viewActionRelay = PublishRelay<ViewAction>() // 사용 예정
     private let fetchStatusTypeRelay = BehaviorRelay<FetchStatusType>(value: .none(.initial))
     private let fetch = PublishRelay<FetchType>()
-    private let queryRelay = BehaviorRelay<String>(value: "마블")
-    let searchSubject = PublishSubject<String?>()
     
     var cellModelsObs: Observable<[MovieListItemCellModel]> {
         cellModelsRelay.map { $0 ?? [] }
@@ -59,15 +66,14 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     
     init() {
         bindFetch()
-        bindSearch()
         fetch.accept(.initial)
     }
     
     // MARK: - Private
     
     private func bindFetch() {
-        Observable.combineLatest(fetch, queryRelay)
-            .do(onNext: { [weak self] (fetchType, _) in
+        fetch
+            .do(onNext: { [weak self] (fetchType) in
                 self?.fetchStatusTypeRelay.accept(.fetching(fetchType))
             })
             .flatMapLatest { (_, query) -> Observable<Result<[MovieListItemCellModel], Error>> in
@@ -93,27 +99,16 @@ final class DefaultMovieListViewModel: MovieListViewModel {
             }).disposed(by: disposeBag)
     }
     
-    private func bindSearch() {
-        searchSubject
-            .compactMap { $0 }
-            .filter { $0.count > 1 }
-            .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
-            .distinctUntilChanged()
-            .subscribe { [weak self] (query) in
-                self?.refresh(query: query)
-            }.disposed(by: disposeBag)
+    private func refresh(query: String) {
+        guard !query.isEmpty else { return }
+        self.query = query
+        fetch.accept(.refresh)
     }
 }
 
 // MARK: - INPUT. View event methods
 
 extension DefaultMovieListViewModel {
-    func refresh(query: String) {
-        guard !query.isEmpty else { return }
-        fetch.accept(.refresh)
-        queryRelay.accept(query)
-    }
-    
     func loadMore() {
         fetch.accept(.more)
     }
@@ -123,5 +118,14 @@ extension DefaultMovieListViewModel {
     //didSelectItem 기능 추가 예정
     func didSelectItem(at index: Int) {
         print("\(index)번 아이템")
+    }
+    
+    func bindSearchText(_ searchObs: Observable<ControlProperty<String?>.Element>) {
+        searchObs
+            .compactMap { $0 }
+            .filter { $0.count > 1 }
+            .subscribe(onNext: { [weak self] in
+                self?.refresh(query: $0)
+            }).disposed(by: disposeBag)
     }
 }
