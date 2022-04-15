@@ -36,6 +36,7 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     private var query = "마블"
     
     // MARK: - Relay & Observer
+    
     private let disposeBag = DisposeBag()
     
     private let cellModelsRelay = BehaviorRelay<[MovieListItemCellModel]?>(value: nil)
