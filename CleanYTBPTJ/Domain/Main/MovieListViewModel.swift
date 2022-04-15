@@ -27,12 +27,6 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     
     // MARK: - private
     
-    private var moviesLoadTask: CancelDelegate? {
-        willSet {
-            moviesLoadTask?.cancel()
-        }
-    }
-    
     private var query = "마블"
     
     // MARK: - Relay & Observer
@@ -77,8 +71,8 @@ final class DefaultMovieListViewModel: MovieListViewModel {
             .do(onNext: { [weak self] (fetchType) in
                 self?.fetchStatusTypeRelay.accept(.fetching(fetchType))
             })
-            .flatMapLatest { (_, query) -> Observable<Result<[MovieListItemCellModel], Error>> in
-                return API.search(query)
+            .flatMapLatest { [weak self] (_) -> Observable<Result<[MovieListItemCellModel], Error>> in
+                return API.search(self?.query ?? "마블")
                     .asObservable()
                     .map {
                         $0.items.map { MovieListItemCellModel(movie: Movie(title: $0.title, path: $0.image)) }
