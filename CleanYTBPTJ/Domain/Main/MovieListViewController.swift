@@ -16,6 +16,7 @@ class MovieListViewController: UIViewController {
         collectionView.register(MovieListItemCell.self, forCellWithReuseIdentifier: MovieListItemCell.className)
         return collectionView
     }()
+    private let searchBar = UISearchBar()
     
     private var viewModel: MovieListViewModel
     private let disposeBag = DisposeBag()
@@ -35,6 +36,7 @@ class MovieListViewController: UIViewController {
         setupViews()
         setupBehaviours()
         bindCollectionView()
+        bindSearchBar()
     }
     
     // MARK: - private
@@ -52,15 +54,35 @@ class MovieListViewController: UIViewController {
     }
     
     private func setupViews() {
+        view.addSubview(searchBar)
         view.addSubview(collectionView)
+        
+        searchBar.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(200)
+            $0.height.equalTo(40)
+        }
         collectionView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.top.equalTo(searchBar.snp.bottom).offset(10)
+            $0.bottom.equalToSuperview().inset(10)
+            $0.leading.trailing.equalToSuperview()
         }
     }
     
     private func setupBehaviours() {
         addBehaviors([BackButtonEmptyTitleNavigationBarBehavior(),
                       BlackStyleNavigationBarBehavior()])
+    }
+    
+    private func bindSearchBar() {
+        searchBar.rx.searchButtonClicked
+            .asObservable()
+            .withLatestFrom(searchBar.rx.text)
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.search($0)
+            })
+            .disposed(by: disposeBag)
     }
 }
 

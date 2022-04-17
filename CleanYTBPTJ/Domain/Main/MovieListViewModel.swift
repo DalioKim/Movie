@@ -6,10 +6,11 @@ import RxCocoa
 import RxRelay
 
 protocol MovieListViewModelInput {
-    func refresh(query: String)
     func loadMore()
     func didCancelSearch()
     func didSelectItem(at index: Int)
+    func refresh()
+    func search(_ query: String?)
 }
 
 protocol MovieListViewModel: MovieListViewModelInput {  // 삭제 예정
@@ -25,14 +26,18 @@ final class DefaultMovieListViewModel: MovieListViewModel {
         case showFeature(itemNo: Int)
     }
     
+    // MARK: - private
+    
+    private var query = "마블"
+    
     // MARK: - Relay & Observer
+    
+    private let disposeBag = DisposeBag()
     
     private let cellModelsRelay = BehaviorRelay<[MovieListItemCellModel]?>(value: nil)
     private let viewActionRelay = PublishRelay<ViewAction>() // 사용 예정
-    private let disposeBag = DisposeBag()
     private let fetchStatusTypeRelay = BehaviorRelay<FetchStatusType>(value: .none(.initial))
     private let fetch = PublishRelay<FetchType>()
-    private let queryRelay = BehaviorRelay<String>(value: "마블")
     
     var cellModelsObs: Observable<[MovieListItemCellModel]> {
         cellModelsRelay.map { $0 ?? [] }
@@ -63,12 +68,13 @@ final class DefaultMovieListViewModel: MovieListViewModel {
     // MARK: - Private
     
     private func bindFetch() {
-        Observable.combineLatest(fetch, queryRelay)
-            .do(onNext: { [weak self] (fetchType, _) in
+        fetch
+            .do(onNext: { [weak self] fetchType in
                 self?.fetchStatusTypeRelay.accept(.fetching(fetchType))
             })
-            .flatMapLatest { (_, query) -> Observable<Result<[MovieListItemCellModel], Error>> in
-                return API.search(query)
+            .flatMapLatest { [weak self] _ -> Observable<Result<[MovieListItemCellModel], Error>> in
+                guard let self = self else { return .empty() }
+                return API.search(self.query)
                     .asObservable()
                     .map {
                         $0.items.map { MovieListItemCellModel(movie: Movie(title: $0.title, path: $0.image)) }
@@ -87,19 +93,14 @@ final class DefaultMovieListViewModel: MovieListViewModel {
                 case .failure(let error):
                     self.fetchStatusTypeRelay.accept(.failure(fetchType, error: error))
                 }
-            }).disposed(by: disposeBag)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
 // MARK: - INPUT. View event methods
 
 extension DefaultMovieListViewModel {
-    func refresh(query: String) {
-        guard !query.isEmpty else { return }
-        fetch.accept(.refresh)
-        queryRelay.accept(query)
-    }
-    
     func loadMore() {
         fetch.accept(.more)
     }
@@ -109,5 +110,15 @@ extension DefaultMovieListViewModel {
     //didSelectItem 기능 추가 예정
     func didSelectItem(at index: Int) {
         print("\(index)번 아이템")
+    }
+    
+    func refresh() {
+        fetch.accept(.refresh)
+    }
+    
+    func search(_ query: String?) {
+        guard let query = query, query.count > 1 else { return }
+        self.query = query
+        refresh()
     }
 }
